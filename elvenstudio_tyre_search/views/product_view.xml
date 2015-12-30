@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Aggiunge la ricerca per misura -->
+        <record id="elvenstudio_product_template_search_view_measure" model="ir.ui.view">
+            <field name="name">product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view" />
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="compact_measure" string="Misura compatta" />
+                </field>
+                <xpath expr="//search[@string='Product']" position="inside">
+                    <!--<search string="Pneumatico" class="dati-pneumatico">-->
+
+                        <!-- Stagione -->
+                        <filter string="Summer" domain="[('season','=','Estiva')]" name="stagione_estiva" />
+                        <filter string="Winter" domain="[('season','=','Invernale')]" name="stagione_invernale" />
+                        <filter string="All Season" domain="[('season','=','Quattrostagioni')]" name="stagione_quattrostagioni" />
+                        <separator />
+
+                        <!-- Tube -->
+                        <filter string="TT" domain="[('tube','=','TT')]" name="tube_tt" />
+                        <filter string="TL" domain="[('tube','=','TL')]" name="tube_tl" />
+                        <separator />
+
+                        <!-- M+S, RFT, XL -->
+                        <filter string="M+S" domain="[('mud_snow','=',True)]" name="is_mud_snow" />
+                        <separator />
+
+                        <filter string="RFT" domain="[('runflat','=',True)]" name="is_runflat" />
+                        <separator />
+
+                        <filter string="XL" domain="[('reinforced','=',True)]" name="is_reinforced" />
+                        <separator />
+
+                        <!-- Tipo Pneumatico -->
+                        <filter string="Auto" domain="[('tipo_pneumatico','=','Pneumatico Auto')]" name="tipo_auto" />
+                        <filter string="Moto" domain="[('tipo_pneumatico','=','Pneumatico Moto')]" name="tipo_mototo" />
+                        <filter string="Autocarro" domain="[('tipo_pneumatico','=','Pneumatico Autocarro')]" name="tipo_autocarro" />
+                        <separator />
+
+                        <!-- Asse Moto -->
+                        <filter string="Anteriore" domain="[('asse','=','Anteriore')]" name="asse_anteriore" />
+                        <filter string="Posteriore" domain="[('asse','=','Posteriore')]" name="asse_posteriore" />
+                        <filter string="Ant/Post" domain="[('asse','=','Anteriore/Posteriore')]" name="asse_posteriore" />
+                        <separator />
+
+                        <!-- Asse Autocarro -->
+                        <filter string="Sterzante" domain="[('asse_sterzante','=',True)]" name="is_sterzante" />
+                        <filter string="Trattivo" domain="[('asse_trattivo','=',True)]" name="is_trattivo" />
+                        <filter string="Rimorchio" domain="[('asse_rimorchio','=',True)]" name="is_rimorchio" />
+                        <separator />
+                    <!--</search>-->
+
+                </xpath>
+                <field name="name" position="after">
+                    <field name="ip_code" string="Ip Code" />
+                    <field name="magento_manufacturer" string="Marca" />
+                    <field name="ic_cv" string="ICCV" />
+                    <field name="etichetta_europea" string="Etichetta europea" />
+                </field>
+            </field>
+        </record>
+
+        <!-- Aggiunge la misura nella form view -->
+        <record id="elvenstudio_view_stock_product_template_form_measure" model="ir.ui.view">
+            <field name="name">product.form.stock.view.inherited</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view" />
+            <!--<field name="inherit_id" ref="magento_bridge.product_template_form_view2" />-->
+
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                <!--<xpath expr="//field[@name='description']" position="before">-->
+                    <separator string="Caratteristiche Pneumatico" attrs="{'invisible': [('tipo_pneumatico', '=', 'none')]}"/>
+                    <group colspan="4" attrs="{'invisible': [('tipo_pneumatico', '=', 'none')]}">
+                        <group colspan="4">
+                            <field name="tipo_pneumatico" attrs="{'invisible': [('tipo_pneumatico', '=', 'none')]}" />
+                        </group>
+                        <group>
+                            <field name="magento_manufacturer" />
+                            <field name="ip_code" />
+                            <field name="measure" />
+                            <field name="ic_cv" />
+                            <field name="tube" />
+                            <field name="mud_snow" />
+                            <field name="runflat" />
+                            <field name="reinforced" />
+                        </group>
+                        <group>
+                            <field name="season" />
+                            <field name="etichetta_europea" />
+                            <field name="asse" attrs="{'invisible': [('tipo_pneumatico', '!=', 'Pneumatico Moto')]}"/>
+                            <field name="asse_sterzante" attrs="{'invisible': [('tipo_pneumatico', '!=', 'Pneumatico Autocarro')]}" />
+                            <field name="asse_trattivo" attrs="{'invisible': [('tipo_pneumatico', '!=', 'Pneumatico Autocarro')]}"/>
+                            <field name="asse_rimorchio" attrs="{'invisible': [('tipo_pneumatico', '!=', 'Pneumatico Autocarro')]}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Aggiunge la misura nella kanban view -->
+        <!-- Non dovrebbe servire nient'altro perchè ci dovrebbe essere tutto nel nome del prodotto -->
+        <record model="ir.ui.view" id="elvenstudio_product_template_kanban_stock_view_measure">
+            <field name="name">Product Template Kanban Stock</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_kanban_stock_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <br />
+                    <span class="measure">
+                        <field name="measure" />
+                    </span>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Aggiunge la misura nella tree view -->
+        <record id="elvenstudio_view_stock_product_template_tree_measure" model="ir.ui.view">
+            <field name="name">product.template.stock.tree.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_stock_product_template_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="measure"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

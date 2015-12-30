@@ -1,0 +1,56 @@
+
+/**
+ * Menu Principale
+ */
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    color: #fff;
+    background-color: #1CC934;
+    border-radius: 4px;
+}
+
+
+
+/**
+ * Calendario 
+ */
+.openerp .oe_calendar_table .calendar_color_11 {
+  border-color: #2E903C !important;
+  background-color: #1CC934 !important;
+  color: #0d0d0d;
+}
+
+.openerp .oe_calendar_table .cal_opacity {
+  opacity: 1 !important;
+}
+
+.fc-agenda-slots td div {
+  height: 40px !important;
+}
+
+
+ /**
+  * Blocco di notifica
+  */
+.ui-notify-message-style {
+	background: #075111 none repeat scroll 0% 0%;
+}
+
+
+
+
+/**
+ * Estensione Form di creazione/vista singola
+ */
+ .openerp .oe_form_sheet_width {
+	max-width: 90%;
+ }
+ 
+
+@media (min-width: 992px) {
+	.modal-lg {
+	  width: 80%  !important;
+	}
+}
+ 

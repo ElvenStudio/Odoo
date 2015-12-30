@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="elvenstudio_ddt_link_view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button type="object"
+                        class="oe_inline oe_stat_button"
+                        id="ddt_button"
+                        icon="fa-list-alt"
+                        name="action_open_partner_ddt" >
+                        <field name="total_ddt" widget="statinfo"/>&nbsp;DDT
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

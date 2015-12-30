@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<!-- Definisco la Home view -->
+		<record id="elvenstudio_controlpanel_form" model="ir.ui.view">
+            <field name="name">elvenstudio.controlpanel.form</field>
+            <field name="model">elvenstudio.controlpanel</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form create="false" save="false" string="Elven Studio Control Panel Home">
+					<header>
+						<separator colspan="5" string="Elven Studio Control Panel Home" />
+					</header>
+					<sheet>
+						<div>
+							<p>
+								<h3><label string="Panello di controllo" /></h3>
+								<label string="Seleziona dal menù a sinistra l'operazione da eseguire."/>
+							</p>
+						</div>
+					</sheet>
+				</form>
+			</field>
+        </record>
+
+		<!-- Definisco l'action di default per l'accesso alla home view -->
+		<record id="elvenstudio_home_action" model="ir.actions.act_window">
+            <field name="name">Elven Studio Control Home</field>
+            <field name="res_model">elvenstudio.controlpanel</field>
+            <field name="view_type">form</field>
+            <field name="target">inline</field>
+            <field name="view_id" ref="elvenstudio_controlpanel_form"/>
+        </record>
+
+		<!-- Definisco il main menù accessibile solo dal livello manager in su -->
+    	<menuitem id="elvenstudio_controlpanel_parent_menu" name="Elven Studio" groups="group_elvenstudio_manager"/>
+
+			<!-- Definisco la voce principale del pannello di controllo -->
+			<menuitem  id="menu_controlpanel_home" name="Control Panel" parent="elvenstudio_controlpanel_parent_menu" sequence="1"/>
+
+				<!-- Definisco la view di default quando si accede al pannello di controllo -->
+				<menuitem  id="cp_id0" name="Elven Studio Panel" parent="menu_controlpanel_home" action="elvenstudio_home_action"/>
+	</data>
+</openerp>

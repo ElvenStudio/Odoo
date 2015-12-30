@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="elvenstudio_tyre_search.assets_backend" name="product_tyre module" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/elvenstudio_tyre_search/static/src/js/custom.js"></script>
+                <link rel="stylesheet" href="/elvenstudio_tyre_search/static/src/css/custom.css" />
+            </xpath>
+        </template>
+    </data>
+</openerp>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+,,,,,,,
+access_elvenstudio_controlpanel_manager,Control Panel,model_elvenstudio_controlpanel,group_elvenstudio_manager,1,1,0,0
+,,,,,,,
+access_elvenstudio_controlpanel_admin,Control Panel,model_elvenstudio_controlpanel,group_elvenstudio_admin,1,1,1,1

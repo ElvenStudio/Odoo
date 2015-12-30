@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+,,,,,,,
+access_elvenstudio_controlpanel_manager,Pricelist Importer Line,model_product_pricelist_import_line,elvenstudio_control_panel.group_elvenstudio_manager,1,1,1,1
+,,,,,,,
+access_elvenstudio_controlpanel_manager,Pricelist Importer,model_product_pricelist_import,elvenstudio_control_panel.group_elvenstudio_manager,1,1,1,1

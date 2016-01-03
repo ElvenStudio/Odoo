@@ -8,8 +8,9 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_search_view" />
             <field name="arch" type="xml">
-                <field name="name" position="before">
-                    <field name="compact_measure" string="Misura compatta" />
+                <field name="name" position="replace">
+                    <field name="name" string="Product" filter_domain="['|','|',('default_code','ilike',self),('name','ilike',self),('compact_measure','ilike',self)]"/>
+                    <!--<field name="compact_measure" string="Misura compatta" />-->
                 </field>
                 <xpath expr="//search[@string='Product']" position="inside">
                     <!--<search string="Pneumatico" class="dati-pneumatico">-->
@@ -56,6 +57,7 @@
 
                 </xpath>
                 <field name="name" position="after">
+                    <field name="compact_measure" string="Misura compatta" />
                     <field name="ip_code" string="Ip Code" />
                     <field name="magento_manufacturer" string="Marca" />
                     <field name="ic_cv" string="ICCV" />
@@ -82,7 +84,8 @@
                         <group>
                             <field name="magento_manufacturer" />
                             <field name="ip_code" />
-                            <field name="measure" />
+                            <field name="measure" class="oe_read_only"/>
+                            <field name="compact_measure" class="oe_edit_only"/>
                             <field name="ic_cv" />
                             <field name="tube" />
                             <field name="mud_snow" />

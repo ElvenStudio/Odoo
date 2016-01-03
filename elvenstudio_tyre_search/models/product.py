@@ -72,7 +72,8 @@ class Product(models.Model):
         compute='_get_compact_measure',
         store=True,
         index=True,
-        search='_search_compact_measure'
+        search='_search_compact_measure',
+        inverse='_write_compact_measure'
     )
 
     ip_code = fields.Char(
@@ -108,7 +109,7 @@ class Product(models.Model):
         search='_search_ic_cv'
     )
 
-    measure = fields.Char(string='Misura', compute='_get_measure', store=True)
+    measure = fields.Char(string='Misura', compute='_get_measure', store=True, inverse='_write_measure')
     season = fields.Char(string='Stagione', compute='_get_season', store=True, index=True)
     tube = fields.Char(string='Camera', compute='_get_tube', store=True, index=True)
     asse = fields.Char(string='Asse', compute='_get_asse', store=True, index=True)
@@ -133,6 +134,7 @@ class Product(models.Model):
     @api.depends('magento_attribute_ids')
     def _get_magento_attributes(self):
         attributes = dict()
+
         if self.attribute_set_id:
             if AttributeCode.Pneumatico in self.attribute_set_id.name:
                 for attribute in self.magento_attribute_ids:
@@ -154,7 +156,7 @@ class Product(models.Model):
 
                     attributes[key] = attribute.value
 
-        self._magento_attributes = str(attributes).replace('"', "\"")  # .replace("'", "\"")
+        self._magento_attributes = str(attributes).replace('"', "\"")
 
     @api.one
     @api.depends('_magento_attributes')
@@ -170,6 +172,41 @@ class Product(models.Model):
             self._get_separator(larghezza + sezione) + cerchio
 
     @api.one
+    def _write_compact_measure(self):
+
+        measure_values = self.compact_measure.split("/")
+        size_measure_values = len(measure_values)
+
+        to_save = True
+
+        if size_measure_values == 3:
+            larghezza = measure_values[0]
+            sezione = measure_values[1]
+            cerchio = measure_values[2]
+
+        elif size_measure_values == 2:
+            larghezza = measure_values[0]
+            sezione = ''
+            cerchio = measure_values[1]
+
+        else:
+            _logger.error("Wrong measure written!")
+            to_save = False
+
+        if to_save:
+            attributes = dict()
+
+            # Recupero la struttura se presente
+            if self._magento_attributes:
+                attributes = ast.literal_eval(self._magento_attributes)
+
+            struttura = self._get_dict_value(attributes, AttributeCode.Struttura, 'R')
+
+            self.measure = larghezza + \
+                (self._get_separator(sezione) if larghezza != '' else '') + sezione + \
+                self._get_separator(larghezza + sezione, separator=' ') + struttura + cerchio
+
+    @api.one
     @api.depends('_magento_attributes')
     def _get_measure(self):
         attributes = ast.literal_eval(self._magento_attributes)
@@ -182,6 +219,13 @@ class Product(models.Model):
         self.measure = larghezza + \
             (self._get_separator(sezione) if larghezza != '' else '') + sezione + \
             self._get_separator(larghezza + sezione, separator=' ') + struttura + cerchio
+
+    @api.one
+    def _write_measure(self):
+        # Dummy Write
+        # Enable save on computed stored field
+        # Depends on _write_compact_measure
+        return True
 
     @api.one
     @api.depends('_magento_attributes')

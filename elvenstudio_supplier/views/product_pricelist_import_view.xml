@@ -60,6 +60,7 @@
                             <field name="delay" />
                             <field name="fail" />
                             <field name="fail_reason" />
+                            <field name="product_id" />
                         </tree>
                     </field>
                 </form>

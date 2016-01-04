@@ -7,7 +7,8 @@
             <field name="inherit_id" ref="stock.view_template_property_form"/>
             <field name="arch" type="xml">
                  <xpath expr="//field[@name='virtual_available']" position="after">
-                    <field name="supplier_qty" />
+                     <field name="supplier_price"/>
+                     <field name="supplier_qty" />
                 </xpath>
             </field>
         </record>
@@ -17,6 +18,7 @@
             <field name="inherit_id" ref="stock.product_template_kanban_stock_view"/>
             <field name="arch" type="xml">
                 <ul position="inside">
+                    <li t-if="record.type.raw_value != 'service'">Supplier price: <field name="supplier_price"/></li>
                     <li t-if="record.type.raw_value != 'service'">Supplier qty: <field name="supplier_qty"/> <field name="uom_id"/></li>
                 </ul>
             </field>
@@ -30,6 +32,7 @@
                     <attribute name="colors">red:supplier_qty&lt;0;blue:supplier_qty&gt;=0 and state in ('draft', 'end', 'obsolete');black:supplier_qty&gt;=0 and state not in ('draft', 'end', 'obsolete')</attribute>
                 </tree>
                 <field name="virtual_available" position="after">
+                    <field name="supplier_price"/>
                     <field name="supplier_qty"/>
                 </field>
             </field>

@@ -20,17 +20,11 @@
 ##############################################################################
 
 {
- 'name': 'Gestione dei fornitori',
+ 'name': 'FIx fattura provieniente da picking diversi',
  'version': '0.0.2',
  'category': 'Customization',
  'description': """
-    Estende le funzionalità associate ai fornitori di un prodotto con le seguenti migliorie:
-     - Definisce per ogni fornitore di un prodotto, le quantità massime disponibili
-     - Riordina automaticamente la lista dei fornitori di un prodotto in base al miglior prezzo
-     - Permette di importare un listino fornitori da un apposito menù
-     - TODO: gestione dei PO
-     - TODO: importazione dei fornitori in batch
-     - TODO: creazione report e pivot
+
 
 ==============================================================
     """,
@@ -41,19 +35,10 @@
  'images': ['images/elvenstudio.png'],
 
  'depends': [
-     'elvenstudio_control_panel',
-     'product',
-     'purchase',
-     'stock',
+     'purchase'
  ],
 
  'data': [
-     'wizard/import_price_file_view.xml',
-     'views/product_supplierinfo_view.xml',
-     'views/product_view.xml',
-     'views/product_pricelist_import_line_view.xml',
-     'views/product_pricelist_import_view.xml',
-     'security/ir.model.access.csv'
  ],
 
  'installable': True,

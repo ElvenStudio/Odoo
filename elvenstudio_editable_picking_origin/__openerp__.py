@@ -19,11 +19,11 @@
 #
 ##############################################################################
 
-{'name': 'ElvenStudio Custom Web Theme',
+{'name': 'Editable Picking Origin after Transfer',
  'version': '0.0.1',
  'category': 'Customization',
  'description': """
-    Personalizzazione del tema standard di Odoo
+    Make field Origin in stock picking editable even after transfer.
 ==============================================================
     """,
  'author': "ElvenStudio",
@@ -31,12 +31,9 @@
  'website': 'http://www.elvenstudio.it',
  'images': ['images/elvenstudio.png',
             ],
- 'depends': ['web'],
+ 'depends': ['stock'],
  'data': [
-     'template.xml',
  ],
- 'css': ['static/src/css/custom.css'],
- 'js': ['static/src/js/custom.js'],
  'installable': True,
  'application': False,
  }

@@ -174,37 +174,38 @@ class Product(models.Model):
     @api.one
     def _write_compact_measure(self):
 
-        measure_values = self.compact_measure.split("/")
-        size_measure_values = len(measure_values)
+        if self.compact_measure:
+            measure_values = self.compact_measure.split("/")
+            size_measure_values = len(measure_values)
 
-        to_save = True
+            to_save = True
 
-        if size_measure_values == 3:
-            larghezza = measure_values[0]
-            sezione = measure_values[1]
-            cerchio = measure_values[2]
+            if size_measure_values == 3:
+                larghezza = measure_values[0]
+                sezione = measure_values[1]
+                cerchio = measure_values[2]
 
-        elif size_measure_values == 2:
-            larghezza = measure_values[0]
-            sezione = ''
-            cerchio = measure_values[1]
+            elif size_measure_values == 2:
+                larghezza = measure_values[0]
+                sezione = ''
+                cerchio = measure_values[1]
 
-        else:
-            _logger.error("Wrong measure written!")
-            to_save = False
+            else:
+                _logger.error("Wrong measure written!")
+                to_save = False
 
-        if to_save:
-            attributes = dict()
+            if to_save:
+                attributes = dict()
 
-            # Recupero la struttura se presente
-            if self._magento_attributes:
-                attributes = ast.literal_eval(self._magento_attributes)
+                # Recupero la struttura se presente
+                if self._magento_attributes:
+                    attributes = ast.literal_eval(self._magento_attributes)
 
-            struttura = self._get_dict_value(attributes, AttributeCode.Struttura, 'R')
+                struttura = self._get_dict_value(attributes, AttributeCode.Struttura, 'R')
 
-            self.measure = larghezza + \
-                (self._get_separator(sezione) if larghezza != '' else '') + sezione + \
-                self._get_separator(larghezza + sezione, separator=' ') + struttura + cerchio
+                self.measure = larghezza + \
+                    (self._get_separator(sezione) if larghezza != '' else '') + sezione + \
+                    self._get_separator(larghezza + sezione, separator=' ') + struttura + cerchio
 
     @api.one
     @api.depends('_magento_attributes')
@@ -250,7 +251,7 @@ class Product(models.Model):
     def _get_tube(self):
         attributes = ast.literal_eval(self._magento_attributes)
         tube = self._get_dict_value(attributes, AttributeCode.Tube)
-        self.tube = 'Tube Type' if tube == 'TT' else 'Tube Less' if tube == 'TL' else ''
+        self.tube = ('Tube Type' if tube == 'TT' else ('Tube Less' if tube == 'TL' else ''))
 
     @api.one
     @api.depends('_magento_attributes')

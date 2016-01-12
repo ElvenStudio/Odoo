@@ -3,7 +3,7 @@
     <data>
         <template id="elvenstudio_custom_web_theme.assets_backend" name="custom_web_theme module" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/eelvenstudio_custom_web_theme/static/src/js/custom.js"></script>
+                <script type="text/javascript" src="/elvenstudio_custom_web_theme/static/src/js/custom.js"></script>
                 <link rel="stylesheet" href="/elvenstudio_custom_web_theme/static/src/css/custom.css" />
             </xpath>
         </template>

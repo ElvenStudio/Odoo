@@ -42,11 +42,13 @@
      'stock',
      'magento_bridge',
      'mob_product_attribute',
+     'point_of_sale',
  ],
 
  'data': [
+     'views/stock_quant_view.xml',
      'views/product_view.xml',
-     'template.xml',
+     'template.xml'
  ],
  'css': ['static/src/css/custom.css'],
  'js': ['static/src/js/custom.js'],

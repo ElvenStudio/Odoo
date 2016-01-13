@@ -75,6 +75,8 @@ class ProductPricelistImport(models.Model):
                                     'discount': line.discount,
                                 })
 
+                                # TODO attivare MTS + MTO
+
                                 file_load.fails -= 1
                                 line.write({
                                     'product_id': product_tmpl.id,
@@ -96,12 +98,15 @@ class ProductPricelistImport(models.Model):
                                     'supplier_pricelist_import_id': file_load.id
                                 })
 
+                                # TODO gestire le fasce
                                 price_list_partner_info_obj.create({
                                     'suppinfo_id': product_supplier_info_obj.id,
                                     'min_quantity': product_supplier_info_obj.min_qty,
                                     'price': line.price,
                                     'discount': line.discount,
                                 })
+
+                                # TODO attivare MTS + MTO
 
                                 file_load.fails -= 1
                                 line.write({
@@ -134,8 +139,10 @@ class ProductPricelistImport(models.Model):
 
                 # _logger.warning("da rimuovere " + str(supplier_to_remove))
 
+                # TODO rimuovere MTS + MTO se il prodotto non ha altri fornitori
+
                 # Rimuovo i supplier vecchi
-                # Ovvero quelli più vecchi della data di avvio del processo di caricamento
+                # Ovvero quelli importati con un listino diverso da quello attuale
                 supplier_to_remove.unlink()
 
         return True

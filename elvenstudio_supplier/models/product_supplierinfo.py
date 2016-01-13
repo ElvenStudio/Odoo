@@ -2,9 +2,9 @@
 
 from openerp import models, fields, api, _
 import openerp.addons.decimal_precision as dp
-# import logging
+import logging
 
-# _logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 class ProductSupplierInfo(models.Model):
@@ -22,7 +22,7 @@ class ProductSupplierInfo(models.Model):
 
     supplier_pricelist_condensed = fields.Char(compute='_compute_condensed_pricelist')
 
-    supplier_pricelist_import_id = fields.One2many('product.pricelist.import', 'name')
+    supplier_pricelist_import_id = fields.Many2one('product.pricelist.import', 'id')
 
     def product_has_available_qty(self):
         if self:
@@ -72,35 +72,58 @@ class ProductSupplierInfo(models.Model):
 
     @api.multi
     def write(self, values):
-        # _logger.warning("Supplier to save " + str(values))
-
         result = super(ProductSupplierInfo, self).write(values)
 
-        # _logger.warning("Saving supplier " + str(result))
+        for supplier in self:
 
-        if 'pricelist_ids' in values or 'available_qty' in values:
+            settings_obj = self.env['stock.config.settings'].search([], limit=1, order="id DESC")
 
-            price_list_info_obj = self.env['pricelist.partnerinfo']
-            sup_info_obj = self.env['product.supplierinfo']
+            if settings_obj.mto_route and \
+                    settings_obj.mto_route.id not in supplier.product_tmpl_id.route_ids.ids:
+                # aggiungo il route id mto di default
+                supplier.product_tmpl_id.route_ids = supplier.product_tmpl_id.route_ids.ids + [settings_obj.mto_route.id]
 
-            price_list = price_list_info_obj.search([
-                ('suppinfo_id', 'in', self.product_tmpl_id.supplier_ids.ids),
-                ('available_qty', '>', 0)],
-                order="price ASC")
+            if 'pricelist_ids' in values or 'available_qty' in values:
 
-            i = 1
-            ordered_suppliers_ids = []
-            suppliers_ids = self.product_tmpl_id.supplier_ids.ids
-            for price_line in price_list:
-                if price_line.suppinfo_id.id not in ordered_suppliers_ids:
-                    ordered_suppliers_ids.append(price_line.suppinfo_id.id)
-                    sup_info_obj.browse([price_line.suppinfo_id.id]).write({'sequence': i})
+                price_list_info_obj = self.env['pricelist.partnerinfo']
+                sup_info_obj = self.env['product.supplierinfo']
+
+                price_list = price_list_info_obj.search(
+                    [
+                        ('suppinfo_id', 'in', supplier.product_tmpl_id.supplier_ids.ids),
+                        ('available_qty', '>', 0)
+                    ],
+                    order="price ASC"
+                )
+
+                i = 1
+                ordered_suppliers_ids = []
+                suppliers_ids = supplier.product_tmpl_id.supplier_ids.ids
+                for price_line in price_list:
+                    if price_line.suppinfo_id.id not in ordered_suppliers_ids:
+                        ordered_suppliers_ids.append(price_line.suppinfo_id.id)
+                        sup_info_obj.browse([price_line.suppinfo_id.id]).write({'sequence': i})
+                        i += 1
+                    if price_line.suppinfo_id.id in suppliers_ids:
+                        suppliers_ids.remove(price_line.suppinfo_id.id)
+
+                for dangling_supplier in suppliers_ids:
+                    sup_info_obj.browse([dangling_supplier]).write({'sequence': i})
                     i += 1
-                if price_line.suppinfo_id.id in suppliers_ids:
-                    suppliers_ids.remove(price_line.suppinfo_id.id)
-
-            for dangling_supplier in suppliers_ids:
-                sup_info_obj.browse([dangling_supplier]).write({'sequence': i})
-                i += 1
 
         return result
+
+    @api.multi
+    def unlink(self):
+
+        for supplier in self:
+            if len(supplier.product_tmpl_id.supplier_ids.ids) == 1:
+                # lo sto per rimuovere, togli l'mts
+                settings_obj = self.env['stock.config.settings'].search([], limit=1, order="id DESC")
+                if settings_obj.mto_route and \
+                        settings_obj.mto_route.id in supplier.product_tmpl_id.route_ids.ids:
+                    # rimuovo
+                    supplier.product_tmpl_id.write({'route_ids': [(3, settings_obj.mto_route.id)], 'save_route': True})
+
+        super(ProductSupplierInfo, self).unlink()
+

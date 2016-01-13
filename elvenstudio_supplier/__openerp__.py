@@ -53,6 +53,7 @@
      'views/product_view.xml',
      'views/product_pricelist_import_line_view.xml',
      'views/product_pricelist_import_view.xml',
+     'views/res_config_view.xml',
      'security/ir.model.access.csv'
  ],
 

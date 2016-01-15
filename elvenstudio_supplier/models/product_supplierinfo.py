@@ -75,14 +75,6 @@ class ProductSupplierInfo(models.Model):
         result = super(ProductSupplierInfo, self).write(values)
 
         for supplier in self:
-
-            settings_obj = self.env['stock.config.settings'].search([], limit=1, order="id DESC")
-
-            if settings_obj.mto_route and \
-                    settings_obj.mto_route.id not in supplier.product_tmpl_id.route_ids.ids:
-                # aggiungo il route id mto di default
-                supplier.product_tmpl_id.route_ids = supplier.product_tmpl_id.route_ids.ids + [settings_obj.mto_route.id]
-
             if 'pricelist_ids' in values or 'available_qty' in values:
 
                 price_list_info_obj = self.env['pricelist.partnerinfo']
@@ -111,19 +103,19 @@ class ProductSupplierInfo(models.Model):
                     sup_info_obj.browse([dangling_supplier]).write({'sequence': i})
                     i += 1
 
+        if 'pricelist_ids' in values or 'available_qty' in values:
+            # Aggiorna le regole mto solo ai prodotti coinvolti
+            product_template_obj = self.env['product.template']
+            products = product_template_obj.search([('supplier_ids', 'in', self.ids)])
+            products.update_mto_route()
+
         return result
 
     @api.multi
     def unlink(self):
-
-        for supplier in self:
-            if len(supplier.product_tmpl_id.supplier_ids.ids) == 1:
-                # lo sto per rimuovere, togli l'mts
-                settings_obj = self.env['stock.config.settings'].search([], limit=1, order="id DESC")
-                if settings_obj.mto_route and \
-                        settings_obj.mto_route.id in supplier.product_tmpl_id.route_ids.ids:
-                    # rimuovo
-                    supplier.product_tmpl_id.write({'route_ids': [(3, settings_obj.mto_route.id)], 'save_route': True})
+        # Aggiorna le regole mto solo ai prodotti coinvolti
+        product_template_obj = self.env['product.template']
+        products = product_template_obj.search([('supplier_ids', 'in', self.ids)])
 
         super(ProductSupplierInfo, self).unlink()
-
+        products.update_mto_route()

@@ -68,14 +68,22 @@ class ProductPricelistImport(models.Model):
                                     'supplier_pricelist_import_id': file_load.id
                                 })
 
-                                # TODO gestire le fasce
-                                supplier.pricelist_ids[0].write({
-                                    'min_quantity': product_supplier_info_obj.min_qty,
-                                    'price': line.price,
-                                    'discount': line.discount,
-                                })
+                                if supplier.pricelist_ids.ids:
+                                    # TODO gestire le fasce
+                                    supplier.pricelist_ids[0].write({
+                                        'min_quantity': product_supplier_info_obj.min_qty,
+                                        'price': line.price,
+                                        'discount': line.discount,
+                                    })
 
-                                # TODO attivare MTS + MTO
+                                else:
+                                    # TODO gestire le fasce
+                                    price_list_partner_info_obj.create({
+                                        'suppinfo_id': supplier.id,
+                                        'min_quantity': product_supplier_info_obj.min_qty,
+                                        'price': line.price,
+                                        'discount': line.discount,
+                                    })
 
                                 file_load.fails -= 1
                                 line.write({
@@ -105,8 +113,6 @@ class ProductPricelistImport(models.Model):
                                     'price': line.price,
                                     'discount': line.discount,
                                 })
-
-                                # TODO attivare MTS + MTO
 
                                 file_load.fails -= 1
                                 line.write({

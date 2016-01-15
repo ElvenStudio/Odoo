@@ -32,22 +32,21 @@ class ProductV8(models.Model):
         self.supplier_price = self.supplier_ids.get_supplier_price()
 
     @api.multi
-    def write(self, values):
-
-        result = super(ProductV8, self).write(values)
-
-        if 'save_route' in values:
-            return result
-
-        for product in self:
-            if not product.supplier_ids.ids:
-
-                # lo sto per rimuovere, togli l'mts
-                settings_obj = self.env['stock.config.settings'].search([], limit=1, order="id DESC")
-
-                if settings_obj.mto_route.id and \
-                        (settings_obj.mto_route.id in product.route_ids.ids):
+    def update_mto_route(self):
+        settings_obj = self.env['stock.config.settings'].search([('mto_route', '!=', 0)], limit=1, order="id DESC")
+        if settings_obj and settings_obj.mto_route.id:
+            _route_id = settings_obj.mto_route.id
+            for product in self:
+                if _route_id in product.route_ids.ids and not product.supplier_ids.ids:
                     # rimuovo l'mto
-                    product.write({'route_ids': [(3, settings_obj.mto_route.id)], 'save_route': True})
+                    product.write({'route_ids': [(3, _route_id)], 'update_mto_route': True})
+                elif _route_id not in product.route_ids.ids and product.supplier_ids.ids:
+                    # aggiungo l'mto
+                    product.write({'route_ids': [(4, _route_id)], 'update_mto_route': True})
 
+    @api.multi
+    def write(self, values):
+        result = super(ProductV8, self).write(values)
+        if 'update_mto_route' not in values:
+            self.update_mto_route()
         return result

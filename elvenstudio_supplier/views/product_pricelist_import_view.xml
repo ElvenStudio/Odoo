@@ -75,8 +75,8 @@
         </record>
 
         <act_window name="Fail Lines"
-            domain="[('file_lines', '=', active_id),('fail', '=', True)]"
-            context="{'file_lines':active_id}"
+            domain="[('file_import', '=', active_id),('fail', '=', True)]"
+            context="{'file_import':active_id}"
             res_model="product.pricelist.import.line"
             src_model="product.pricelist.import"
             id="act_fail_lines" />

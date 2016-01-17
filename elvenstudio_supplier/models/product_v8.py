@@ -74,27 +74,28 @@ class ProductV8(models.Model):
         for product in self:
             supplier_ids = product.supplier_ids.ids
 
-            price_list = price_list_info_obj.search(
-                [
-                    ('suppinfo_id', 'in', supplier_ids),
-                    ('available_qty', '>', 0)
-                ],
-                order="price ASC"
-            )
+            if supplier_ids and len(supplier_ids) > 1:
+                price_list = price_list_info_obj.search(
+                    [
+                        ('suppinfo_id', 'in', supplier_ids),
+                        ('available_qty', '>', 0)
+                    ],
+                    order="price ASC"
+                )
 
-            i = 1
-            ordered_supplier_ids = []
-            for price_line in price_list:
-                if price_line.suppinfo_id.id not in ordered_supplier_ids:
-                    ordered_supplier_ids.append(price_line.suppinfo_id.id)
-                    sup_info_obj.browse([price_line.suppinfo_id.id]).write({'sequence': i, 'sort_suppliers': False})
+                i = 1
+                ordered_supplier_ids = []
+                for price_line in price_list:
+                    if price_line.suppinfo_id.id not in ordered_supplier_ids:
+                        ordered_supplier_ids.append(price_line.suppinfo_id.id)
+                        sup_info_obj.browse([price_line.suppinfo_id.id]).write({'sequence': i, 'sort_suppliers': False})
+                        i += 1
+                    if price_line.suppinfo_id.id in supplier_ids:
+                        supplier_ids.remove(price_line.suppinfo_id.id)
+
+                for dangling_supplier in supplier_ids:
+                    sup_info_obj.browse([dangling_supplier]).write({'sequence': i, 'sort_suppliers': False})
                     i += 1
-                if price_line.suppinfo_id.id in supplier_ids:
-                    supplier_ids.remove(price_line.suppinfo_id.id)
-
-            for dangling_supplier in supplier_ids:
-                sup_info_obj.browse([dangling_supplier]).write({'sequence': i, 'sort_suppliers': False})
-                i += 1
 
     @api.multi
     def write(self, values):

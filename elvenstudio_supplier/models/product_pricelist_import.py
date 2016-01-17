@@ -14,7 +14,8 @@ class ProductPricelistImport(models.Model):
 
     name = fields.Char('Load')
     date = fields.Datetime('Date:', readonly=True)
-    import_date = fields.Datetime('Date:', readonly=True)
+    process_start_date = fields.Datetime('Date:', readonly=True)
+    process_end_date = fields.Datetime('Date:', readonly=True)
     file_name = fields.Char('File Name', readonly=True)
     fails = fields.Integer('Fail Lines:', readonly=True)
     process = fields.Integer('Lines to Process:', readonly=True)
@@ -29,6 +30,8 @@ class ProductPricelistImport(models.Model):
     def process_lines(self):
 
         for file_load in self:
+            start_date = fields.Datetime.now()
+            fail_lines = file_load.fails
 
             if not file_load.supplier:
                 raise exceptions.Warning(_("You must select a Supplier"))
@@ -42,6 +45,10 @@ class ProductPricelistImport(models.Model):
 
             product_to_sort = set()
             product_to_check_mto = set()
+            multi_supplier_lines = []
+            multi_product_lines = []
+            no_product_lines = []
+            no_product_code_lines = []
 
             for line in file_load.file_lines:
                 # process fail lines
@@ -92,7 +99,8 @@ class ProductPricelistImport(models.Model):
                                         'sort_suppliers': False,
                                     })
 
-                                file_load.fails -= 1
+                                # file_load.fails -= 1  -- avoid write
+                                fail_lines -= 1
                                 line.write({
                                     'product_id': product_tmpl.id,
                                     'fail': False,
@@ -128,7 +136,8 @@ class ProductPricelistImport(models.Model):
                                     'sort_suppliers': False,
                                 })
 
-                                file_load.fails -= 1
+                                # file_load.fails -= 1  -- avoid write
+                                fail_lines -= 1
                                 line.write({
                                     'product_id': product_tmpl.id,
                                     'fail': False,
@@ -144,15 +153,36 @@ class ProductPricelistImport(models.Model):
                             # Ci sono almeno due righe con lo stesso fornitore,
                             # è un errore da mostrare
                             else:
-                                line.fail_reason = _('Multiple Supplier Line found')
+                                # line.fail_reason = _('Multiple Supplier Line found') -- avoid write
+                                multi_supplier_lines.append(line.id)
 
                         elif len(product_list) > 1:
-                            line.fail_reason = _('Multiple Products found')
+                            # line.fail_reason = _('Multiple Products found') -- avoid write
+                            multi_product_lines.append(line.id)
 
                         else:
-                            line.fail_reason = _('Product not found')
+                            # line.fail_reason = _('Product not found') -- avoid write
+                            no_product_lines.append(line.id)
+
                     else:
-                        line.fail_reason = _('No Product Code')
+                        # line.fail_reason = _('No Product Code') -- avoid write
+                        no_product_code_lines.append(line.id)
+
+            # Aggiorno le righe che hanno lo stesso fornitore più volte
+            if multi_supplier_lines:
+                file_load.file_lines.browse(multi_supplier_lines).write({'fail_reason': _('Multiple Supplier Line found')})
+
+            # Aggiorno le righe che hanno più prodotti con lo stesso codice
+            if multi_product_lines:
+                file_load.file_lines.browse(multi_product_lines).write({'fail_reason': _('Multiple Products found')})
+
+            # Aggiorno le righe che non hanno prodotti
+            if no_product_lines:
+                file_load.file_lines.browse(no_product_lines).write({'fail_reason': _('Product not found')})
+
+            # Aggiorno le righe che non hanno il codice prodotto
+            if no_product_code_lines:
+                file_load.file_lines.browse(no_product_lines).write({'fail_reason': _('No Product Code')})
 
             # Cerco i prodotti che hanno un riferimento a questo fornitore
             # e che non sono stati aggiornati dal file perchè devo rimuoverli
@@ -178,7 +208,8 @@ class ProductPricelistImport(models.Model):
             if product_to_check_mto:
                 self.env['product.template'].browse(list(product_to_check_mto)).update_mto_route()
 
-            file_load.import_date = fields.Datetime.now()
+            end_date = fields.Datetime.now()
+            file_load.write({'fails': fail_lines, 'process_start_date': start_date, 'process_end_date': end_date})
 
         return True
 

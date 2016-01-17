@@ -42,10 +42,13 @@
                         <button name="%(action_import_file)d" string="Load File" class="oe_highlight" type="action" />
                         <button class="oe_highlight" name="process_lines" string="Proccess" type="object" />
                     </header>
+                    <group>
+                        <h2><field name="name" /></h2>
+                    </group>
                     <group col="6">
-                        <field name="name" />
                         <field name="file_name" />
                         <field name="date" />
+                        <field name="import_date" />
                         <field name="process" />
                         <field name="fails" />
                         <field name="supplier"  domain="[('supplier', '=', True)]" />

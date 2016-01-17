@@ -14,6 +14,7 @@ class ProductPricelistImport(models.Model):
 
     name = fields.Char('Load')
     date = fields.Datetime('Date:', readonly=True)
+    import_date = fields.Datetime('Date:', readonly=True)
     file_name = fields.Char('File Name', readonly=True)
     fails = fields.Integer('Fail Lines:', readonly=True)
     process = fields.Integer('Lines to Process:', readonly=True)
@@ -38,6 +39,9 @@ class ProductPricelistImport(models.Model):
             product_obj = self.env['product.product']
             product_supplier_info_obj = self.env['product.supplierinfo']
             price_list_partner_info_obj = self.env['pricelist.partnerinfo']
+
+            product_to_sort = set()
+            product_to_check_mto = set()
 
             for line in file_load.file_lines:
                 # process fail lines
@@ -65,7 +69,8 @@ class ProductPricelistImport(models.Model):
                                     'available_qty': line.available_qty,
                                     'delay': line.delay,
                                     'last_modified_date': fields.Datetime.now(),
-                                    'supplier_pricelist_import_id': file_load.id
+                                    'supplier_pricelist_import_id': file_load.id,
+                                    'sort_suppliers': False,
                                 })
 
                                 if supplier.pricelist_ids.ids:
@@ -74,6 +79,7 @@ class ProductPricelistImport(models.Model):
                                         'min_quantity': product_supplier_info_obj.min_qty,
                                         'price': line.price,
                                         'discount': line.discount,
+                                        'sort_suppliers': False,
                                     })
 
                                 else:
@@ -83,6 +89,7 @@ class ProductPricelistImport(models.Model):
                                         'min_quantity': product_supplier_info_obj.min_qty,
                                         'price': line.price,
                                         'discount': line.discount,
+                                        'sort_suppliers': False,
                                     })
 
                                 file_load.fails -= 1
@@ -91,6 +98,10 @@ class ProductPricelistImport(models.Model):
                                     'fail': False,
                                     'fail_reason': _('Correctly Updated')
                                 })
+
+                                # Se effettuo una modifica, sul prodotto devo verificare l'ordine dei fornitori
+                                # Ma non devo attivare l'MTO in quanto già attivo (ha almeno un fornitore)
+                                product_to_sort.add(product_tmpl.id)
 
                             # Non esiste e lo creo
                             elif len(supplier) == 0:
@@ -103,7 +114,9 @@ class ProductPricelistImport(models.Model):
                                     'available_qty': line.available_qty,
                                     'delay': line.delay,
                                     # 'last_modified_date': fields.Datetime.now(),
-                                    'supplier_pricelist_import_id': file_load.id
+                                    'supplier_pricelist_import_id': file_load.id,
+                                    'sort_suppliers': False,
+                                    'update_mto_route': False,
                                 })
 
                                 # TODO gestire le fasce
@@ -112,6 +125,7 @@ class ProductPricelistImport(models.Model):
                                     'min_quantity': product_supplier_info_obj.min_qty,
                                     'price': line.price,
                                     'discount': line.discount,
+                                    'sort_suppliers': False,
                                 })
 
                                 file_load.fails -= 1
@@ -120,6 +134,12 @@ class ProductPricelistImport(models.Model):
                                     'fail': False,
                                     'fail_reason': _('Correctly Added')
                                 })
+
+                                # Se aggiungo un fornitore, devo sicuramente verificare che MTO sia attivo
+                                # Ma devo anche aggiornare l'ordine dei fornitori, perchè potrebbero
+                                # essercene altri già presenti
+                                product_to_check_mto.add(product_tmpl.id)
+                                product_to_sort.add(product_tmpl.id)
 
                             # Ci sono almeno due righe con lo stesso fornitore,
                             # è un errore da mostrare
@@ -134,22 +154,31 @@ class ProductPricelistImport(models.Model):
                     else:
                         line.fail_reason = _('No Product Code')
 
-                # Cerco i prodotti che hanno un riferimento a questo fornitore
-                # e che non sono stati aggiornati dal file perchè devo rimuoverli
-                supplier_to_remove = product_supplier_info_obj.search(
-                    [
-                        ('name', '=', file_load.supplier.id),
-                        ('supplier_pricelist_import_id', '!=', file_load.id)
-                    ]
-                )
+            # Cerco i prodotti che hanno un riferimento a questo fornitore
+            # e che non sono stati aggiornati dal file perchè devo rimuoverli
+            supplier_to_remove = product_supplier_info_obj.search(
+                [
+                    ('name', '=', file_load.supplier.id),
+                    ('supplier_pricelist_import_id', '!=', file_load.id)
+                ]
+            )
 
-                # _logger.warning("da rimuovere " + str(supplier_to_remove))
+            # _logger.warning("SUPPLIER TO REMOVE " + str(supplier_to_remove))
 
-                # TODO rimuovere MTS + MTO se il prodotto non ha altri fornitori
-
-                # Rimuovo i supplier vecchi
-                # Ovvero quelli importati con un listino diverso da quello attuale
+            # Rimuovo i supplier vecchi se ce ne sono
+            # Ovvero quelli importati con un listino diverso da quello attuale
+            if supplier_to_remove.ids:
                 supplier_to_remove.unlink()
+
+            # _logger.warning("PRODUCT TO SORT " + str(product_to_sort))
+            if product_to_sort:
+                self.env['product.template'].browse(list(product_to_sort)).sort_suppliers()
+
+            # _logger.warning("PRODUCT TO CHECK MTO " + str(product_to_check_mto))
+            if product_to_check_mto:
+                self.env['product.template'].browse(list(product_to_check_mto)).update_mto_route()
+
+            file_load.import_date = fields.Datetime.now()
 
         return True
 

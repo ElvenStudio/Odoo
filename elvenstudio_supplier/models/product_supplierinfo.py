@@ -65,57 +65,56 @@ class ProductSupplierInfo(models.Model):
 
     @api.model
     def create(self, values):
+        # _logger.warning('CREATE SUPPLIER')
+
+        update_mto_route = True
+        if 'update_mto_route' in values:
+            update_mto_route = values['update_mto_route']
+            values.pop('update_mto_route')
+
+        sort_product_suppliers = True
+        if 'sort_suppliers' in values:
+            sort_product_suppliers = values['sort_suppliers']
+            values.pop('sort_suppliers')
+
         supplier = super(ProductSupplierInfo, self).create(values)
 
-        supplier.write({'available_qty': supplier.available_qty})
+        if update_mto_route:
+            supplier.product_tmpl_id.update_mto_route()
+
+        if sort_product_suppliers:
+            supplier.product_tmpl_id.sort_suppliers()
+
         return supplier
 
     @api.multi
     def write(self, values):
+        # _logger.warning('WRITE SUPPLIER')
+
+        sort_product_suppliers = True
+        if 'sort_suppliers' in values:
+            sort_product_suppliers = values['sort_suppliers']
+            values.pop('sort_suppliers')
+
         result = super(ProductSupplierInfo, self).write(values)
 
-        for supplier in self:
-            if 'pricelist_ids' in values or 'available_qty' in values:
-
-                price_list_info_obj = self.env['pricelist.partnerinfo']
-                sup_info_obj = self.env['product.supplierinfo']
-
-                price_list = price_list_info_obj.search(
-                    [
-                        ('suppinfo_id', 'in', supplier.product_tmpl_id.supplier_ids.ids),
-                        ('available_qty', '>', 0)
-                    ],
-                    order="price ASC"
-                )
-
-                i = 1
-                ordered_suppliers_ids = []
-                suppliers_ids = supplier.product_tmpl_id.supplier_ids.ids
-                for price_line in price_list:
-                    if price_line.suppinfo_id.id not in ordered_suppliers_ids:
-                        ordered_suppliers_ids.append(price_line.suppinfo_id.id)
-                        sup_info_obj.browse([price_line.suppinfo_id.id]).write({'sequence': i})
-                        i += 1
-                    if price_line.suppinfo_id.id in suppliers_ids:
-                        suppliers_ids.remove(price_line.suppinfo_id.id)
-
-                for dangling_supplier in suppliers_ids:
-                    sup_info_obj.browse([dangling_supplier]).write({'sequence': i})
-                    i += 1
-
-        if 'pricelist_ids' in values or 'available_qty' in values:
-            # Aggiorna le regole mto solo ai prodotti coinvolti
+        if sort_product_suppliers:
+            # Aggiorno l'ordine dei fornitori sui prodotti coinvolti,
+            # perchè potrebbe essdere cambiato qualcosa
             product_template_obj = self.env['product.template']
             products = product_template_obj.search([('supplier_ids', 'in', self.ids)])
-            products.update_mto_route()
+            products.sort_suppliers()
 
         return result
 
     @api.multi
     def unlink(self):
+        # _logger.warning('UNLINK SUPPLIER')
         # Aggiorna le regole mto solo ai prodotti coinvolti
+        # Aggiorna l'ordine dei fornitori solo ai prodotti coinvolti
         product_template_obj = self.env['product.template']
         products = product_template_obj.search([('supplier_ids', 'in', self.ids)])
 
         super(ProductSupplierInfo, self).unlink()
         products.update_mto_route()
+        products.sort_suppliers()

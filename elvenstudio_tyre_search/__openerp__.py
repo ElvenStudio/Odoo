@@ -41,12 +41,11 @@
      'product',
      'stock',
      'magento_bridge',
-     'mob_product_attribute',
-     'point_of_sale',
+     'mob_product_attribute'
  ],
 
  'data': [
-     'views/stock_quant_view.xml',
+     'views/stock_view.xml',
      'views/product_view.xml',
      'template.xml'
  ],

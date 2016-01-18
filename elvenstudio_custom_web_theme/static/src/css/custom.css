@@ -10,8 +10,12 @@
     border-radius: 4px;
 }
 
-
-
+/**
+ * Righe Tabelle
+ */
+.openerp .oe_list_content > tbody > tr:hover td {
+    background-color: #1CC934 !important;
+}
 /**
  * Calendario 
  */

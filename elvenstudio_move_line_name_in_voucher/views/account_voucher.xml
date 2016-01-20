@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="elvenstudio_view_vendor_receipt_form">
+            <field name="name">elvenstudio.account.voucher.line</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_line_id']" position="after">
+                    <field name="move_name" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

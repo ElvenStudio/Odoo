@@ -22,9 +22,9 @@
 {
  'name': 'Add Account Move Line name into Account Voucher Line',
  'version': '0.1.0',
- 'category': 'Customization',
+ 'category': 'Account',
  'description': """
-    TODO --
+    Aggiunge il campo nome nella schermata di registrazione dei pagamenti.
 ==============================================================
     """,
  'author': "ElvenStudio",
@@ -40,6 +40,7 @@
  'data': [
      'views/account_voucher.xml',
  ],
+
  'css': ['static/src/css/custom.css'],
  'js': ['static/src/js/custom.js'],
 

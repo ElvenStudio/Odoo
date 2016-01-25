@@ -14,14 +14,14 @@ class DataConnector(models.Model):
     def export_to_md(self, filepath, filename, domain, host, user, pwd, ftp_path, url):
         status = False
         operation = self.create_operation('export_to_csv')
-        operation.execute_operation('product.template')
+        operation.execute_operation('product.product')
 
         try:
             domain = eval(domain) if domain != '' else []
         except SyntaxError as e:
             operation.error_on_operation(e.message)
 
-        m = self.env['product.template']
+        m = self.env['product.product']
         products_to_export = m.search(domain)
         if products_to_export.ids:
             with open(filepath + '/' + filename, 'w+') as csvFile:

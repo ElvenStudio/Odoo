@@ -64,29 +64,29 @@ class DataConnector(models.Model):
                             pfu = '0.38'
                         elif '1.05' in pfu:
                             pfu = '1.10'
-                        elif '41.60' in pfu:
+                        elif '41.6' in pfu:
                             pfu = '43.00'
-                        elif '113.00' in pfu:
+                        elif '113' in pfu:
                             pfu = '116.70'
-                        elif '16.90' in pfu:
+                        elif '16.9' in pfu:
                             pfu = '17.60'
-                        elif '51.60' in pfu:
+                        elif '51.6' in pfu:
                             pfu = '53.40'
-                        elif '182.00' in pfu:
+                        elif '182' in pfu:
                             pfu = '188.70'
                         elif '14.15' in pfu:
                             pfu = '14.70'
-                        elif '34.80' in pfu:
+                        elif '34.8' in pfu:
                             pfu = '36.00'
-                        elif '7.30' in pfu:
+                        elif '7.3' in pfu:
                             pfu = '7.60'
-                        elif '7.80' in pfu:
+                        elif '7.8' in pfu:
                             pfu = '8.10'
-                        elif '68.00' in pfu:
+                        elif '68' in pfu:
                             pfu = '70.30'
-                        elif '21.90' in pfu:
+                        elif '21.9' in pfu:
                             pfu = '22.80'
-                        elif '3.30' in pfu:
+                        elif '3.3' in pfu:
                             pfu = '3.40'
 
                         price = product.with_context(pricelist=3).price

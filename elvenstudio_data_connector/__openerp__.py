@@ -44,8 +44,6 @@
      'views/data_connector.xml',
      'security/ir.model.access.csv',
  ],
- 'css': ['static/src/css/custom.css'],
- 'js': ['static/src/js/custom.js'],
 
  'installable': True,
  'application': False,

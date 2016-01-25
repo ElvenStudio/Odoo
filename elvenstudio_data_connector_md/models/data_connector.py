@@ -50,12 +50,46 @@ class DataConnector(models.Model):
                                     rumore = str(attribute.value) + 'dB'
                                 elif 'battistrada' == attribute.code:
                                     battistrada = attribute.value
-
+                        '''
                         price = 0.0
                         for pricelist in product.pricelist_ids:
                             if "Listino Gommisti (Standard)" == pricelist.name:
                                 price = pricelist.price
+                        '''
 
+                        # Fix a crudo per i pfu 2016
+                        if pfu == '2.15':
+                            pfu = '2.30'
+                        elif pfu == '0.35':
+                            pfu = '0.38'
+                        elif pfu == '1.05':
+                            pfu = '1.10'
+                        elif pfu == '41.60':
+                            pfu = '43.00'
+                        elif pfu == '113.00':
+                            pfu = '116.70'
+                        elif pfu == '16.90':
+                            pfu = '17.60'
+                        elif pfu == '51.60':
+                            pfu = '53.40'
+                        elif pfu == '182.00':
+                            pfu = '188.70'
+                        elif pfu == '14.15':
+                            pfu = '14.70'
+                        elif pfu == '34.80':
+                            pfu = '36.00'
+                        elif pfu == '7.30':
+                            pfu = '7.60'
+                        elif pfu == '7.80':
+                            pfu = '8.10'
+                        elif pfu == '68.00':
+                            pfu = '70.30'
+                        elif pfu == '21.90':
+                            pfu = '22.80'
+                        elif pfu == '3.30':
+                            pfu = '3.40'
+
+                        price = product.with_context(pricelist=3).price
                         ip_code = product.default_code
                         if product.ip_code:
                             ip_code = product.ip_code
@@ -80,7 +114,7 @@ class DataConnector(models.Model):
                             'SUMMER' if product.season == 'Estiva' else (
                                 'WINTER' if product.season == 'Invernale' else (
                                     'ALL SEASON' if product.season == 'Quattrostagioni' else '')),
-                            'VETTURA' if product.attribute_set_id.name == 'Pneumatico Auto' else (
+                            'CAR' if product.attribute_set_id.name == 'Pneumatico Auto' else (
                                 'MOTO' if product.attribute_set_id.name == 'Pneumatico Moto' else (
                                     'AUTOCARRO' if product.attribute_set_id.name == 'Pneumatico Autocaro' else '')),
                             price if price else '0.0',

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+,,,,,,,
+access_elvenstudio_controlpanel_admin,Data Connector,model_elvenstudio_data_connector,elvenstudio_control_panel.group_elvenstudio_admin,1,1,1,1

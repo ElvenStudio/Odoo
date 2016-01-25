@@ -11,7 +11,7 @@ class DataConnector(models.Model):
     _inherit = 'elvenstudio.data.connector'
 
     @api.model
-    def export_to_md(self, filename, domain):
+    def export_to_md(self, filepath, filename, domain, host, user, pwd, ftp_path, url):
         status = False
         operation = self.create_operation('export_to_csv')
         operation.execute_operation('product.template')
@@ -24,7 +24,7 @@ class DataConnector(models.Model):
         m = self.env['product.template']
         products_to_export = m.search(domain)
         if products_to_export.ids:
-            with open(filename, 'w+') as csvFile:
+            with open(filepath + '/' + filename, 'w+') as csvFile:
                 writer = csv.writer(csvFile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 for product in products_to_export:
                     if product.attribute_set_id:
@@ -138,4 +138,6 @@ class DataConnector(models.Model):
         else:
             operation.cancel_operation('No product selected to export')
 
+        self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path)
+        self.open_url(url, '')
         return status

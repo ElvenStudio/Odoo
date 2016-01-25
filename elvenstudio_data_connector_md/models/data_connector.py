@@ -58,35 +58,35 @@ class DataConnector(models.Model):
                         '''
 
                         # Fix a crudo per i pfu 2016
-                        if '2.15' in pfu:
+                        if '2.15' in str(pfu):
                             pfu = '2.30'
-                        elif '0.35' in pfu:
+                        elif '0.35' in str(pfu):
                             pfu = '0.38'
-                        elif '1.05' in pfu:
+                        elif '1.05' in str(pfu):
                             pfu = '1.10'
-                        elif '41.6' in pfu:
+                        elif '41.6' in str(pfu):
                             pfu = '43.00'
-                        elif '113' in pfu:
+                        elif '113' in str(pfu):
                             pfu = '116.70'
-                        elif '16.9' in pfu:
+                        elif '16.9' in str(pfu):
                             pfu = '17.60'
-                        elif '51.6' in pfu:
+                        elif '51.6' in str(pfu):
                             pfu = '53.40'
-                        elif '182' in pfu:
+                        elif '182' in str(pfu):
                             pfu = '188.70'
-                        elif '14.15' in pfu:
+                        elif '14.15' in str(pfu):
                             pfu = '14.70'
-                        elif '34.8' in pfu:
+                        elif '34.8' in str(pfu):
                             pfu = '36.00'
-                        elif '7.3' in pfu:
+                        elif '7.3' in str(pfu):
                             pfu = '7.60'
-                        elif '7.8' in pfu:
+                        elif '7.8' in str(pfu):
                             pfu = '8.10'
-                        elif '68' in pfu:
+                        elif '68' in str(pfu):
                             pfu = '70.30'
-                        elif '21.9' in pfu:
+                        elif '21.9' in str(pfu):
                             pfu = '22.80'
-                        elif '3.3' in pfu:
+                        elif '3.3' in str(pfu):
                             pfu = '3.40'
 
                         price = product.with_context(pricelist=3).price

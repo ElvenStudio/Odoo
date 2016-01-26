@@ -31,9 +31,10 @@ class DataConnector(models.BaseModel):
     end_date = fields.Datetime(readonly=True)
     message = fields.Char(size=255, readonly=True)
 
-    @staticmethod
+    @api.one
     def exist_model(self, model_name):
         return model_name in self.env.registry
+
 
     @api.model
     def create_operation(self, command_name=''):
@@ -73,7 +74,7 @@ class DataConnector(models.BaseModel):
             domain = []
             if 'domain' in kwargs:
                 domain = kwargs['domain']
-            if self.exist_model(model_name):
+            if operation.exist_model(model_name):
                 operation.execute_operation(model_name)
                 model = self.env[model_name]
                 objs_to_export = model.search(domain)

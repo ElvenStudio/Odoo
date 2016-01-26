@@ -27,10 +27,9 @@
  'website': 'https://github.com/ElvenStudio/Odoo',
  'summary': "Add a link to the related ddt's in the partner form.",
  'description': """
-
-    The module Adds, in the partner form, the link to the related DDT's.
-    ==============================================================
-    """,
+The module Adds, in the partner form, the link to the related DDT's.
+==============================================================
+""",
  'author': "ElvenStudio",
  'license': 'AGPL-3',
  'website': 'http://www.elvenstudio.it',

@@ -27,7 +27,7 @@
  'website': 'https://github.com/ElvenStudio/Odoo',
  'summary': "Aggiunge un pannello di controllo delle estensioni elvenstudio",
  'description': """
-    Pannello di controllo delle estensioni elvenstudio.
+Pannello di controllo delle estensioni elvenstudio.
 ==============================================================
     """,
  'author': "ElvenStudio",

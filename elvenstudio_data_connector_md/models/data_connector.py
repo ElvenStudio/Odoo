@@ -57,7 +57,7 @@ class DataConnector(models.Model):
                         if customer.customer_payment_mode and customer.property_payment_term:
                             payment_term = customer.customer_payment_mode.name + ' ' + \
                                 customer.property_payment_term.name
-                            payment_term = payment_term.encode('utf-8') if isinstance(payment_term, unicode) else str(payment_term)
+                            #payment_term = payment_term.encode('utf-8') if isinstance(payment_term, unicode) else str(payment_term)
 
                         extra = 0
                         if customer.property_product_pricelist:
@@ -65,16 +65,16 @@ class DataConnector(models.Model):
                             if len(extra_nr) == 1:
                                 extra = -1 * int(extra_nr[0])
 
-                        name = customer.name.decode() if customer.name else ''
+                        name = str(customer.name.decode()) if customer.name else ''
                         #name = name.encode('utf-8') if isinstance(name, unicode) else str(name)
 
-                        street = customer.street.decode() if customer.street else ''
+                        street = str(customer.street.decode()) if customer.street else ''
                         #street = street.encode('utf-8') if isinstance(street, unicode) else str(street)
 
-                        city = customer.city.decode() if customer.city else ''
-                        city = city.encode('utf-8') if isinstance(city, unicode) else str(city)
+                        city = str(customer.city.decode()) if customer.city else ''
+                        #city = city.encode('utf-8') if isinstance(city, unicode) else str(city)
 
-                        email = customer.email.decode() if customer.email else ''
+                        email = str(customer.email.decode()) if customer.email else ''
                         #email = email.encode('utf-8') if isinstance(email, unicode) else str(email)
 
                         if vat:
@@ -193,15 +193,15 @@ class DataConnector(models.Model):
 
                             row = [
                                 3,
-                                str(ip_code).encode('utf-8'),
-                                str(product.compact_measure.replace('/', '') if product.compact_measure else '').encode('utf-8'),
-                                str(product.measure if product.measure else '').encode('utf-8'),
-                                str(ic).encode('utf-8'),  # IC
-                                str(cv).encode('utf-8'),  # CV
+                                str(ip_code),
+                                str(product.compact_measure.replace('/', '') if product.compact_measure else ''),
+                                str(product.measure if product.measure else ''),
+                                str(ic),  # IC
+                                str(cv),  # CV
                                 'XL' if product.reinforced else '',
                                 'RFT' if product.runflat else '',
-                                str(product.magento_manufacturer if product.magento_manufacturer else '').encode('utf-8'),
-                                str(battistrada if battistrada else '').encode('utf-8'),
+                                str(product.magento_manufacturer if product.magento_manufacturer else ''),
+                                str(battistrada if battistrada else ''),
                                 'SUMMER' if product.season == 'Estiva' else (
                                     'WINTER' if product.season == 'Invernale' else (
                                         'ALL SEASON' if product.season == 'Quattrostagioni' else '')),
@@ -209,16 +209,16 @@ class DataConnector(models.Model):
                                     'MOTO' if product.attribute_set_id.name == 'Pneumatico Moto' else (
                                         'AUTOCARRO' if product.attribute_set_id.name == 'Pneumatico Autocaro' else '')),
                                 price if price else '0.0',
-                                str(pfu).encode('utf-8'),
-                                str(prezzo_ivato).encode('utf-8'),  # vendita + pfu + iva
+                                str(pfu),
+                                str(prezzo_ivato),  # vendita + pfu + iva
                                 product.qty_available,
                                 product.qty_available,
                                 '',  # TODO Data prox arrivo
-                                str(product.ean13 if product.ean13 else '').encode('utf-8'),
+                                str(product.ean13 if product.ean13 else ''),
                                 '',  # TODO DOT NON USATO
-                                str(aderenza if aderenza else '').encode('utf-8'),
-                                str(resistenza if resistenza else '').encode('utf-8'),
-                                str(rumore if rumore else '').encode('utf-8'),
+                                str(aderenza if aderenza else ''),
+                                str(resistenza if resistenza else ''),
+                                str(rumore if rumore else ''),
                                 ''  # TODO NETTO NON USATO
                             ]
                             writer.writerow(row)

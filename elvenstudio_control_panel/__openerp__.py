@@ -21,10 +21,13 @@
 
 {
  'name': 'ElvenStudio Control Panel',
+ 'license': 'AGPL-3',
  'version': '0.0.1',
  'category': 'Customization',
+ 'website': 'https://github.com/ElvenStudio/Odoo',
+ 'summary': "Aggiunge un pannello di controllo delle estensioni elvenstudio",
  'description': """
-    Pannello di controllo delle personalizzazioni.
+    Pannello di controllo delle estensioni elvenstudio.
 ==============================================================
     """,
  'author': "ElvenStudio",

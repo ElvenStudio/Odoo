@@ -21,11 +21,15 @@
 
 {
  'name': 'DDT Link in partner form view',
+ 'license': 'AGPL-3',
  'version': '0.0.1',
- 'category': 'Customization',
+ 'category': 'Sales',
+ 'website': 'https://github.com/ElvenStudio/Odoo',
+ 'summary': "Add a link to the related ddt's in the partner form.",
  'description': """
-    Aggiunge nella vista dei partner un link ai DDT associati
-==============================================================
+
+    The module Adds, in the partner form, the link to the related DDT's.
+    ==============================================================
     """,
  'author': "ElvenStudio",
  'license': 'AGPL-3',

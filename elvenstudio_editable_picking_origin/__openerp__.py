@@ -22,6 +22,9 @@
 {'name': 'Editable Picking Origin after Transfer',
  'version': '0.0.1',
  'category': 'Customization',
+ 'license': 'AGPL-3',
+ 'website': 'https://github.com/ElvenStudio/Odoo',
+ 'summary': "Allows edit in the stock picking origin field.",
  'description': """
     Make field Origin in stock picking editable even after transfer.
 ==============================================================

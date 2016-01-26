@@ -21,8 +21,11 @@
 
 {
  'name': 'Esportazione MD',
+ 'license': 'AGPL-3',
  'version': '0.1.0',
  'category': 'Extra Tools',
+ 'website': 'https://github.com/ElvenStudio/Odoo',
+ 'summary': "Personalizzazione esportazioni per md",
  'description': """
     --
 ==============================================================

@@ -35,7 +35,6 @@ class DataConnector(models.BaseModel):
     def exist_model(self, model_name):
         return model_name in self.env.registry
 
-
     @api.model
     def create_operation(self, command_name=''):
         return self.create({'command': command_name})
@@ -84,7 +83,7 @@ class DataConnector(models.BaseModel):
                         writer.writeheader()
 
                         for obj in objs_to_export:
-                            row = {k: (obj[k] if k in obj else '') for k in fields_to_export}
+                            row = {k: (str(obj[k]).encode('utf-8') if k in obj else '') for k in fields_to_export}
                             writer.writerow(row)
 
                         csvFile.close()

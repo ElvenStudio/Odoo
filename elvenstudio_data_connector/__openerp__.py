@@ -20,12 +20,33 @@
 ##############################################################################
 
 {
- 'name': 'Tool for connecting odoo to other platforms',
+ 'name': 'Tools for connecting odoo to other platforms',
+ 'license': 'AGPL-3',
  'version': '0.1.0',
  'category': 'Extra Tools',
+ 'website': 'https://github.com/ElvenStudio/Odoo',
+ 'summary': "Add a set of tool for export data to other platforms.",
  'description': """
     A set of useful set of tool that connect Odoo to other platforms.
-==============================================================
+    ===================================================================
+
+    Features
+    -----
+    * Export any model in csv file
+    * Send any file in a ftp location
+    * Query a Url with option parameters.
+    * Shows the log of the executed actions in Tasks Menu into the ElvenStudio Panel.
+
+    Usage
+    -----
+    * Go in Configuration -> Technical -> Automation -> Scheduled Action
+    * Create a new Action, complete the required field and:
+       * In the model field, specify elvenstudio.data.connector
+       * In the method fields can be used this method:
+           * export_to_csv: Export any model in csv file. Params to send are: (filename, model_name, fields,to,export, domain='[optional domain]')
+           * ftp_send_file: Send any file in a ftp location. Params to send are: (filepath, filename, host, user, pwd, ftp_path)
+           * open_url: Send any file in a ftp location. Params to send are: (url, params)
+
     """,
  'author': "ElvenStudio",
  'license': 'AGPL-3',

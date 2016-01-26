@@ -67,16 +67,16 @@ class DataConnector(models.Model):
                         if vat:
                             row = [
                                 customer.id,
-                                customer.name.encode('utf-8'),
+                                str(customer.name).encode('utf-8'),
                                 vat,
-                                customer.street.encode('utf-8'),
-                                customer.city.encode('utf-8'),
-                                customer.email.encode('utf-8'),
+                                str(customer.street if customer.city else '').encode('utf-8'),
+                                str(customer.city if customer.city else '').encode('utf-8'),
+                                str(customer.email if customer.email else '').encode('utf-8'),
                                 3,  # Il numero di listino gommisti su GCP!, senza questo i clienti non vedono le gomme!
                                 extra,  # L'extra!
                                 '',  # Tempi di consegna, inutile
-                                payment_term.encode('utf-8'),  # Tempi e metodi di consegna
-                                max(customer.credit_limit - customer, 0),  # credito restante
+                                str(payment_term).encode('utf-8'),  # Tempi e metodi di consegna
+                                max(customer.credit_limit - customer.credit, 0),  # credito restante
                             ]
                             writer.writerow(row)
 
@@ -180,15 +180,15 @@ class DataConnector(models.Model):
 
                             row = [
                                 3,
-                                ip_code.encode('utf-8'),
-                                product.compact_measure.replace('/', '').encode('utf-8') if product.compact_measure else '',
-                                product.measure.encode('utf-8'),
-                                ic.encode('utf-8'),  # IC
-                                cv.encode('utf-8'),  # CV
+                                str(ip_code).encode('utf-8'),
+                                str(product.compact_measure.replace('/', '') if product.compact_measure else '').encode('utf-8'),
+                                str(product.measure if product.measure else '').encode('utf-8'),
+                                str(ic).encode('utf-8'),  # IC
+                                str(cv).encode('utf-8'),  # CV
                                 'XL' if product.reinforced else '',
                                 'RFT' if product.runflat else '',
-                                product.magento_manufacturer.encode('utf-8'),
-                                battistrada.encode('utf-8'),
+                                str(product.magento_manufacturer if product.magento_manufacturer else '').encode('utf-8'),
+                                str(battistrada if battistrada else '').encode('utf-8'),
                                 'SUMMER' if product.season == 'Estiva' else (
                                     'WINTER' if product.season == 'Invernale' else (
                                         'ALL SEASON' if product.season == 'Quattrostagioni' else '')),
@@ -196,16 +196,16 @@ class DataConnector(models.Model):
                                     'MOTO' if product.attribute_set_id.name == 'Pneumatico Moto' else (
                                         'AUTOCARRO' if product.attribute_set_id.name == 'Pneumatico Autocaro' else '')),
                                 price if price else '0.0',
-                                pfu.encode('utf-8'),
-                                prezzo_ivato.encode('utf-8'),  # vendita + pfu + iva
+                                str(pfu).encode('utf-8'),
+                                str(prezzo_ivato).encode('utf-8'),  # vendita + pfu + iva
                                 product.qty_available,
                                 product.qty_available,
                                 '',  # TODO Data prox arrivo
-                                product.ean13.encode('utf-8') if product.ean13 else '',
+                                str(product.ean13 if product.ean13 else '').encode('utf-8'),
                                 '',  # TODO DOT NON USATO
-                                aderenza.encode('utf-8'),
-                                resistenza.encode('utf-8'),
-                                rumore.encode('utf-8'),
+                                str(aderenza if aderenza else '').encode('utf-8'),
+                                str(resistenza if resistenza else '').encode('utf-8'),
+                                str(rumore if rumore else '').encode('utf-8'),
                                 ''  # TODO NETTO NON USATO
                             ]
                             writer.writerow(row)

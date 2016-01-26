@@ -65,16 +65,16 @@ class DataConnector(models.Model):
                             if len(extra_nr) == 1:
                                 extra = -1 * int(extra_nr[0])
 
-                        name = customer.name if customer.name else ''
+                        name = customer.name.decode() if customer.name else ''
                         #name = name.encode('utf-8') if isinstance(name, unicode) else str(name)
 
-                        street = customer.street if customer.street else ''
+                        street = customer.street.decode() if customer.street else ''
                         #street = street.encode('utf-8') if isinstance(street, unicode) else str(street)
 
-                        city = customer.city if customer.city else ''
+                        city = customer.city.decode() if customer.city else ''
                         city = city.encode('utf-8') if isinstance(city, unicode) else str(city)
 
-                        email = customer.email if customer.email else ''
+                        email = customer.email.decode() if customer.email else ''
                         #email = email.encode('utf-8') if isinstance(email, unicode) else str(email)
 
                         if vat:

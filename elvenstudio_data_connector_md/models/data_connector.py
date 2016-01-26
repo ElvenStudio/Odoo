@@ -26,7 +26,6 @@ class DataConnector(models.Model):
         return status
 
     @api.model
-    # def export_customer_to_md(self, filepath, filename, domain, host, user, pwd, ftp_path, url):
     def export_customer_to_md(self, filepath, filename, domain):
         status = False
         operation = self.create_operation('export_to_csv')
@@ -68,16 +67,16 @@ class DataConnector(models.Model):
                         if vat:
                             row = [
                                 customer.id,
-                                customer.name,
+                                customer.name.encode('utf-8'),
                                 vat,
-                                customer.street,
-                                customer.city,
-                                customer.email,
+                                customer.street.encode('utf-8'),
+                                customer.city.encode('utf-8'),
+                                customer.email.encode('utf-8'),
                                 3,  # Il numero di listino gommisti su GCP!, senza questo i clienti non vedono le gomme!
                                 extra,  # L'extra!
                                 '',  # Tempi di consegna, inutile
-                                payment_term,  # Tempi e metodi di consegna
-                                customer.credit_limit - customer,  # credito restante
+                                payment_term.encode('utf-8'),  # Tempi e metodi di consegna
+                                max(customer.credit_limit - customer, 0),  # credito restante
                             ]
                             writer.writerow(row)
 
@@ -86,10 +85,6 @@ class DataConnector(models.Model):
                     operation.complete_operation()
             else:
                 operation.cancel_operation('No customer selected to export')
-
-        # status = status and \
-        #    self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path) and \
-        #    self.open_url(url, '')
 
         return status
 
@@ -185,15 +180,15 @@ class DataConnector(models.Model):
 
                             row = [
                                 3,
-                                ip_code,
-                                product.compact_measure.replace('/', '') if product.compact_measure else '',
-                                product.measure,
-                                ic,  # IC
-                                cv,  # CV
+                                ip_code.encode('utf-8'),
+                                product.compact_measure.replace('/', '').encode('utf-8') if product.compact_measure else '',
+                                product.measure.encode('utf-8'),
+                                ic.encode('utf-8'),  # IC
+                                cv.encode('utf-8'),  # CV
                                 'XL' if product.reinforced else '',
                                 'RFT' if product.runflat else '',
-                                product.magento_manufacturer,
-                                battistrada,
+                                product.magento_manufacturer.encode('utf-8'),
+                                battistrada.encode('utf-8'),
                                 'SUMMER' if product.season == 'Estiva' else (
                                     'WINTER' if product.season == 'Invernale' else (
                                         'ALL SEASON' if product.season == 'Quattrostagioni' else '')),
@@ -201,16 +196,16 @@ class DataConnector(models.Model):
                                     'MOTO' if product.attribute_set_id.name == 'Pneumatico Moto' else (
                                         'AUTOCARRO' if product.attribute_set_id.name == 'Pneumatico Autocaro' else '')),
                                 price if price else '0.0',
-                                pfu,
-                                prezzo_ivato,  # vendita + pfu + iva
+                                pfu.encode('utf-8'),
+                                prezzo_ivato.encode('utf-8'),  # vendita + pfu + iva
                                 product.qty_available,
                                 product.qty_available,
                                 '',  # TODO Data prox arrivo
-                                product.ean13 if product.ean13 else '',
+                                product.ean13.encode('utf-8') if product.ean13 else '',
                                 '',  # TODO DOT NON USATO
-                                aderenza,
-                                resistenza,
-                                rumore,
+                                aderenza.encode('utf-8'),
+                                resistenza.encode('utf-8'),
+                                rumore.encode('utf-8'),
                                 ''  # TODO NETTO NON USATO
                             ]
                             writer.writerow(row)
@@ -220,9 +215,5 @@ class DataConnector(models.Model):
                     operation.complete_operation()
             else:
                 operation.cancel_operation('No product selected to export')
-
-        # status = status and \
-        #    self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path) and \
-        #    self.open_url(url, '')
 
         return status

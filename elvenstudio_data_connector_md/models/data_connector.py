@@ -215,8 +215,8 @@ class DataConnector(models.Model):
                                     price if price else '0.0',
                                     pfu,
                                     prezzo_ivato,  # vendita + pfu + iva
-                                    product.qty_available,
-                                    product.qty_available,
+                                    product.immediately_usable_qty,
+                                    product.immediately_usable_qty,
                                     '',  # TODO Data prox arrivo
                                     product.ean13 if product.ean13 else '',
                                     '',  # TODO DOT NON USATO

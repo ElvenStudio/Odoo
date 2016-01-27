@@ -65,16 +65,16 @@ class DataConnector(models.Model):
                             if len(extra_nr) == 1:
                                 extra = -1 * int(extra_nr[0])
 
-                        name = str(customer.name.decode()) if customer.name else ''
+                        name = str(customer.name) if customer.name else ''
                         #name = name.encode('utf-8') if isinstance(name, unicode) else str(name)
 
-                        street = str(customer.street.decode()) if customer.street else ''
+                        street = str(customer.street) if customer.street else ''
                         #street = street.encode('utf-8') if isinstance(street, unicode) else str(street)
 
-                        city = str(customer.city.decode()) if customer.city else ''
+                        city = str(customer.city) if customer.city else ''
                         #city = city.encode('utf-8') if isinstance(city, unicode) else str(city)
 
-                        email = str(customer.email.decode()) if customer.email else ''
+                        email = str(customer.email) if customer.email else ''
                         #email = email.encode('utf-8') if isinstance(email, unicode) else str(email)
 
                         if vat:
@@ -149,35 +149,35 @@ class DataConnector(models.Model):
                             '''
 
                             # Fix a crudo per i pfu 2016
-                            if '2.15' in str(pfu):
+                            if '2.15' in pfu:
                                 pfu = '2.30'
-                            elif '0.35' in str(pfu):
+                            elif '0.35' in pfu:
                                 pfu = '0.38'
-                            elif '1.05' in str(pfu):
+                            elif '1.05' in pfu:
                                 pfu = '1.10'
-                            elif '41.6' in str(pfu):
+                            elif '41.6' in pfu:
                                 pfu = '43.00'
-                            elif '113' in str(pfu):
+                            elif '113' in pfu:
                                 pfu = '116.70'
-                            elif '16.9' in str(pfu):
+                            elif '16.9' in pfu:
                                 pfu = '17.60'
-                            elif '51.6' in str(pfu):
+                            elif '51.6' in pfu:
                                 pfu = '53.40'
-                            elif '182' in str(pfu):
+                            elif '182' in pfu:
                                 pfu = '188.70'
-                            elif '14.15' in str(pfu):
+                            elif '14.15' in pfu:
                                 pfu = '14.70'
-                            elif '34.8' in str(pfu):
+                            elif '34.8' in pfu:
                                 pfu = '36.00'
-                            elif '7.3' in str(pfu):
+                            elif '7.3' in pfu:
                                 pfu = '7.60'
-                            elif '7.8' in str(pfu):
+                            elif '7.8' in pfu:
                                 pfu = '8.10'
-                            elif '68' in str(pfu):
+                            elif '68' in pfu:
                                 pfu = '70.30'
-                            elif '21.9' in str(pfu):
+                            elif '21.9' in pfu:
                                 pfu = '22.80'
-                            elif '3.3' in str(pfu):
+                            elif '3.3' in pfu:
                                 pfu = '3.40'
 
                             price = product.with_context(pricelist=3).price
@@ -193,15 +193,15 @@ class DataConnector(models.Model):
 
                             row = [
                                 3,
-                                str(ip_code),
-                                str(product.compact_measure.replace('/', '') if product.compact_measure else ''),
-                                str(product.measure if product.measure else ''),
-                                str(ic),  # IC
-                                str(cv),  # CV
+                                ip_code,
+                                product.compact_measure.replace('/', '') if product.compact_measure else '',
+                                product.measure if product.measure else '',
+                                ic,  # IC
+                                cv,  # CV
                                 'XL' if product.reinforced else '',
                                 'RFT' if product.runflat else '',
-                                str(product.magento_manufacturer if product.magento_manufacturer else ''),
-                                str(battistrada if battistrada else ''),
+                                product.magento_manufacturer if product.magento_manufacturer else '',
+                                battistrada if battistrada else '',
                                 'SUMMER' if product.season == 'Estiva' else (
                                     'WINTER' if product.season == 'Invernale' else (
                                         'ALL SEASON' if product.season == 'Quattrostagioni' else '')),
@@ -209,16 +209,16 @@ class DataConnector(models.Model):
                                     'MOTO' if product.attribute_set_id.name == 'Pneumatico Moto' else (
                                         'AUTOCARRO' if product.attribute_set_id.name == 'Pneumatico Autocaro' else '')),
                                 price if price else '0.0',
-                                str(pfu),
-                                str(prezzo_ivato),  # vendita + pfu + iva
+                                pfu,
+                                prezzo_ivato,  # vendita + pfu + iva
                                 product.qty_available,
                                 product.qty_available,
                                 '',  # TODO Data prox arrivo
-                                str(product.ean13 if product.ean13 else ''),
+                                product.ean13 if product.ean13 else '',
                                 '',  # TODO DOT NON USATO
-                                str(aderenza if aderenza else ''),
-                                str(resistenza if resistenza else ''),
-                                str(rumore if rumore else ''),
+                                aderenza if aderenza else '',
+                                resistenza if resistenza else '',
+                                rumore if rumore else '',
                                 ''  # TODO NETTO NON USATO
                             ]
                             writer.writerow(row)

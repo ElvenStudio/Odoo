@@ -118,7 +118,7 @@ class DataConnector(models.Model):
                 with open(filepath + '/' + filename, 'w+') as csvFile:
                     writer = csv.writer(csvFile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                     for product in products_to_export:
-                        if product.attribute_set_id:
+                        if product.attribute_set_id and product.immediately_usable_qty > 0:
                             pfu = 0.0
                             ic = ''
                             cv = ''

@@ -30,6 +30,7 @@
                     <field name="command" />
                     <field name="start_date" />
                     <field name="end_date" />
+                    <field name="duration" />
                     <field name="message" />
                     <field name="state" />
                 </tree>
@@ -46,11 +47,10 @@
                     <header>
                         <field name="state" widget="statusbar" statusbar_visible="draft,in-progress,done" />
                     </header>
+                    <h2><field name="command" /></h2>
                     <group>
-                        <h2><field name="command" /></h2>
-                    </group>
-                    <group col="6">
                         <field name="impacted_model" />
+                        <field name="duration" />
                         <field name="start_date" string="Task started at" />
                         <field name="end_date" string="Task ended at" />
                         <field name="message" />

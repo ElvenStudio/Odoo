@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 import csv
 import ftplib
 import urllib
 import urllib2
+import datetime
 import logging
-
 _logger = logging.getLogger(__name__)
 
 
@@ -30,6 +31,17 @@ class DataConnector(models.BaseModel):
     start_date = fields.Datetime(readonly=True)
     end_date = fields.Datetime(readonly=True)
     message = fields.Char(size=255, readonly=True)
+    duration = fields.Char(compute='_get_duration', readonly=True)
+
+    @api.one
+    @api.depends('start_date', 'end_date')
+    def _get_duration(self):
+        if self.end_date and self.start_date:
+            d_frm_obj = datetime.datetime.strptime(self.start_date, DEFAULT_SERVER_DATETIME_FORMAT)
+            d_to_obj = datetime.datetime.strptime(self.end_date, DEFAULT_SERVER_DATETIME_FORMAT)
+            self.duration = str(d_to_obj - d_frm_obj)
+        else:
+            self.duration = 0
 
     @api.one
     def exist_model(self, model_name):

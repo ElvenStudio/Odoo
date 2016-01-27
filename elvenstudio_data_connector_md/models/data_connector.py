@@ -18,6 +18,10 @@ class DataConnector(models.Model):
             status = self.export_product_to_md(filepath, filename, domain)
         elif data_type == 'clienti':
             status = self.export_customer_to_md(filepath, filename, domain)
+        elif data_type == 'tyre24':
+            status = self.export_product_to_tyre24(filepath, filename, domain)
+        elif data_type == 'easytyre':
+            status = self.export_product_to_easytyre(filepath, filename, domain)
 
         status = status and \
             self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path) and \
@@ -47,51 +51,54 @@ class DataConnector(models.Model):
 
                     for customer in customers_to_export:
 
-                        vat = ''
-                        if customer.vat:
+                        if customer.vat and \
+                            customer.property_product_pricelist and \
+                                customer.property_product_pricelist.id in [3, 353, 354, 360, 361]:
+
+                            pricelist_id = customer.property_product_pricelist.id
+
+                            if pricelist_id == 3:
+                                extra = 0.0  # Listino Gommisti Base (Extra 0)
+                            elif pricelist_id == 353:
+                                extra = -2  # Listino Gommisti +2% (Extra -2)
+                            elif pricelist_id == 353:
+                                extra = -4  # Listino Gommisti +4% (Extra -4)
+                            elif pricelist_id == 353:
+                                extra = -6  # Listino Gommisti +6% (Extra -6)
+                            elif pricelist_id == 353:
+                                extra = -8  # Listino Gommisti +8% (Extra -8)
+                            else:
+                                extra = -25  # Giusto per stare tranquilli
+
                             vat_nr = re.findall('\d+', customer.vat)
                             if len(vat_nr) == 1:
                                 vat = int(vat_nr[0])
 
-                        payment_term = ''
-                        if customer.customer_payment_mode and customer.property_payment_term:
-                            payment_term = customer.customer_payment_mode.name + ' ' + \
-                                customer.property_payment_term.name
-                            #payment_term = payment_term.encode('utf-8') if isinstance(payment_term, unicode) else str(payment_term)
+                                payment_term = ''
+                                if customer.customer_payment_mode and customer.property_payment_term:
+                                    payment_term = customer.customer_payment_mode.name + ' ' + \
+                                        customer.property_payment_term.name
+                                    payment_term.replace(';', '')
 
-                        extra = 0
-                        if customer.property_product_pricelist:
-                            extra_nr = re.findall('\-?\d+', customer.property_product_pricelist.name)
-                            if len(extra_nr) == 1:
-                                extra = -1 * int(extra_nr[0])
+                                name = customer.name.encode('utf-8').replace(';', '') if customer.name else ''
+                                street = customer.street.encode('utf-8').replace(';', '') if customer.street else ''
+                                city = customer.city.encode('utf-8').replace(';', '') if customer.city else ''
+                                email = customer.email.encode('utf-8').replace(';', '') if customer.email else ''
 
-                        name = str(customer.name) if customer.name else ''
-                        #name = name.encode('utf-8') if isinstance(name, unicode) else str(name)
-
-                        street = str(customer.street) if customer.street else ''
-                        #street = street.encode('utf-8') if isinstance(street, unicode) else str(street)
-
-                        city = str(customer.city) if customer.city else ''
-                        #city = city.encode('utf-8') if isinstance(city, unicode) else str(city)
-
-                        email = str(customer.email) if customer.email else ''
-                        #email = email.encode('utf-8') if isinstance(email, unicode) else str(email)
-
-                        if vat:
-                            row = [
-                                customer.id,
-                                name,
-                                vat,
-                                street,
-                                city,
-                                email,
-                                3,  # Il numero di listino gommisti su GCP!, senza questo i clienti non vedono le gomme!
-                                extra,  # L'extra!
-                                '',  # Tempi di consegna, inutile
-                                payment_term,  # Tempi e metodi di consegna
-                                max(customer.credit_limit - customer.credit, 0),  # credito restante
-                            ]
-                            writer.writerow(row)
+                                row = [
+                                    customer.id,
+                                    name,
+                                    vat,
+                                    street,
+                                    city,
+                                    email,
+                                    3,  # Il numero di listino gommisti su GCP!, senza questo i clienti non vedono le gomme!
+                                    extra,  # L'extra!
+                                    '',  # Tempi di consegna, inutile
+                                    payment_term,  # Tempi e metodi di consegna
+                                    max(customer.credit_limit - customer.credit, 0),  # credito restante
+                                ]
+                                writer.writerow(row)
 
                     csvFile.close()
                     status = True
@@ -232,5 +239,17 @@ class DataConnector(models.Model):
                         operation.complete_operation()
                 else:
                     operation.cancel_operation('No product selected to export')
+
+        return status
+
+    @api.model
+    def export_product_to_tyre24(self, filepath, filename, domain):
+        status = False
+
+        return status
+
+    @api.model
+    def export_product_to_easytyre(self, filepath, filename, domain):
+        status = False
 
         return status

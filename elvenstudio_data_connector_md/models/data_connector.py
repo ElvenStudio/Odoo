@@ -61,11 +61,11 @@ class DataConnector(models.Model):
                                 extra = 0.0  # Listino Gommisti Base (Extra 0)
                             elif pricelist_id == 353:
                                 extra = -2  # Listino Gommisti +2% (Extra -2)
-                            elif pricelist_id == 353:
+                            elif pricelist_id == 354:
                                 extra = -4  # Listino Gommisti +4% (Extra -4)
-                            elif pricelist_id == 353:
+                            elif pricelist_id == 360:
                                 extra = -6  # Listino Gommisti +6% (Extra -6)
-                            elif pricelist_id == 353:
+                            elif pricelist_id == 361:
                                 extra = -8  # Listino Gommisti +8% (Extra -8)
                             else:
                                 extra = -25  # Giusto per stare tranquilli

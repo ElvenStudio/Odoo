@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="type_by_cost_sale" model="product.price.type">
+            <field name="name">Cost Sale</field>
+            <field name="active">True</field>
+            <field name="field">cost_sale</field>
+        </record>
+    </data>
+</openerp>

@@ -24,9 +24,11 @@ class DataConnector(models.Model):
         elif data_type == 'easytyre':
             status = self.export_product_to_easytyre(filepath, filename, domain, params, log)
 
-        status = status and \
-            self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path, log) and \
-            self.open_url(url, '', log)
+        if host:
+            status = status and self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path, log)
+
+        if url:
+            status = status and self.open_url(url, '', log)
 
         return status
 

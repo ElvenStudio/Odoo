@@ -12,25 +12,26 @@ class DataConnector(models.Model):
     _inherit = 'elvenstudio.data.connector'
 
     @api.model
-    def export_to_md(self, filepath, filename, domain, host, user, pwd, ftp_path, url, data_type='listino', params={}):
+    def export_to_md(self, filepath, filename, domain,
+                     host, user, pwd, ftp_path, url, data_type='listino', params={}, log=False):
         status = False
         if data_type == 'listino':
-            status = self.export_product_to_md(filepath, filename, domain, params)
+            status = self.export_product_to_md(filepath, filename, domain, params, log)
         elif data_type == 'clienti':
-            status = self.export_customer_to_md(filepath, filename, domain, params)
+            status = self.export_customer_to_md(filepath, filename, domain, params, log)
         elif data_type == 'tyre24':
-            status = self.export_product_to_tyre24(filepath, filename, domain, params)
+            status = self.export_product_to_tyre24(filepath, filename, domain, params, log)
         elif data_type == 'easytyre':
-            status = self.export_product_to_easytyre(filepath, filename, domain, params)
+            status = self.export_product_to_easytyre(filepath, filename, domain, params, log)
 
         status = status and \
-            self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path) and \
-            self.open_url(url, '')
+            self.ftp_send_file(filepath, filename, host, user, pwd, ftp_path, log) and \
+            self.open_url(url, '', log)
 
         return status
 
     @api.model
-    def export_customer_to_md(self, filepath, filename, domain, params={}):
+    def export_customer_to_md(self, filepath, filename, domain, params={}, log=False):
         status = False
         operation = self.create_operation('export_to_csv')
         operation.execute_operation('res.partner')
@@ -43,7 +44,7 @@ class DataConnector(models.Model):
             try:
                 domain = eval(domain) if domain != '' else []
             except SyntaxError as e:
-                operation.error_on_operation(e.message)
+                operation.error_on_operation("Domain Exception: " + str(e.message))
             else:
                 domain = default_domain + domain
                 model = self.env['res.partner']
@@ -58,25 +59,9 @@ class DataConnector(models.Model):
                             if customer.vat and \
                                 customer.property_product_pricelist and \
                                     customer.property_product_pricelist.id in pricelist_ids:
-                                    #customer.property_product_pricelist.id in [3, 353, 354, 360, 361]:
 
                                 extra = pricelist_ids[customer.property_product_pricelist.id]
-                                """
-                                pricelist_id = customer.property_product_pricelist.id
 
-                                if pricelist_id == 3:
-                                    extra = 0.0  # Listino Gommisti Base (Extra 0)
-                                elif pricelist_id == 353:
-                                    extra = -2  # Listino Gommisti +2% (Extra -2)
-                                elif pricelist_id == 354:
-                                    extra = -4  # Listino Gommisti +4% (Extra -4)
-                                elif pricelist_id == 360:
-                                    extra = -6  # Listino Gommisti +6% (Extra -6)
-                                elif pricelist_id == 361:
-                                    extra = -8  # Listino Gommisti +8% (Extra -8)
-                                else:
-                                    extra = -25  # Giusto per stare tranquilli
-                                """
                                 vat_nr = re.findall('\d+', customer.vat)
                                 if len(vat_nr) == 1:
                                     vat = int(vat_nr[0])
@@ -109,14 +94,14 @@ class DataConnector(models.Model):
 
                         csvFile.close()
                         status = True
-                        operation.complete_operation()
+                        operation.complete_operation() if log else operation.unlink()
                 else:
                     operation.cancel_operation('No customer selected to export')
 
         return status
 
     @api.model
-    def export_product_to_md(self, filepath, filename, domain, params={}):
+    def export_product_to_md(self, filepath, filename, domain, params={}, log=False):
         status = False
         operation = self.create_operation('export_to_csv')
         operation.execute_operation('product.product')
@@ -128,13 +113,13 @@ class DataConnector(models.Model):
             try:
                 domain = eval(domain) if domain != '' else []
             except SyntaxError as e:
-                operation.error_on_operation(e.message)
+                operation.error_on_operation("Domain Exception: " + str(e.message))
             else:
                 m = self.env['product.product']
                 try:
                     products_to_export = m.search(domain)
                 except Exception as e:
-                    operation.error_on_operation(e.message)
+                    operation.error_on_operation("Domain Exception: " + str(e.message))
                 else:
                     if products_to_export.ids:
                         with open(filepath + '/' + filename, 'w+') as csvFile:
@@ -163,12 +148,6 @@ class DataConnector(models.Model):
                                                 rumore = str(attribute.value) + 'dB'
                                             elif 'battistrada' == attribute.code:
                                                 battistrada = attribute.value
-                                    '''
-                                    price = 0.0
-                                    for pricelist in product.pricelist_ids:
-                                        if "Listino Gommisti (Standard)" == pricelist.name:
-                                            price = pricelist.price
-                                    '''
 
                                     # Fix a crudo per i pfu 2016
                                     if '2.15' in str(pfu):
@@ -246,14 +225,14 @@ class DataConnector(models.Model):
 
                             csvFile.close()
                             status = True
-                            operation.complete_operation()
+                            operation.complete_operation() if log else operation.unlink()
                     else:
                         operation.cancel_operation('No product selected to export')
 
         return status
 
     @api.model
-    def export_product_to_tyre24(self, filepath, filename, domain, params={}):
+    def export_product_to_tyre24(self, filepath, filename, domain, params={}, log=False):
         status = False
         operation = self.create_operation('export_to_csv')
         operation.execute_operation('product.product')
@@ -265,13 +244,13 @@ class DataConnector(models.Model):
             try:
                 domain = eval(domain) if domain != '' else []
             except SyntaxError as e:
-                operation.error_on_operation(e.message)
+                operation.error_on_operation("Domain Exception " + str(e.message))
             else:
                 m = self.env['product.product']
                 try:
                     products_to_export = m.search(domain)
                 except Exception as e:
-                    operation.error_on_operation(e.message)
+                    operation.error_on_operation("Domain Exception " + str(e.message))
                 else:
                     if products_to_export.ids:
                         with open(filepath + '/' + filename, 'w+') as csvFile:
@@ -304,14 +283,14 @@ class DataConnector(models.Model):
 
                             csvFile.close()
                             status = True
-                            operation.complete_operation()
+                            operation.complete_operation() if log else operation.unlink()
                     else:
                         operation.cancel_operation('No product selected to export')
 
         return status
 
     @api.model
-    def export_product_to_easytyre(self, filepath, filename, domain, params={}):
+    def export_product_to_easytyre(self, filepath, filename, domain, params={}, log=False):
         status = False
         operation = self.create_operation('export_to_csv')
         operation.execute_operation('product.product')
@@ -323,13 +302,13 @@ class DataConnector(models.Model):
             try:
                 domain = eval(domain) if domain != '' else []
             except SyntaxError as e:
-                operation.error_on_operation(e.message)
+                operation.error_on_operation("Domain Exception " + str(e.message))
             else:
                 m = self.env['product.product']
                 try:
                     products_to_export = m.search(domain)
                 except Exception as e:
-                    operation.error_on_operation(e.message)
+                    operation.error_on_operation("Domain Exception " + str(e.message))
                 else:
                     if products_to_export.ids:
                         with open(filepath + '/' + filename, 'w+') as csvFile:
@@ -422,7 +401,7 @@ class DataConnector(models.Model):
 
                             csvFile.close()
                             status = True
-                            operation.complete_operation()
+                            operation.complete_operation() if log else operation.unlink()
                     else:
                         operation.cancel_operation('No product selected to export')
 

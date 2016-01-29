@@ -77,6 +77,7 @@ class DataConnector(models.BaseModel):
 
     @api.model
     def export_to_csv(self, filename, model_name, *fields_to_export, **kwargs):
+        # TODO FIX **kwargs usage
         status = False
         operation = self.create_operation('export_to_csv')
         if not fields_to_export:
@@ -109,7 +110,7 @@ class DataConnector(models.BaseModel):
         return status
 
     @api.model
-    def ftp_send_file(self, filepath, filename, host, user, pwd, ftp_path):
+    def ftp_send_file(self, filepath, filename, host, user, pwd, ftp_path, log=False):
         status = False
         operation = self.create_operation('ftp_send_file')
         if filepath and filename and host and user and pwd and ftp_path:
@@ -123,16 +124,16 @@ class DataConnector(models.BaseModel):
                 ftp.quit()
                 file_to_send.close()
                 status = True
-                operation.complete_operation()
+                operation.complete_operation() if log else operation.unlink()
             except Exception as e:
-                operation.error_on_operation(e.message)
+                operation.error_on_operation("FTP Exception: " + str(e.message))
         else:
             operation.cancel_operation('Missing Params')
 
         return status
 
     @api.model
-    def open_url(self, url, param):
+    def open_url(self, url, param, log=False):
         status = False
         operation = self.create_operation('open_url')
         if url:
@@ -149,9 +150,9 @@ class DataConnector(models.BaseModel):
                 if request.msg == 'OK':
                     # TODO Error 500 page?
                     status = True
-                    operation.complete_operation()
+                    operation.complete_operation() if log else operation.unlink()
                 else:
-                    operation.error_on_operation(request.msg)
+                    operation.error_on_operation("Url Exception: " + str(request.msg))
         else:
             operation.cancel_operation('Missing Urls')
 

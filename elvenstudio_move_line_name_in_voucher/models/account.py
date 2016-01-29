@@ -30,13 +30,13 @@ class AccountVoucher(osv.osv):
         if 'value' in result:
             if 'line_cr_ids' in result['value'] and result['value']['line_cr_ids']:
                 for move in result['value']['line_cr_ids']:
-                    if move['move_line_id']:
+                    if isinstance(move, dict) and move['move_line_id']:
                         move['move_name'] = move_line_obj.browse(
                             cr, uid, move['move_line_id'], context).name
 
             if 'line_dr_ids' in result['value'] and result['value']['line_dr_ids']:
                 for move in result['value']['line_cr_ids']:
-                    if move['move_line_id']:
+                    if isinstance(move, dict) and move['move_line_id']:
                         move['move_name'] = move_line_obj.browse(
                             cr, uid, move['move_line_id'], context).name
 

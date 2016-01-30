@@ -67,60 +67,40 @@ class Product(models.Model):
 
     _magento_attributes = fields.Char(compute="_get_magento_attributes", store=True)
 
+    measure = fields.Char(string='Misura', compute='_get_measure', store=True, index=True)
+
     compact_measure = fields.Char(
         string='Misura compatta',
-        help='Misura compatta per la ricerca veloce. Esempio: 195/55/15.',
+        help='Misura, esempio: 1955515.',
         compute='_get_compact_measure',
         store=True,
-        index=True,
-        search='_search_compact_measure',
-        inverse='_write_compact_measure'
+        index=True
     )
 
-    ip_code = fields.Char(
-        string='Ip Code',
-        compute='_get_ip_code',
-        store=True,
-        index=True,
-        search='_search_ip_code'
-    )
+    ip_code = fields.Char(string='Ip Code', store=True, index=True)
+    magento_manufacturer = fields.Char(string='Marca', store=True, index=True)
 
-    magento_manufacturer = fields.Char(
-        string='Marca',
-        compute='_get_magento_manufacturer',
-        store=True,
-        index=True,
-        search='_search_magento_manufacturer'
-    )
-
-    etichetta_europea = fields.Char(
-        string='Etichetta Europea',
-        compute='_get_etichetta_europea',
-        store=True,
-        index=True,
-        search='_search_etichetta_europea'
-    )
+    tipo_pneumatico = fields.Char(string='Tipo di Pneumatico', compute='_get_tipo_pneumatico', store=True, index=True)
 
     # TODO Modificare la ricerca per permettere ricerche del tipo: IC > valore e CV > Valore
-    ic_cv = fields.Char(
-        string='ICCV',
-        compute='_get_ic_cv',
-        store=True,
-        index=True,
-        search='_search_ic_cv'
-    )
+    ic_cv = fields.Char(string='ICCV', store=True, index=True)
 
-    measure = fields.Char(string='Misura', compute='_get_measure', store=True, inverse='_write_measure')
-    season = fields.Char(string='Stagione', compute='_get_season', store=True, index=True)
-    tube = fields.Char(string='Camera', compute='_get_tube', store=True, index=True)
-    asse = fields.Char(string='Asse', compute='_get_asse', store=True, index=True)
-    mud_snow = fields.Boolean(string='M+S', compute='_get_mud_snow', store=True, index=True)
-    runflat = fields.Boolean(string='RFT', compute='_get_runflat', store=True, index=True)
-    reinforced = fields.Boolean(string='XL', compute='_get_reinforced', store=True, index=True)
-    asse_sterzante = fields.Boolean(string='Sterzante', compute='_get_asse_sterzante', store=True, index=True)
-    asse_trattivo = fields.Boolean(string='Trattivo', compute='_get_asse_trattivo', store=True, index=True)
-    asse_rimorchio = fields.Boolean(string='Rimorchio', compute='_get_asse_rimorchio', store=True, index=True)
-    tipo_pneumatico = fields.Char(string='Tipo di Pneumatico', compute='_get_tipo_pneumatico', store=True, index=True)
+    larghezza = fields.Char(store=True, index=True)
+    sezione = fields.Char(store=True, index=True)
+    cerchio = fields.Char(store=True, index=True)
+    struttura = fields.Char(store=True, index=True)
+
+    season = fields.Char(string='Stagione', store=True, index=True)
+    tube = fields.Char(string='Camera', store=True, index=True)
+    asse = fields.Char(string='Asse', store=True, index=True)
+    mud_snow = fields.Boolean(string='M+S', store=True, index=True)
+    runflat = fields.Boolean(string='RFT', store=True, index=True)
+    reinforced = fields.Boolean(string='XL', store=True, index=True)
+    etichetta_europea = fields.Char(string='Etichetta Europea', store=True, index=True)
+
+    asse_sterzante = fields.Boolean(string='Sterzante', store=True, index=True)
+    asse_trattivo = fields.Boolean(string='Trattivo', store=True, index=True)
+    asse_rimorchio = fields.Boolean(string='Rimorchio', store=True, index=True)
 
     @api.one
     @api.depends('attribute_set_id')
@@ -128,8 +108,6 @@ class Product(models.Model):
         self.tipo_pneumatico = 'none'
         if self.attribute_set_id:
             self.tipo_pneumatico = self.attribute_set_id.name
-
-        # _logger.warning("Agg. prod. " + str(self.id))
 
     @api.one
     @api.depends('magento_attribute_ids')
@@ -157,149 +135,77 @@ class Product(models.Model):
 
                     attributes[key] = attribute.value
 
-        self._magento_attributes = str(attributes).replace('"', "\"")
+        ip_code = self._get_dict_value(attributes, AttributeCode.IpCode)
+        magento_manufacturer = self._get_dict_value(attributes, AttributeCode.Marca)
+        season = self._get_dict_value(attributes, AttributeCode.Stagione)
+        asse = self._get_dict_value(attributes, AttributeCode.Asse)
+        mud_snow = self._get_dict_value(attributes, AttributeCode.MudSnow) == 'SI'
+        runflat = self._get_dict_value(attributes, AttributeCode.Runflat) == 'SI'
+        reinforced = self._get_dict_value(attributes, AttributeCode.Reinforced) == 'SI'
 
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_compact_measure(self):
-        attributes = ast.literal_eval(self._magento_attributes)
+        # Assi Autocarro
+        asse_sterzante = self._get_dict_value(attributes, AttributeCode.Asse_Sterzante) == 'SI'
+        asse_trattivo = self._get_dict_value(attributes, AttributeCode.Asse_Trattivo) == 'SI'
+        asse_rimorchio = self._get_dict_value(attributes, AttributeCode.Asse_Rimorchio) == 'SI'
 
-        larghezza = self._get_measure_value(self._get_dict_value(attributes, AttributeCode.Larghezza))
-        sezione = self._get_measure_value(self._get_dict_value(attributes, AttributeCode.Sezione))
-        cerchio = self._get_measure_value(self._get_dict_value(attributes, AttributeCode.Cerchio))
-
-        self.compact_measure = larghezza + \
-            (self._get_separator(sezione) if larghezza != '' else '') + sezione + \
-            self._get_separator(larghezza + sezione) + cerchio
-
-    @api.one
-    def _write_compact_measure(self):
-
-        if self.compact_measure:
-            measure_values = self.compact_measure.split("/")
-            size_measure_values = len(measure_values)
-
-            to_save = True
-
-            if size_measure_values == 3:
-                larghezza = measure_values[0]
-                sezione = measure_values[1]
-                cerchio = measure_values[2]
-
-            elif size_measure_values == 2:
-                larghezza = measure_values[0]
-                sezione = ''
-                cerchio = measure_values[1]
-
-            else:
-                _logger.error("Wrong measure written!")
-                to_save = False
-
-            if to_save:
-                attributes = dict()
-
-                # Recupero la struttura se presente
-                if self._magento_attributes:
-                    attributes = ast.literal_eval(self._magento_attributes)
-
-                struttura = self._get_dict_value(attributes, AttributeCode.Struttura, 'R')
-
-                self.measure = larghezza + \
-                    (self._get_separator(sezione) if larghezza != '' else '') + sezione + \
-                    self._get_separator(larghezza + sezione, separator=' ') + struttura + cerchio
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_measure(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-
-        larghezza = self._get_measure_value(self._get_dict_value(attributes, AttributeCode.Larghezza))
-        sezione = self._get_measure_value(self._get_dict_value(attributes, AttributeCode.Sezione))
-        cerchio = self._get_measure_value(self._get_dict_value(attributes, AttributeCode.Cerchio))
-        struttura = self._get_dict_value(attributes, AttributeCode.Struttura)
-
-        self.measure = larghezza + \
-            (self._get_separator(sezione) if larghezza != '' else '') + sezione + \
-            self._get_separator(larghezza + sezione, separator=' ') + struttura + cerchio
-
-    @api.one
-    def _write_measure(self):
-        # Dummy Write
-        # Enable save on computed stored field
-        # Depends on _write_compact_measure
-        return True
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_ip_code(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.ip_code = self._get_dict_value(attributes, AttributeCode.IpCode)
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_magento_manufacturer(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.magento_manufacturer = self._get_dict_value(attributes, AttributeCode.Marca)
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_season(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.season = self._get_dict_value(attributes, AttributeCode.Stagione)
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_tube(self):
-        attributes = ast.literal_eval(self._magento_attributes)
+        # Tube
         tube = self._get_dict_value(attributes, AttributeCode.Tube)
-        self.tube = ('Tube Type' if tube == 'TT' else ('Tube Less' if tube == 'TL' else ''))
+        tube = ('Tube Type' if tube == 'TT' else ('Tube Less' if tube == 'TL' else ''))
+        ic_cv = self._get_ic_cv(attributes)
+        etichetta_europea = self._get_etichetta_europea(attributes)
+
+        # Misura
+        larghezza = self._get_dict_value(attribute, AttributeCode.Larghezza)
+        sezione = self._get_dict_value(attribute, AttributeCode.Sezione, '-')
+        cerchio = self._get_dict_value(attribute, AttributeCode.Cerchio)
+        struttura = self._get_dict_value(attribute, AttributeCode.Struttura, '-')
+
+        _magento_attributes = str(attributes).replace('"', "\"")
+
+        # Salvo tutti i campi calcolati nei rispettivi campi della model
+        self.write({
+            'ip_code': ip_code,
+            'magento_manufacturer': magento_manufacturer,
+            'season': season,
+            'asse': asse,
+            'mud_snow': mud_snow,
+            'runflat': runflat,
+            'reinforced': reinforced,
+            'asse_sterzante': asse_sterzante,
+            'asse_trattivo': asse_trattivo,
+            'asse_rimorchio': asse_rimorchio,
+            'tube': tube,
+            'ic_cv': ic_cv,
+            'etichetta_europea': etichetta_europea,
+            'larghezza': larghezza,
+            'sezione': sezione,
+            'cerchio': cerchio,
+            'struttura': struttura,
+            '_magento_attributes': _magento_attributes
+        })
 
     @api.one
-    @api.depends('_magento_attributes')
-    def _get_asse(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.asse = self._get_dict_value(attributes, AttributeCode.Asse)
+    @api.depends('_magento_attributes', 'larghezza', 'sezione', 'cerchio')
+    def _get_compact_measure(self):
+        lar = str(self.larghezza) if self.larghezza else ''
+        sez = str(self.sezione) if self.sezione else ''
+        cer = str(self.cerchio) if self.cerchio else ''
+        self.compact_measure = lar + sez + cer
 
     @api.one
-    @api.depends('_magento_attributes')
-    def _get_etichetta_europea(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        resistenza = self._get_dict_value(attributes, AttributeCode.Resistenza)
-        aderenza = self._get_dict_value(attributes, AttributeCode.Aderenza)
-        rumore = self._get_dict_value(attributes, AttributeCode.Rumore)
+    @api.depends('_magento_attributes', 'larghezza', 'sezione', 'cerchio')
+    def _get_measure(self):
+        lar = str(self.larghezza) if self.larghezza else ''
+        sez = str(self.sezione) if self.sezione else ''
+        cer = str(self.cerchio) if self.cerchio else ''
+        strut = str(self.struttura) if self.struttura else ''
 
-        try:
-            rumore += 'dB' if isinstance(int(rumore), float) else ''
-        except ValueError:
-            pass
-
-        self.etichetta_europea = resistenza + \
-            ((' ' + aderenza) if aderenza != '' else '') + \
-            ((' ' + rumore) if aderenza + rumore != '' else '')
+        self.measure = lar + (self._get_separator(sez) if lar != '' else '') + sez + \
+            self._get_separator(lar + sez, separator=' ') + strut + cer
 
     @api.one
-    @api.depends('_magento_attributes')
-    def _get_mud_snow(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.mud_snow = self._get_dict_value(attributes, AttributeCode.MudSnow) == 'SI'
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_runflat(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.runflat = self._get_dict_value(attributes, AttributeCode.Runflat) == 'SI'
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_reinforced(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.reinforced = self._get_dict_value(attributes, AttributeCode.Reinforced) == 'SI'
-
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_ic_cv(self):
-        self.ic_cv = ''
-        attributes = ast.literal_eval(self._magento_attributes)
+    def _get_ic_cv(self, attributes):
+        ic_cv = ''
 
         iccv_singola = self._get_dict_value(attributes, AttributeCode.IC_CV_singola)
         iccv_gemellata = self._get_dict_value(attributes, AttributeCode.IC_CV_gemellata)
@@ -314,9 +220,6 @@ class Product(models.Model):
         except SyntaxError:
             pass
 
-        # _logger.warning("IC CV Singola " + str(iccv_singola))
-        # _logger.warning("IC CV Gemellata " + str(iccv_gemellata))
-
         # Verifico che non ci sia una situazione del tipo, perchè errata:
         #  - IC CV Singola      -> 98V
         #  - IC CV Gemellata    -> [94V,97R]
@@ -324,58 +227,45 @@ class Product(models.Model):
             pass
 
         elif isinstance(iccv_singola, list) and isinstance(iccv_gemellata, list):
-            self.ic_cv = self._eval_ic_cv(iccv_singola[0], iccv_gemellata[0]) + \
+            ic_cv = self._eval_ic_cv(iccv_singola[0], iccv_gemellata[0]) + \
                 "(" + self._eval_ic_cv(iccv_singola[1], iccv_gemellata[1]) + ")"
 
         elif isinstance(iccv_singola, list) and iccv_gemellata != '':
-            self.ic_cv = self._eval_ic_cv(iccv_singola[0], iccv_gemellata) + "(" + iccv_singola[1] + ")"
+            ic_cv = self._eval_ic_cv(iccv_singola[0], iccv_gemellata) + "(" + iccv_singola[1] + ")"
 
         elif isinstance(iccv_singola, list) and (iccv_gemellata == '' or iccv_gemellata is None):
-            self.ic_cv = iccv_singola[0] + "(" + iccv_singola[1] + ")"
+            ic_cv = iccv_singola[0] + "(" + iccv_singola[1] + ")"
 
         elif iccv_singola != '' and iccv_gemellata != '':
-            self.ic_cv = self._eval_ic_cv(iccv_singola, iccv_gemellata)
+            ic_cv = self._eval_ic_cv(iccv_singola, iccv_gemellata)
 
         elif iccv_singola != '':
-            self.ic_cv = iccv_singola
+            ic_cv = iccv_singola
+
+        return ic_cv
 
     @api.one
-    @api.depends('_magento_attributes')
-    def _get_asse_sterzante(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.asse_sterzante = self._get_dict_value(attributes, AttributeCode.Asse_Sterzante) == 'SI'
+    def _get_etichetta_europea(self, attributes):
+        resistenza = self._get_dict_value(attributes, AttributeCode.Resistenza)
+        aderenza = self._get_dict_value(attributes, AttributeCode.Aderenza)
+        rumore = self._get_dict_value(attributes, AttributeCode.Rumore)
 
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_asse_trattivo(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.asse_trattivo = self._get_dict_value(attributes, AttributeCode.Asse_Trattivo) == 'SI'
+        try:
+            rumore += 'dB' if isinstance(int(rumore), float) else ''
+        except ValueError:
+            pass
 
-    @api.one
-    @api.depends('_magento_attributes')
-    def _get_asse_rimorchio(self):
-        attributes = ast.literal_eval(self._magento_attributes)
-        self.asse_rimorchio = self._get_dict_value(attributes, AttributeCode.Asse_Rimorchio) == 'SI'
+        return resistenza + \
+            ((' ' + aderenza) if aderenza != '' else '') + \
+            ((' ' + rumore) if aderenza + rumore != '' else '')
 
     @staticmethod
-    def _search_compact_measure(operator, value):
-        return [('measure', operator, value)]
+    def _get_dict_value(dictionary, key, default=''):
+        return dictionary[key] if key in dictionary else default
 
     @staticmethod
-    def _search_ip_code(operator, value):
-        return [('ip_code', operator, value)]
-
-    @staticmethod
-    def _search_magento_manufacturer(operator, value):
-        return [('magento_manufacturer', operator, value)]
-
-    @staticmethod
-    def _search_etichetta_europea(operator, value):
-        return [('etichetta_europea', operator, value)]
-
-    @staticmethod
-    def _search_ic_cv(operator, value):
-        return [('ic_cv', operator, value)]
+    def _eval_ic_cv(iccv_singola, iccv_gemellata):
+        return iccv_gemellata[:-1] + "/" + iccv_singola
 
     @staticmethod
     def _get_measure_value(value, default=''):
@@ -390,10 +280,3 @@ class Product(models.Model):
     def _get_separator(value, separator='/', empty_separator=''):
         return separator if value != '' else empty_separator
 
-    @staticmethod
-    def _get_dict_value(dictionary, key, default=''):
-        return dictionary[key] if key in dictionary else default
-
-    @staticmethod
-    def _eval_ic_cv(iccv_singola, iccv_gemellata):
-        return iccv_gemellata[:-1] + "/" + iccv_singola

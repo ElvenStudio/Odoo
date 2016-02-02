@@ -35,7 +35,7 @@ class ProductV8(models.Model):
     def update_mto_route(self):
         # _logger.warning('UPDATE PRODUCT ROUTE')
         # Carico l'ultima configurazione valida
-        settings_obj = self.env['stock.config.settings'].search([('mto_route', '!=', 0)], limit=1, order="id DESC")
+        settings_obj = self.env['stock.config.settings'].search([('mto_route', '!=', False)], limit=1, order="id DESC")
 
         if settings_obj and settings_obj.mto_route.id:
             # Memorizzo la rotta per evitare il refresh continuo della configurazione

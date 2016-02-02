@@ -20,20 +20,32 @@
 ##############################################################################
 
 {
- 'name': 'Gestione dei fornitori',
+ 'name': 'Supplier Pricelist Management',
+ 'license': 'AGPL-3',
  'version': '0.0.2',
- 'category': 'Customization',
+ 'category': 'Purchase',
+ 'website': 'https://github.com/ElvenStudio/Odoo',
+ 'summary': "Import and add supplier pricelist to product",
  'description': """
-    Estende le funzionalità associate ai fornitori di un prodotto con le seguenti migliorie:
-     - Definisce per ogni fornitore di un prodotto, le quantità massime disponibili
-     - Riordina automaticamente la lista dei fornitori di un prodotto in base al miglior prezzo
-     - Permette di importare un listino fornitori da un apposito menù
-     - TODO: gestione dei PO
-     - TODO: importazione dei fornitori in batch
-     - TODO: creazione report e pivot
-
+Improved Supplier pricelist manamegent
 ==============================================================
-    """,
+
+This module extends the supplier pricelist with this functionality:
+ - Adds for each supplier of a product, the maximum buyable quantity
+ - Shows in product kanban view the main supplier quantity and the main supplier price
+ - Automatically sort the product supplier's by best price whom has buyable quantity
+ - Adds a new menu for importing pricelist and logs OK/KO imported lines
+
+Usage:
+------
+In Configuration -> Wharehouse new tab "supplier" will be added.
+Make sure to select the right MTO rule to use when procurement will be created.
+
+TODO:
+-----
+  - Batch pricelist import
+  - Reports and pivot table for price analisys
+""",
  'author': "ElvenStudio",
  'license': 'AGPL-3',
  'website': 'http://www.elvenstudio.it',

@@ -57,12 +57,9 @@
 
                 </xpath>
                 <field name="name" position="after">
+                    <field name="compact_measure" string="Misura compatta" />
                     <field name="ip_code" string="Ip Code" />
                     <field name="magento_manufacturer" string="Marca" />
-                    <field name="compact_measure" string="Misura compatta" />
-                    <field name="larghezza" string="Larghezza Pneumatico" />
-                    <field name="sezione" string="Sezione Pneumatico" />
-                    <field name="cerchio" string="Cerchio Pneumatico" />
                     <field name="ic_cv" string="ICCV" />
                     <field name="etichetta_europea" string="Etichetta europea" />
                 </field>
@@ -88,9 +85,7 @@
                             <field name="magento_manufacturer" />
                             <field name="ip_code" />
                             <field name="measure" class="oe_read_only"/>
-                            <field name="larghezza" class="oe_edit_only"/>
-                            <field name="sezione" class="oe_edit_only"/>
-                            <field name="cerchio" class="oe_edit_only"/>
+                            <field name="compact_measure" class="oe_edit_only"/>
                             <field name="ic_cv" />
                             <field name="tube" />
                             <field name="mud_snow" />

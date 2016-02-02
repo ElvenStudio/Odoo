@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api
-import logging
+# import logging
 
-_log = logging.getLogger(__name__)
+# _log = logging.getLogger(__name__)
 
 
-class ProductProduct(models.Model):
-    _inherit = "product.product"
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
 
     cost_sale = fields.Float(compute='_get_cost_sale', readonly=True)
 
     @api.one
-    @api.depends('supplier_ids', 'cost_price')
+    @api.depends('supplier_ids', 'standard_price')
     def _get_cost_sale(self):
         # TODO pricelist by quantity?
 
@@ -23,7 +23,7 @@ class ProductProduct(models.Model):
         if self.immediately_usable_qty > qty:
             # The stock qty is greather than required qty
             # the cost sale is the stock value
-            self.cost_sale = self.cost_price
+            self.cost_sale = self.standard_price
 
         elif self.immediately_usable_qty > 0 and self.supplier_ids and self.supplier_ids[0].pricelist_ids:
             # The stock qty is not sufficient for the required qty
@@ -37,6 +37,17 @@ class ProductProduct(models.Model):
         else:
             # No supplier price defined, i can use only the standard_price, 0 if is not set
             self.cost_sale = self.standard_price
+
+    @api.one
+    def _get_avg_cost_sale(self, qty, supplier_price):
+        return (
+            self.immediately_usable_qty * self.standard_price +
+            (float(qty) - self.immediately_usable_qty) * float(supplier_price)
+            ) / float(qty)
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
 
     @api.one
     def _get_avg_cost_sale(self, qty, supplier_price):

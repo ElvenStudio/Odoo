@@ -20,28 +20,15 @@
 ##############################################################################
 
 {
- 'name': 'Product Cost Sale',
+ 'name': 'Variant Cost Fix for Purchase Landed Cost Fix',
  'license': 'AGPL-3',
  'version': '0.1.0',
- 'category': 'Sales',
+ 'category': 'Purchase Management',
  'website': 'https://github.com/ElvenStudio/Odoo',
- 'summary': "Adds a cost_sale in product",
+ 'summary': "Variant cost fix for landed cost",
  'description': """
-Relate product stock cost and supplier price.
+Fix Variant cost save after purchase landed cost distribution.
 ==============================================================
-
-This module adds a new product cost called cost_sale, that is evaluated as follow:
- * if the product is in stock, the cost is equal to the variant cost price;
- * if the product is not in stock, the price is got from the main supplier.
- * if the context need a quantity Q of the product and the shock has q1 < Q the cost is:
-   cost_sale = (q1 * variant_cost_price + (Q - q1) * supplier price ) / Q.
-
- This new cost_sale can be used in product pricelist as base cost for pricelists.
-
- Usage:
- ------
- In Sell -> Configuration -> Pricelist -> Price Type will be able to see a new price type
- called cost sale, usable into the pricelist as base cost.
     """,
  'author': "ElvenStudio",
  'license': 'AGPL-3',
@@ -50,15 +37,11 @@ This module adds a new product cost called cost_sale, that is evaluated as follo
  'images': ['images/elvenstudio.png', ],
 
  'depends': [
-     'product',
-     'product_supplierinfo_for_customer',
+     'purchase_landed_cost',
      'product_variant_cost',
  ],
 
- 'data': [
-     'data/default.xml',
-     'views/product.xml',
- ],
+ 'data': [],
 
  'installable': True,
  'application': False,

@@ -20,28 +20,23 @@
 ##############################################################################
 
 {
- 'name': 'Product Cost Sale',
+ 'name': 'Product Pricelist Margin',
  'license': 'AGPL-3',
  'version': '0.1.0',
- 'category': 'Sales',
+ 'category': 'Sales & Purchases',
  'website': 'https://github.com/ElvenStudio/Odoo',
- 'summary': "Adds a cost_sale in product",
+ 'summary': "Calculate margin and margin rates from pricelist",
  'description': """
-Relate product stock cost and supplier price.
+Extend Pricelist with margin calculation
 ==============================================================
 
-This module adds a new product cost called cost_sale, that is evaluated as follow:
- * if the product is in stock, the cost is equal to the variant cost price;
- * if the product is not in stock, the price is got from the main supplier.
- * if the context need a quantity Q of the product and the shock has q1 < Q the cost is:
-   cost_sale = (q1 * variant_cost_price + (Q - q1) * supplier price ) / Q.
+This module extend the module product_pricelist adding the capability of calculate
+the product margin for a pricelist and the margin rate.
 
- This new cost_sale can be used in product pricelist as base cost for pricelists.
+TODO
+----
+ - Display margin rate as percentage
 
-Usage:
-------
- In Sell -> Configuration -> Pricelist -> Price Type will be able to see a new price type
- called cost sale, usable into the pricelist as base cost.
     """,
  'author': "ElvenStudio",
  'license': 'AGPL-3',
@@ -51,13 +46,11 @@ Usage:
 
  'depends': [
      'product',
-     'product_supplierinfo_for_customer',
-     'product_variant_cost',
+     'product_pricelist',
  ],
 
  'data': [
-     'data/default.xml',
-     'views/product.xml',
+     'views/product_view.xml',
  ],
 
  'installable': True,

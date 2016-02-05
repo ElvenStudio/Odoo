@@ -217,6 +217,7 @@ class ProductPricelistImport(models.Model):
 class ProductPricelistImportLine(models.Model):
     _name = 'product.pricelist.import.line'
     _description = 'Product Price List Import Line'
+    _order = 'fail desc'
 
     code = fields.Char('Product Code')
     supplier_code = fields.Char('Supplier Product Code')

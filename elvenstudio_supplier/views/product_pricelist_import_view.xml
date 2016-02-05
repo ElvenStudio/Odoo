@@ -58,7 +58,10 @@
                         <field name="supplier"  domain="[('supplier', '=', True)]" />
                     </group>
                     <field name="file_lines" nolabel="1">
-                        <tree string="Import Lines" colors="red:fail==True;green:fail==False" editable="bottom">
+                        <tree string="Import Lines"
+                              default_order="fail desc"
+                              editable="bottom"
+                              colors="red:fail==True;green:fail==False">
                             <field name="code" />
                             <field name="supplier_name" />
                             <field name="price"/>

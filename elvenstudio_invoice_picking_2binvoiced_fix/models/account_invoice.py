@@ -11,7 +11,6 @@ class AccountInvoice(models.Model):
     @api.multi
     def unlink(self):
         for invoice in self:
-
             picking_names = []
             if invoice.origin:
                 if invoice.origin.find(",") >= 0:

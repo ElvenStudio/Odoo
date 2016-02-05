@@ -7,7 +7,7 @@
             <field name="model">product.pricelist.import.line</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="File Lines">
+                <tree string="File Lines" default_order="fail desc">
                     <field name="code" />
                     <field name="supplier_code" />
                     <field name="supplier_name" />

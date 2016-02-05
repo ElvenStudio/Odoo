@@ -38,8 +38,8 @@ This module adds a new product cost called cost_sale, that is evaluated as follo
 
  This new cost_sale can be used in product pricelist as base cost for pricelists.
 
- Usage:
- ------
+Usage:
+------
  In Sell -> Configuration -> Pricelist -> Price Type will be able to see a new price type
  called cost sale, usable into the pricelist as base cost.
     """,

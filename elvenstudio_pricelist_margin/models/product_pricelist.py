@@ -23,8 +23,8 @@ class ProductPricelistMargin(models.Model):
         digits=dp.get_precision('Product Price'),
         help='Product net margin')
 
-    margin_percent = fields.Float(string='Margin Percentage', compute='_get_margin_percent')
-    markup = fields.Float(string='Markup', compute='_get_markup')
+    margin_percent = fields.Char(string='Margin Percentage', compute='_get_margin_percent')
+    markup = fields.Char(string='Markup', compute='_get_markup')
 
     @api.one
     def _get_product_price(self):
@@ -47,12 +47,12 @@ class ProductPricelistMargin(models.Model):
     @api.one
     def _get_margin_percent(self):
         price = self._get_product_price()[0]
-        self.margin_percent = self.net_margin / price if price > 0 else 0
+        self.margin_percent = str(round((self.net_margin / price if price > 0 else 0.00) * 100, 2)) + '%'
 
     @api.one
     def _get_markup(self):
         cost = self.product_cost
-        self.markup = self.net_margin / cost if cost > 0 else 0
+        self.markup = str(round((self.net_margin / cost if cost > 0 else 0.00) * 100, 2)) + '%'
 
     @api.one
     def _get_product_cost(self):

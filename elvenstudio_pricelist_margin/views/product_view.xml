@@ -9,12 +9,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="before">
                     <field name="product_cost" />
-                    <field name="markup" widget="percentage" />
+                    <field name="markup"/>
                 </xpath>
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
 
                     <field name="net_margin" />
-                    <field name="margin_percent" widget="percentage"/>
+                    <field name="margin_percent"/>
                 </xpath>
             </field>
         </record>
@@ -26,12 +26,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="before">
                     <field name="product_cost" />
-                    <field name="markup" widget="percentage" />
+                    <field name="markup" />
                 </xpath>
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
 
                     <field name="net_margin" />
-                    <field name="margin_percent" widget="percentage"/>
+                    <field name="margin_percent"/>
                 </xpath>
             </field>
         </record>

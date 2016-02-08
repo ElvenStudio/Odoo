@@ -12,7 +12,6 @@
                     <field name="markup"/>
                 </xpath>
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
-
                     <field name="net_margin" />
                     <field name="margin_percent"/>
                 </xpath>
@@ -29,7 +28,6 @@
                     <field name="markup" />
                 </xpath>
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
-
                     <field name="net_margin" />
                     <field name="margin_percent"/>
                 </xpath>

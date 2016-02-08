@@ -103,10 +103,11 @@ class ProductPricelistMargin(models.Model):
 
         categ_ids = {}
         for p in products:
-            categ = p.categ_id
-            while categ:
-                categ_ids[categ.id] = True
-                categ = categ.parent_id
+            if p.categ_id:
+                categ = p.categ_id
+                while categ:
+                    categ_ids[categ.id] = True
+                    categ = categ.parent_id
         categ_ids = categ_ids.keys()
 
         is_product_template = products[0]._name == "product.template"

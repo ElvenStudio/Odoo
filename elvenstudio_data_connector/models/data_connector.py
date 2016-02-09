@@ -110,7 +110,7 @@ class DataConnector(models.BaseModel):
         return status
 
     @api.model
-    def ftp_send_file(self, filepath, filename, host, user, pwd, ftp_path, log=False):
+    def ftp_send_file(self, filepath, filename, host, user, pwd, ftp_path, binary=True, log=False):
         status = False
         operation = self.create_operation('ftp_send_file')
         if filepath and filename and host and user and pwd and ftp_path:
@@ -119,7 +119,8 @@ class DataConnector(models.BaseModel):
                 ftp = ftplib.FTP(host)
                 ftp.login(user, pwd)
                 ftp.cwd(ftp_path)
-                file_to_send = open(filepath + '/' + filename, 'r')
+                read_mode = 'rb' if binary else 'r'
+                file_to_send = open(filepath + '/' + filename, read_mode)
                 ftp.storlines('STOR ' + filename, file_to_send)
                 ftp.quit()
                 file_to_send.close()

@@ -183,6 +183,22 @@ class DataConnector(models.Model):
                                     elif '3.3' in str(pfu):
                                         pfu = '3.40'
 
+                                    stagione = ''
+                                    if product.season == 'Invernale':
+                                        stagione = 'WINTER'
+                                    elif product.season == 'Estiva':
+                                        stagione = 'SUMMER'
+                                    elif product.season == 'Quattrostagioni':
+                                        stagione = 'ALL SEASON'
+
+                                    tipo_auto = ''
+                                    if product.attribute_set_id.name == 'Pneumatico Auto':
+                                        tipo_auto = 'CAR'
+                                    elif product.attribute_set_id.name == 'Pneumatico Moto':
+                                        tipo_auto = 'MOTO'
+                                    elif product.attribute_set_id.name == 'Pneumatico Autocaro':
+                                        tipo_auto = 'AUTOCARRO'
+
                                     price = product.with_context(pricelist=pricelist_id).price
                                     if product.ip_code:
                                         ip_code = product.ip_code
@@ -190,13 +206,17 @@ class DataConnector(models.Model):
                                         default_code = product.default_code.split('-') if product.default_code else []
                                         ip_code = default_code[1] if len(default_code) >= 2 else ''
 
+                                    measure = ''
+                                    if product.compact_measure:
+                                        measure = product.compact_measure.replace('/', '').replace('.', '')
+
                                     imponibile = (price + float(pfu))
                                     prezzo_ivato = imponibile + imponibile * 0.22
 
                                     row = [
                                         3,
                                         ip_code,
-                                        product.compact_measure.replace('/', '') if product.compact_measure else '',
+                                        measure,
                                         product.measure if product.measure else '',
                                         ic,  # IC
                                         cv,  # CV
@@ -204,12 +224,8 @@ class DataConnector(models.Model):
                                         'RFT' if product.runflat else '',
                                         product.magento_manufacturer if product.magento_manufacturer else '',
                                         battistrada if battistrada else '',
-                                        'SUMMER' if product.season == 'Estiva' else (
-                                            'WINTER' if product.season == 'Invernale' else (
-                                                'ALL SEASON' if product.season == 'Quattrostagioni' else '')),
-                                        'CAR' if product.attribute_set_id.name == 'Pneumatico Auto' else (
-                                            'MOTO' if product.attribute_set_id.name == 'Pneumatico Moto' else (
-                                                'AUTOCARRO' if product.attribute_set_id.name == 'Pneumatico Autocaro' else '')),
+                                        stagione,
+                                        tipo_auto,
                                         price if price else '0.0',
                                         pfu,
                                         prezzo_ivato,  # vendita + pfu + iva

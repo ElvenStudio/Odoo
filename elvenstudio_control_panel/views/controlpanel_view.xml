@@ -40,5 +40,8 @@
 
 				<!-- Definisco la view di default quando si accede al pannello di controllo -->
 				<menuitem  id="cp_id0" name="Elven Studio Panel" parent="menu_controlpanel_home" action="elvenstudio_home_action"/>
+
+			<!-- Definisco la voce di configurazione del pannello di controllo -->
+			<menuitem  id="menu_controlpanel_config" name="Configuration" parent="elvenstudio_controlpanel_parent_menu" sequence="100"/>
 	</data>
 </openerp>

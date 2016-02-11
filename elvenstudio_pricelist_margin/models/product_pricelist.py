@@ -86,7 +86,7 @@ class ProductPricelistMargin(models.Model):
 
         prices = []
 
-        if not products:
+        if not products or not products[0]:
             return {}
 
         version = False

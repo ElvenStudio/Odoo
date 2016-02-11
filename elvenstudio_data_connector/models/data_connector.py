@@ -158,3 +158,15 @@ class DataConnector(models.BaseModel):
             operation.cancel_operation('Missing Urls')
 
         return status
+
+    @api.model
+    def send_mail(self, subject, body, *partner_ids):
+        partners = []
+        for partner in partner_ids:        # Where "4" adds the ID to the list
+            partners.append((4, partner))  # of followers and "3" is the partner ID
+
+        post_vars = {'subject': subject, 'body': body, 'partner_ids': partners}
+        thread_pool = self.pool.get('mail.thread')
+        thread_pool.message_post(
+            self._cr, self._uid, False,
+            type="notification", subtype="mt_comment", context=self._context, **post_vars)

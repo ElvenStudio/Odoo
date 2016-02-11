@@ -7,6 +7,8 @@ import ftplib
 import urllib
 import urllib2
 import datetime
+import smtplib
+from email.mime.text import MIMEText
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -192,3 +194,16 @@ class DataConnector(models.BaseModel):
         thread_pool.message_post(
             self._cr, self._uid, False,
             type="notification", subtype="mt_comment", context=self._context, **post_vars)
+
+    @api.model
+    def send_log_mail(self, mail_server, login, password, from_address, to_address, subject, body):
+
+        server = smtplib.SMTP(mail_server)
+        server.login(login, password)
+
+        message = MIMEText(body)
+        message['Subject'] = subject
+        message['From'] = from_address
+        message['To'] = to_address
+
+        server.sendmail(from_address, to_address, message.as_string())

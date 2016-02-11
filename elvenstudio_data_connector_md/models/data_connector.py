@@ -99,10 +99,21 @@ class DataConnector(models.Model):
                             status = True
                             operation.complete_operation() if log else operation.unlink()
 
-                    except Exception as e:
-                            operation.error_on_operation("Export Exception: " + str(e.message))
+                    except Exception:
+                            operation.error_on_operation("Error during data export")
                 else:
                     operation.cancel_operation('No customer selected to export')
+
+        if operation and operation.state == 'error' and 'mail' in params:
+            operation.send_log_mail(
+                params['mail']['mail_server'],
+                params['mail']['login'],
+                params['mail']['password'],
+                params['mail']['from_address'],
+                params['mail']['to_address'],
+                'Error during export_customer_to_md execution',
+                str(operation.start_date) + ": " + operation.message
+            )
 
         return status
 
@@ -250,10 +261,21 @@ class DataConnector(models.Model):
                                 status = True
                                 operation.complete_operation() if log else operation.unlink()
 
-                        except Exception as e:
-                            operation.error_on_operation("Export Exception: " + str(e.message))
+                        except Exception:
+                            operation.error_on_operation("Error during data export")
                     else:
                         operation.cancel_operation('No product selected to export')
+
+        if operation and operation.state == 'error' and 'mail' in params:
+            operation.send_log_mail(
+                params['mail']['mail_server'],
+                params['mail']['login'],
+                params['mail']['password'],
+                params['mail']['from_address'],
+                params['mail']['to_address'],
+                'Error during export_product_to_md execution',
+                str(operation.start_date) + ": " + operation.message
+            )
 
         return status
 
@@ -312,10 +334,21 @@ class DataConnector(models.Model):
                                 status = True
                                 operation.complete_operation() if log else operation.unlink()
 
-                        except Exception as e:
-                            operation.error_on_operation("Export Exception: " + str(e.message))
+                        except Exception:
+                            operation.error_on_operation("Error during data export")
                     else:
                         operation.cancel_operation('No product selected to export')
+
+        if operation and operation.state == 'error' and 'mail' in params:
+            operation.send_log_mail(
+                params['mail']['mail_server'],
+                params['mail']['login'],
+                params['mail']['password'],
+                params['mail']['from_address'],
+                params['mail']['to_address'],
+                'Error during export_product_to_tyre24 execution',
+                str(operation.start_date) + ": " + operation.message
+            )
 
         return status
 
@@ -434,10 +467,21 @@ class DataConnector(models.Model):
                                 status = True
                                 operation.complete_operation() if log else operation.unlink()
 
-                        except Exception as e:
-                            operation.error_on_operation("Export Exception: " + str(e.message))
+                        except Exception:
+                            operation.error_on_operation("Error during data export")
                     else:
                         operation.cancel_operation('No product selected to export')
+
+        if operation and operation.state == 'error' and 'mail' in params:
+            operation.send_log_mail(
+                params['mail']['mail_server'],
+                params['mail']['login'],
+                params['mail']['password'],
+                params['mail']['from_address'],
+                params['mail']['to_address'],
+                'Error during export_product_to_easytyre execution',
+                str(operation.start_date) + ": " + operation.message
+            )
 
         return status
 

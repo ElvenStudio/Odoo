@@ -91,17 +91,20 @@ class DataConnector(models.BaseModel):
                 model = self.env[model_name]
                 objs_to_export = model.search(domain)
                 if objs_to_export.ids:
-                    with open(filename, 'w+') as csvFile:
-                        writer = csv.DictWriter(csvFile, fields_to_export)
-                        writer.writeheader()
+                    try:
+                        with open(filename, 'w+') as csvFile:
+                            writer = csv.DictWriter(csvFile, fields_to_export)
+                            writer.writeheader()
 
-                        for obj in objs_to_export:
-                            row = {k: (str(obj[k]).encode('utf-8') if k in obj else '') for k in fields_to_export}
-                            writer.writerow(row)
+                            for obj in objs_to_export:
+                                row = {k: (str(obj[k]).encode('utf-8') if k in obj else '') for k in fields_to_export}
+                                writer.writerow(row)
 
-                        csvFile.close()
-                        status = True
-                        operation.complete_operation()
+                            csvFile.close()
+                            status = True
+                            operation.complete_operation()
+                    except Exception as e:
+                        operation.error_on_operation("Export Exception: " + str(e.message))
                 else:
                     operation.error_on_operation('No data to export with this domain: ' + str(domain))
             else:
@@ -115,19 +118,38 @@ class DataConnector(models.BaseModel):
         operation = self.create_operation('ftp_send_file')
         if filepath and filename and host and user and pwd and ftp_path:
             operation.execute_operation()
+
             try:
-                ftp = ftplib.FTP(host)
-                ftp.login(user, pwd)
-                ftp.cwd(ftp_path)
                 read_mode = 'rb' if binary else 'r'
                 file_to_send = open(filepath + '/' + filename, read_mode)
-                ftp.storlines('STOR ' + filename, file_to_send)
-                ftp.quit()
-                file_to_send.close()
-                status = True
-                operation.complete_operation() if log else operation.unlink()
             except Exception as e:
                 operation.error_on_operation("FTP Exception: " + str(e.message))
+            else:
+                try:
+                    ftp = ftplib.FTP(host)
+                    ftp.login(user, pwd)
+                    ftp.cwd(ftp_path)
+
+                    # Save the file, due to the choosen mode
+                    if binary:
+                        ftp.storbinary('STOR ' + filename, file_to_send)
+                    else:
+                        ftp.storlines('STOR ' + filename, file_to_send)
+
+                    # Save done, close the file first and the ftp connection
+                    file_to_send.close()
+                    ftp.quit()
+
+                    # Operation complete
+                    status = True
+                    operation.complete_operation() if log else operation.unlink()
+
+                except Exception as e:
+                    operation.error_on_operation("FTP Exception: " + str(e.message))
+
+                    # Force close the file, because it probably is still opened!
+                    file_to_send.close()
+
         else:
             operation.cancel_operation('Missing Params')
 

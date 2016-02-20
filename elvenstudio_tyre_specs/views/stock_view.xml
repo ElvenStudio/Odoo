@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Aggiungo la misura nella vista a lista delle movimentazioni -->
+        <record id="elvenstudio_measure_stock_move_tree" model="ir.ui.view">
+            <field name="name">Stock Moves</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="product_measure" />
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Aggiungo la ricerca prodotto nelle movimentazioni di magazzino -->
+        <record id="elvenstudio_stock_move_search_view" model="ir.ui.view">
+            <field name="name">elvenstudio.stock.move.search</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_search" />
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//search[@string='Stock Moves']" position="inside">
+                    <separator />
+                    <!-- Stagione -->
+                    <filter string="Summer" domain="[('product_id.season','=','Estiva')]" name="stagione_estiva"/>
+                    <filter string="Winter" domain="[('product_id.season','=','Invernale')]" name="stagione_invernale"/>
+                    <filter string="All Season" domain="[('product_id.season','=','Quattrostagioni')]" name="stagione_quattrostagioni"/>
+                    <filter string="No Season" domain="['|','|',('product_id.season','=',False),('product_id.season','=',''),('product_id.season','=','No')]" name="stagione_no_season"/>
+                    <separator />
+
+                    <!-- Tube -->
+                    <filter string="TT" domain="[('product_id.tube','=','TT')]" name="tube_tt" />
+                    <filter string="TL" domain="[('product_id.tube','=','TL')]" name="tube_tl" />
+                    <separator />
+
+                    <!-- M+S, RFT, XL -->
+                    <filter string="M+S" domain="[('product_id.mud_snow','=',True)]" name="is_mud_snow" />
+                    <separator />
+
+                    <filter string="RFT" domain="[('product_id.runflat','=',True)]" name="is_runflat" />
+                    <separator />
+
+                    <filter string="XL" domain="[('product_id.reinforced','=',True)]" name="is_reinforced" />
+                    <separator />
+
+                    <!-- Asse Moto -->
+                    <filter string="Anteriore" domain="[('product_id.asse','=','Anteriore')]" name="asse_anteriore" />
+                    <filter string="Posteriore" domain="[('product_id.asse','=','Posteriore')]" name="asse_posteriore" />
+                    <filter string="Ant/Post" domain="[('product_id.asse','=','Anteriore/Posteriore')]" name="asse_posteriore" />
+                    <separator />
+
+                    <!-- Asse Autocarro -->
+                    <filter string="Sterzante" domain="[('product_id.asse_sterzante','=',True)]" name="is_sterzante" />
+                    <filter string="Trattivo" domain="[('product_id.asse_trattivo','=',True)]" name="is_trattivo" />
+                    <filter string="Rimorchio" domain="[('product_id.asse_rimorchio','=',True)]" name="is_rimorchio" />
+                    <separator />
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Aggiungo la ricerca prodotto nei quanti -->
+        <record id="elvenstudio_quant_search_view" model="ir.ui.view">
+            <field name="name">elvenstudio.stock.quant.search</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.quant_search_view" />
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//group[@string='Filters']" position="inside">
+                    <separator />
+                    <!-- Stagione -->
+                    <filter string="Summer" domain="[('season','=','Estiva')]" name="stagione_estiva"/>
+                    <filter string="Winter" domain="[('season','=','Invernale')]" name="stagione_invernale"/>
+                    <filter string="All Season" domain="[('season','=','Quattrostagioni')]" name="stagione_quattrostagioni"/>
+                    <filter string="No Season" domain="['|','|',('product_id.season','=',False),('product_id.season','=',''),('product_id.season','=','No')]" name="stagione_no_season"/>
+                    <separator />
+
+                    <!-- Tube -->
+                    <filter string="TT" domain="[('product_id.tube','=','TT')]" name="tube_tt" />
+                    <filter string="TL" domain="[('product_id.tube','=','TL')]" name="tube_tl" />
+                    <separator />
+
+                    <!-- M+S, RFT, XL -->
+                    <filter string="M+S" domain="[('product_id.mud_snow','=',True)]" name="is_mud_snow" />
+                    <separator />
+
+                    <filter string="RFT" domain="[('product_id.runflat','=',True)]" name="is_runflat" />
+                    <separator />
+
+                    <filter string="XL" domain="[('product_id.reinforced','=',True)]" name="is_reinforced" />
+                    <separator />
+
+                    <!-- Asse Moto -->
+                    <filter string="Anteriore" domain="[('product_id.asse','=','Anteriore')]" name="asse_anteriore" />
+                    <filter string="Posteriore" domain="[('product_id.asse','=','Posteriore')]" name="asse_posteriore" />
+                    <filter string="Ant/Post" domain="[('product_id.asse','=','Anteriore/Posteriore')]" name="asse_posteriore" />
+                    <separator />
+
+                    <!-- Asse Autocarro -->
+                    <filter string="Sterzante" domain="[('product_id.asse_sterzante','=',True)]" name="is_sterzante" />
+                    <filter string="Trattivo" domain="[('product_id.asse_trattivo','=',True)]" name="is_trattivo" />
+                    <filter string="Rimorchio" domain="[('product_id.asse_rimorchio','=',True)]" name="is_rimorchio" />
+                    <separator />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Aggiunge la ricerca per misura -->
+        <record id="elvenstudio_product_template_measure_search_view" model="ir.ui.view">
+            <field name="name">product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="elvenstudio_tyre.elvenstudio_product_template_search_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//search[@string='Product']" position="inside">
+                    <!-- Stagione -->
+                    <filter string="Summer" domain="[('season','=','Estiva')]" name="stagione_estiva"/>
+                    <filter string="Winter" domain="[('season','=','Invernale')]" name="stagione_invernale"/>
+                    <filter string="All Season" domain="[('season','=','Quattrostagioni')]" name="stagione_quattrostagioni"/>
+                    <filter string="No Season" domain="['|','|',('season','=',False),('season','=',''),('season','=','No')]" name="stagione_no_season"/>
+                    <separator />
+
+                    <!-- Tube -->
+                    <filter string="TT" domain="[('tube','=','TT')]" name="tube_tt" />
+                    <filter string="TL" domain="[('tube','=','TL')]" name="tube_tl" />
+                    <separator />
+
+                    <!-- M+S, RFT, XL -->
+                    <filter string="M+S" domain="[('mud_snow','=',True)]" name="is_mud_snow" />
+                    <separator />
+
+                    <filter string="RFT" domain="[('runflat','=',True)]" name="is_runflat" />
+                    <separator />
+
+                    <filter string="XL" domain="[('reinforced','=',True)]" name="is_reinforced" />
+                    <separator />
+
+                    <!-- Asse Moto -->
+                    <filter string="Anteriore" domain="[('asse','=','Anteriore')]" name="asse_anteriore" />
+                    <filter string="Posteriore" domain="[('asse','=','Posteriore')]" name="asse_posteriore" />
+                    <filter string="Ant/Post" domain="[('asse','=','Anteriore/Posteriore')]" name="asse_posteriore" />
+                    <separator />
+
+                    <!-- Asse Autocarro -->
+                    <filter string="Sterzante" domain="[('asse_sterzante','=',True)]" name="is_sterzante" />
+                    <filter string="Trattivo" domain="[('asse_trattivo','=',True)]" name="is_trattivo" />
+                    <filter string="Rimorchio" domain="[('asse_rimorchio','=',True)]" name="is_rimorchio" />
+                    <separator />
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Aggiungo la misura nella form view -->
+        <record id="elvenstudio_product_template_measure_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.product.template.measure.form.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="elvenstudio_tyre_measure.elvenstudio_product_template_measure_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='tyre_measure_view']" position="after">
+                    <separator />
+                    <group name="tyre_specs" colspan="4" col="8">
+                        <field name="tube" />
+                        <field name="mud_snow" />
+                        <field name="runflat" />
+                        <field name="reinforced" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

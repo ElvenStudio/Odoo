@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Aggiunge la ricerca per Attribute Set nelle movimentazioni di magazzino -->
+        <record id="elvenstudio_stock_move_search_view" model="ir.ui.view">
+            <field name="name">elvenstudio.stock.move.search</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_search" />
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search[@string='Stock Moves']" position="inside">
+                    <!-- Tipo Pneumatico -->
+                    <filter string="Auto" domain="[('product_id.tipo_pneumatico','=','Pneumatico Auto')]" name="tipo_auto" />
+                    <filter string="Moto" domain="[('product_id.tipo_pneumatico','=','Pneumatico Moto')]" name="tipo_mototo" />
+                    <filter string="Autocarro" domain="[('product_id.tipo_pneumatico','=','Pneumatico Autocarro')]" name="tipo_autocarro" />
+                    <filter string="Senza Categ." domain="['|',('product_id.tipo_pneumatico','=',''),('product_id.tipo_pneumatico','=','none')]" name="tipo_nessuno" />
+                    <separator />
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Aggiunge la ricerca per Attribute Set nei quanti -->
+        <record id="elvenstudio_quant_search_view" model="ir.ui.view">
+            <field name="name">elvenstudio.stock.quant.search</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.quant_search_view" />
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Filters']" position="inside">
+                    <!-- Tipo Pneumatico -->
+                    <filter string="Auto" domain="[('product_id.tipo_pneumatico','=','Pneumatico Auto')]" name="tipo_auto" />
+                    <filter string="Moto" domain="[('product_id.tipo_pneumatico','=','Pneumatico Moto')]" name="tipo_mototo" />
+                    <filter string="Autocarro" domain="[('product_id.tipo_pneumatico','=','Pneumatico Autocarro')]" name="tipo_autocarro" />
+                    <filter string="Senza Categ." domain="['|',('product_id.tipo_pneumatico','=',''),('product_id.tipo_pneumatico','=','none')]" name="tipo_nessuno" />
+                    <separator />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

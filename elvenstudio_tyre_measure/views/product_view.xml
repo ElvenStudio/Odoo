@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Aggiunge la ricerca per misura -->
+        <record id="elvenstudio_product_template_measure_search_view" model="ir.ui.view">
+            <field name="name">product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="elvenstudio_tyre.elvenstudio_product_template_search_view" />
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <!-- Aggiungo la ricerca per misura nella ricerca prodotto -->
+                    <field name="name" string="Product"
+                           filter_domain="['|','|','|',
+                           ('default_code','ilike',self),
+                           ('name','ilike',self),
+                           ('compact_measure','ilike',self), ('slashed_measure','ilike',self)]" />
+                </field>
+                <field name="name" position="after">
+                    <field name="compact_measure" string="Misura compatta" />
+                    <field name="iccv" string="ICCV" />
+                </field>
+            </field>
+        </record>
+
+        <!-- Aggiungo la misura nella form view -->
+        <record id="elvenstudio_product_template_measure_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.product.template.measure.form.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="elvenstudio_tyre.elvenstudio_product_template_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='tyre_data']" position="after">
+                    <group name="tyre_measure_view" col="8" class="oe_read_only">
+                        <field name="measure" />
+                        <field name="iccv" />
+                    </group>
+                    <separator />
+                    <group name="tyre_measure_edit" colspan="4" col="8" class="oe_edit_only">
+                        <field name="larghezza" />
+                        <field name="sezione" />
+                        <field name="struttura" />
+                        <field name="cerchio" />
+                        <field name="iccv" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Aggiunge la misura nella kanban view -->
+        <record model="ir.ui.view" id="elvenstudio_product_template_measure_kanban_view">
+            <field name="name">Product Template Kanban Stock</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_kanban_stock_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <br />
+                    <span class="measure">
+                        <field name="measure" />
+                        <field name="iccv" />
+                    </span>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Aggiunge la misura nella tree view -->
+        <record model="ir.ui.view" id="elvenstudio_product_template_measure_tree_view">
+            <field name="name">Product Template Tree View</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="measure" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

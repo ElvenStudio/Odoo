@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Aggiunge la ricerca per Attribute Set -->
+        <record id="elvenstudio_product_template_search_view" model="ir.ui.view">
+            <field name="name">product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//search[@string='Product']" position="inside">
+                    <!-- Tipo Pneumatico -->
+                    <filter string="Auto" domain="[('tipo_pneumatico','=','Pneumatico Auto')]" name="tipo_auto" />
+                    <filter string="Moto" domain="[('tipo_pneumatico','=','Pneumatico Moto')]" name="tipo_mototo" />
+                    <filter string="Autocarro" domain="[('tipo_pneumatico','=','Pneumatico Autocarro')]" name="tipo_autocarro" />
+                    <filter string="Senza Categ." domain="['|',('product_id.tipo_pneumatico','=',''),('product_id.tipo_pneumatico','=','none')]" name="tipo_nessuno" />
+                    <separator />
+                </xpath>
+                <field name="name" position="after">
+                    <field name="ip_code" string="Ip Code" />
+                    <field name="magento_manufacturer" string="Marca" />
+                </field>
+            </field>
+        </record>
+
+        <!-- Aggiungo lo spazio dei dati pneumatico nella view -->
+        <record id="elvenstudio_product_template_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.product.template.form.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <group colspan="4" name="elvenstudio_tyre" attrs="{'invisible': ['|',('tipo_pneumatico', '=', 'none'),('tipo_pneumatico', '=', '')]}">
+                        <separator string="Caratteristiche Pneumatico" attrs="{'invisible': [('tipo_pneumatico', '=', 'none')]}"/>
+                        <group colspan="4" name="tyre_data">
+                            <field name="tipo_pneumatico" />
+                            <field name="magento_manufacturer" />
+                            <field name="ip_code" />
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_reload_product_template_from_magento" model="ir.actions.server">
+			<field name="name">Reload Magento Attributes</field>
+			<field name="model_id" ref="product.model_product_template"/>
+			<field name="state">code</field>
+			<field name="code">
+                self.reload_magento_attributes(cr, uid, context.get('active_ids', []), context=context)</field>
+		</record>
+
+        <record id="ir_open_bulk_product_template" model="ir.values">
+			<field eval="'client_action_multi'" name="key2"/>
+			<field eval="'product.template'" name="model"/>
+			<field name="name">Reload Magento Attributes</field>
+			<field eval="'ir.actions.server,%d'%action_reload_product_template_from_magento" name="value"/>
+			<field eval="True" name="object"/>
+		</record>
+
+    </data>
+</openerp>

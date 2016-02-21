@@ -40,7 +40,9 @@
 
  'depends': [
      'elvenstudio_data_connector',
-     'elvenstudio_tyre_search',
+     'elvenstudio_tyre',
+     'elvenstudio_tyre_measure',
+     'elvenstudio_tyre_specs',
  ],
 
  'data': [],

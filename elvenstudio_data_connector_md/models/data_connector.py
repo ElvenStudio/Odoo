@@ -151,6 +151,28 @@ class DataConnector(models.Model):
                                         resistenza = ''
                                         rumore = ''
                                         battistrada = ''
+
+                                        magento_attribute = product._get_all_magento_attributes()
+                                        if 'pfu' in magento_attribute:
+                                            pfu = magento_attribute['pfu'].value.split(' - ')[1]
+
+                                        if 'ic_cv_singola' in magento_attribute:
+                                            ic = magento_attribute['ic_cv_singola'][:-1]
+                                            cv = magento_attribute['ic_cv_singola'][-1:]
+
+                                        if 'aderenza' in magento_attribute:
+                                            aderenza = magento_attribute['aderenza']
+
+                                        if 'resistenza' in magento_attribute:
+                                            resistenza = magento_attribute['resistenza']
+
+                                        if 'rumorosita' in magento_attribute:
+                                            rumore = str(magento_attribute['rumorosita']) + 'dB'
+
+                                        if 'battistrada' in magento_attribute:
+                                            battistrada = magento_attribute['battistrada']
+
+                                        """
                                         if product.magento_attribute_ids:
                                             for attribute in product.magento_attribute_ids:
                                                 if 'pfu' == attribute.code:
@@ -166,6 +188,7 @@ class DataConnector(models.Model):
                                                     rumore = str(attribute.value) + 'dB'
                                                 elif 'battistrada' == attribute.code:
                                                     battistrada = attribute.value
+                                        """
 
                                         # Fix a crudo per i pfu 2016
                                         if '2.15' in str(pfu):
@@ -222,9 +245,12 @@ class DataConnector(models.Model):
                                             default_code = product.default_code.split('-') if product.default_code else []
                                             ip_code = default_code[1] if len(default_code) >= 2 else ''
 
+                                        """
                                         measure = ''
                                         if product.compact_measure:
                                             measure = product.compact_measure.replace('/', '').replace('.', '')
+                                        """
+                                        measure = product.compact_measure if product.compact_measure else ''
 
                                         imponibile = (price + float(pfu))
                                         prezzo_ivato = imponibile + imponibile * 0.22
@@ -397,6 +423,19 @@ class DataConnector(models.Model):
                                             ic = ''
                                             cv = ''
                                             battistrada = ''
+
+                                            magento_attribute = product._get_all_magento_attributes()
+                                            if 'pfu' in magento_attribute:
+                                                pfu = magento_attribute['pfu'].value.split(' - ')[1]
+
+                                            if 'ic_cv_singola' in magento_attribute:
+                                                ic = magento_attribute['ic_cv_singola'][:-1]
+                                                cv = magento_attribute['ic_cv_singola'][-1:]
+
+                                            if 'battistrada' in magento_attribute:
+                                                battistrada = magento_attribute['battistrada']
+
+                                            """
                                             if product.magento_attribute_ids:
                                                 for attribute in product.magento_attribute_ids:
                                                     if 'pfu' == attribute.code:
@@ -406,6 +445,7 @@ class DataConnector(models.Model):
                                                         cv = attribute.value[-1:]
                                                     elif 'battistrada' == attribute.code:
                                                         battistrada = attribute.value
+                                            """
 
                                             # Fix a crudo per i pfu 2016
                                             if '2.15' in str(pfu):

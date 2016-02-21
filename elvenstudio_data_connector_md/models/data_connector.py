@@ -99,8 +99,8 @@ class DataConnector(models.Model):
                             status = True
                             operation.complete_operation() if log else operation.unlink()
 
-                    except Exception:
-                            operation.error_on_operation("Error during data export")
+                    except Exception as e:
+                            operation.error_on_operation("Error during data export" + str(e))
                 else:
                     operation.cancel_operation('No customer selected to export')
 
@@ -152,9 +152,9 @@ class DataConnector(models.Model):
                                         rumore = ''
                                         battistrada = ''
 
-                                        magento_attribute = product._get_all_magento_attributes()
+                                        magento_attribute = product.product_tmpl_id._get_all_magento_attributes()
                                         if 'pfu' in magento_attribute:
-                                            pfu = magento_attribute['pfu'].value.split(' - ')[1]
+                                            pfu = magento_attribute['pfu'].split(' - ')[1]
 
                                         if 'ic_cv_singola' in magento_attribute:
                                             ic = magento_attribute['ic_cv_singola'][:-1]
@@ -287,8 +287,8 @@ class DataConnector(models.Model):
                                 status = True
                                 operation.complete_operation() if log else operation.unlink()
 
-                        except Exception:
-                            operation.error_on_operation("Error during data export")
+                        except Exception as e:
+                            operation.error_on_operation("Error during data export" + str(e))
                     else:
                         operation.cancel_operation('No product selected to export')
 
@@ -424,9 +424,9 @@ class DataConnector(models.Model):
                                             cv = ''
                                             battistrada = ''
 
-                                            magento_attribute = product._get_all_magento_attributes()
+                                            magento_attribute = product.product_tmpl_id._get_all_magento_attributes()
                                             if 'pfu' in magento_attribute:
-                                                pfu = magento_attribute['pfu'].value.split(' - ')[1]
+                                                pfu = magento_attribute['pfu'].split(' - ')[1]
 
                                             if 'ic_cv_singola' in magento_attribute:
                                                 ic = magento_attribute['ic_cv_singola'][:-1]
@@ -507,8 +507,8 @@ class DataConnector(models.Model):
                                 status = True
                                 operation.complete_operation() if log else operation.unlink()
 
-                        except Exception:
-                            operation.error_on_operation("Error during data export")
+                        except Exception as e:
+                            operation.error_on_operation("Error during data export" + str(e))
                     else:
                         operation.cancel_operation('No product selected to export')
 

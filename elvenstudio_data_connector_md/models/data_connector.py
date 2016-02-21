@@ -100,7 +100,8 @@ class DataConnector(models.Model):
                             operation.complete_operation() if log else operation.unlink()
 
                     except Exception as e:
-                            operation.error_on_operation("Error during data export" + str(e))
+                            operation.error_on_operation("Error during data export" +
+                                                         (" - " + e.message if e.message else ''))
                 else:
                     operation.cancel_operation('No customer selected to export')
 
@@ -172,23 +173,6 @@ class DataConnector(models.Model):
                                         if 'battistrada' in magento_attribute:
                                             battistrada = magento_attribute['battistrada']
 
-                                        """
-                                        if product.magento_attribute_ids:
-                                            for attribute in product.magento_attribute_ids:
-                                                if 'pfu' == attribute.code:
-                                                    pfu = attribute.value.split(' - ')[1]
-                                                elif 'ic_cv_singola' == attribute.code:
-                                                    ic = attribute.value[:-1]
-                                                    cv = attribute.value[-1:]
-                                                elif 'aderenza' == attribute.code:
-                                                    aderenza = attribute.value
-                                                elif 'resistenza' == attribute.code:
-                                                    resistenza = attribute.value
-                                                elif 'rumorosita' in attribute.code:
-                                                    rumore = str(attribute.value) + 'dB'
-                                                elif 'battistrada' == attribute.code:
-                                                    battistrada = attribute.value
-                                        """
 
                                         # Fix a crudo per i pfu 2016
                                         if '2.15' in str(pfu):
@@ -245,11 +229,6 @@ class DataConnector(models.Model):
                                             default_code = product.default_code.split('-') if product.default_code else []
                                             ip_code = default_code[1] if len(default_code) >= 2 else ''
 
-                                        """
-                                        measure = ''
-                                        if product.compact_measure:
-                                            measure = product.compact_measure.replace('/', '').replace('.', '')
-                                        """
                                         measure = product.compact_measure if product.compact_measure else ''
 
                                         imponibile = (price + float(pfu))
@@ -360,8 +339,9 @@ class DataConnector(models.Model):
                                 status = True
                                 operation.complete_operation() if log else operation.unlink()
 
-                        except Exception:
-                            operation.error_on_operation("Error during data export")
+                        except Exception as e:
+                            operation.error_on_operation("Error during data export" +
+                                                         (" - " + e.message if e.message else ''))
                     else:
                         operation.cancel_operation('No product selected to export')
 
@@ -435,18 +415,6 @@ class DataConnector(models.Model):
                                             if 'battistrada' in magento_attribute:
                                                 battistrada = magento_attribute['battistrada']
 
-                                            """
-                                            if product.magento_attribute_ids:
-                                                for attribute in product.magento_attribute_ids:
-                                                    if 'pfu' == attribute.code:
-                                                        pfu = attribute.value.split(' - ')[1]
-                                                    elif 'ic_cv_singola' == attribute.code:
-                                                        ic = attribute.value[:-1]
-                                                        cv = attribute.value[-1:]
-                                                    elif 'battistrada' == attribute.code:
-                                                        battistrada = attribute.value
-                                            """
-
                                             # Fix a crudo per i pfu 2016
                                             if '2.15' in str(pfu):
                                                 pfu = '2.30'
@@ -508,7 +476,8 @@ class DataConnector(models.Model):
                                 operation.complete_operation() if log else operation.unlink()
 
                         except Exception as e:
-                            operation.error_on_operation("Error during data export" + str(e))
+                            operation.error_on_operation("Error during data export" +
+                                                         (" - " + e.message if e.message else ''))
                     else:
                         operation.cancel_operation('No product selected to export')
 

@@ -97,7 +97,11 @@ class DataConnector(models.Model):
 
                             csvFile.close()
                             status = True
-                            operation.complete_operation() if log else operation.unlink()
+                            if log:
+                                operation.complete_operation()
+                            else:
+                                operation.unlink()
+                                operation = False
 
                     except Exception as e:
                             operation.error_on_operation("Error during data export" +
@@ -264,10 +268,15 @@ class DataConnector(models.Model):
 
                                 csvFile.close()
                                 status = True
-                                operation.complete_operation() if log else operation.unlink()
+                                if log:
+                                    operation.complete_operation()
+                                else:
+                                    operation.unlink()
+                                    operation = False
 
                         except Exception as e:
-                            operation.error_on_operation("Error during data export" + str(e))
+                            operation.error_on_operation("Error during data export" +
+                                                         (" - " + e.message if e.message else ''))
                     else:
                         operation.cancel_operation('No product selected to export')
 
@@ -337,7 +346,11 @@ class DataConnector(models.Model):
 
                                 csvFile.close()
                                 status = True
-                                operation.complete_operation() if log else operation.unlink()
+                                if log:
+                                    operation.complete_operation()
+                                else:
+                                    operation.unlink()
+                                    operation = False
 
                         except Exception as e:
                             operation.error_on_operation("Error during data export" +
@@ -473,7 +486,12 @@ class DataConnector(models.Model):
 
                                 csvFile.close()
                                 status = True
-                                operation.complete_operation() if log else operation.unlink()
+
+                                if log:
+                                    operation.complete_operation()
+                                else:
+                                    operation.unlink()
+                                    operation = False
 
                         except Exception as e:
                             operation.error_on_operation("Error during data export" +

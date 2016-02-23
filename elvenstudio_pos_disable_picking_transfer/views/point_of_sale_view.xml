@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="elvenstudio_view_pos_config_form">
+            <field name="name">elvenstudio.pos.config.form.view</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stock_location_id']" position="after">
+                    <field name="auto_transfer_picking" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

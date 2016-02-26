@@ -1,0 +1,32 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_sale_margin_enhancement
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 17:49+0000\n"
+"PO-Revision-Date: 2016-02-26 17:49+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:ir.actions.server,name:elvenstudio_sale_margin_enhancement.action_recompute_sale_order_margin
+msgid "Recompute Margin"
+msgstr ""
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:ir.model,name:elvenstudio_sale_margin_enhancement.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:ir.model,name:elvenstudio_sale_margin_enhancement.model_sale_order_line
+msgid "Sales Order Line"
+msgstr ""
+

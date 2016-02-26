@@ -1,0 +1,36 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_purchase_multicompany_fix
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 17:50+0000\n"
+"PO-Revision-Date: 2016-02-26 17:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_purchase_multicompany_fix
+#: code:addons/elvenstudio_purchase_multicompany_fix/models/purchase_order.py:29
+#: code:addons/elvenstudio_purchase_multicompany_fix/models/purchase_order_v7.py:33
+#, python-format
+msgid "Error!"
+msgstr "Error!"
+
+#. module: elvenstudio_purchase_multicompany_fix
+#: code:addons/elvenstudio_purchase_multicompany_fix/models/purchase_order.py:29
+#: code:addons/elvenstudio_purchase_multicompany_fix/models/purchase_order_v7.py:33
+#, python-format
+msgid "Make sure you have at least an incoming picking type defined"
+msgstr "Make sure you have at least an incoming picking type defined"
+
+#. module: elvenstudio_purchase_multicompany_fix
+#: model:ir.model,name:elvenstudio_purchase_multicompany_fix.model_purchase_order
+msgid "Purchase Order"
+msgstr "Purchase Order"
+

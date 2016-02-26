@@ -1,0 +1,32 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_product_cost_sale
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 17:49+0000\n"
+"PO-Revision-Date: 2016-02-26 17:49+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_product_cost_sale
+#: model:product.price.type,name:elvenstudio_product_cost_sale.type_by_cost_sale
+msgid "Cost Sale"
+msgstr "Cost Sale"
+
+#. module: elvenstudio_product_cost_sale
+#: model:ir.model,name:elvenstudio_product_cost_sale.model_product_product
+msgid "Product"
+msgstr "Product"
+
+#. module: elvenstudio_product_cost_sale
+#: model:ir.model,name:elvenstudio_product_cost_sale.model_product_template
+msgid "Product Template"
+msgstr "Product Template"
+

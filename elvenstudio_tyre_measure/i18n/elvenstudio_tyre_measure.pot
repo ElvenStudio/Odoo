@@ -1,0 +1,85 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_tyre_measure
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 17:50+0000\n"
+"PO-Revision-Date: 2016-02-26 17:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_tyre_measure
+#: field:product.template,cerchio:0
+msgid "Cerchio"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: view:product.template:elvenstudio_tyre_measure.elvenstudio_product_template_measure_search_view
+#: field:product.template,iccv:0
+msgid "ICCV"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: field:product.template,iccv_gemellata:0
+msgid "ICCV Gemellata"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: field:product.template,iccv_singola:0
+msgid "ICCV Singola"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: field:product.template,larghezza:0
+msgid "Larghezza"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: field:product.template,measure:0
+#: field:product.template,slashed_measure:0
+#: field:stock.move,product_compact_measure:0
+#: field:stock.move,product_measure:0
+#: field:stock.move,product_slashed_measure:0
+msgid "Misura"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: view:product.template:elvenstudio_tyre_measure.elvenstudio_product_template_measure_search_view
+#: field:product.template,compact_measure:0
+msgid "Misura compatta"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: view:product.template:elvenstudio_tyre_measure.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_measure.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_measure.elvenstudio_quant_search_view
+msgid "Product"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: model:ir.model,name:elvenstudio_tyre_measure.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: field:product.template,sezione:0
+msgid "Sezione"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: model:ir.model,name:elvenstudio_tyre_measure.model_stock_move
+msgid "Stock Move"
+msgstr ""
+
+#. module: elvenstudio_tyre_measure
+#: field:product.template,struttura:0
+msgid "Struttura"
+msgstr ""
+

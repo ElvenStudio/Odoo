@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="action_recompute_sale_order_margin" model="ir.actions.server">
+			<field name="name">Recompute Margin</field>
+			<field name="model_id" ref="sale.model_sale_order"/>
+			<field name="state">code</field>
+			<field name="code">
+                self.recompute_order_margin(cr, uid, context.get('active_ids', []), context=context)</field>
+		</record>
+
+        <record id="ir_open_bulk_sale_order" model="ir.values">
+			<field eval="'client_action_multi'" name="key2"/>
+			<field eval="'sale.order'" name="model"/>
+			<field name="name">Recompute Margin</field>
+			<field eval="'ir.actions.server,%d'%action_recompute_sale_order_margin" name="value"/>
+			<field eval="True" name="object"/>
+		</record>
+
+    </data>
+</openerp>

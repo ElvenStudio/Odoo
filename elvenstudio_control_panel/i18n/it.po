@@ -1,0 +1,107 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_control_panel
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 17:50+0000\n"
+"PO-Revision-Date: 2016-02-26 17:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_control_panel
+#: model:res.groups,name:elvenstudio_control_panel.group_elvenstudio_admin
+msgid "Admin"
+msgstr "Admin"
+
+#. module: elvenstudio_control_panel
+#: model:ir.ui.menu,name:elvenstudio_control_panel.menu_controlpanel_home
+msgid "Control Panel"
+msgstr "Control Panel"
+
+#. module: elvenstudio_control_panel
+#: field:elvenstudio.controlpanel,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: elvenstudio_control_panel
+#: field:elvenstudio.controlpanel,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: elvenstudio_control_panel
+#: model:ir.ui.menu,name:elvenstudio_control_panel.elvenstudio_controlpanel_parent_menu
+msgid "Elven Studio"
+msgstr "Elven Studio"
+
+#. module: elvenstudio_control_panel
+#: model:ir.actions.act_window,name:elvenstudio_control_panel.elvenstudio_home_action
+msgid "Elven Studio Control Home"
+msgstr "Elven Studio Control Home"
+
+#. module: elvenstudio_control_panel
+#: model:ir.module.category,description:elvenstudio_control_panel.module_elvenstudio_controlpanel_category
+msgid "Elven Studio Control Panel Application"
+msgstr "Elven Studio Control Panel Application"
+
+#. module: elvenstudio_control_panel
+#: view:elvenstudio.controlpanel:elvenstudio_control_panel.elvenstudio_controlpanel_form
+msgid "Elven Studio Control Panel Home"
+msgstr "Elven Studio Control Panel Home"
+
+#. module: elvenstudio_control_panel
+#: model:ir.ui.menu,name:elvenstudio_control_panel.cp_id0
+msgid "Elven Studio Panel"
+msgstr "Elven Studio Panel"
+
+#. module: elvenstudio_control_panel
+#: model:ir.module.category,name:elvenstudio_control_panel.module_elvenstudio_controlpanel_category
+msgid "ElvenStudio Control Panel"
+msgstr "ElvenStudio Control Panel"
+
+#. module: elvenstudio_control_panel
+#: model:res.groups,comment:elvenstudio_control_panel.group_elvenstudio_admin
+msgid "Full Access on Control Panel"
+msgstr "Full Access on Control Panel"
+
+#. module: elvenstudio_control_panel
+#: field:elvenstudio.controlpanel,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: elvenstudio_control_panel
+#: field:elvenstudio.controlpanel,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: elvenstudio_control_panel
+#: field:elvenstudio.controlpanel,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: elvenstudio_control_panel
+#: model:res.groups,comment:elvenstudio_control_panel.group_elvenstudio_manager
+msgid "Manage ElvenStudio application from Control Panel"
+msgstr "Manage ElvenStudio application from Control Panel"
+
+#. module: elvenstudio_control_panel
+#: model:res.groups,name:elvenstudio_control_panel.group_elvenstudio_manager
+msgid "Manager"
+msgstr "Manager"
+
+#. module: elvenstudio_control_panel
+#: view:elvenstudio.controlpanel:elvenstudio_control_panel.elvenstudio_controlpanel_form
+msgid "Panello di controllo"
+msgstr "Panello di controllo"
+
+#. module: elvenstudio_control_panel
+#: view:elvenstudio.controlpanel:elvenstudio_control_panel.elvenstudio_controlpanel_form
+msgid "Seleziona dal menù a sinistra l'operazione da eseguire."
+msgstr "Seleziona dal menù a sinistra l'operazione da eseguire."
+

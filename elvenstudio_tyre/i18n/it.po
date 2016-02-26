@@ -1,0 +1,87 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_tyre
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 17:50+0000\n"
+"PO-Revision-Date: 2016-02-26 17:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_tyre
+#: view:product.template:elvenstudio_tyre.elvenstudio_product_template_search_view
+#: view:stock.move:elvenstudio_tyre.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre.elvenstudio_quant_search_view
+msgid "Auto"
+msgstr "Auto"
+
+#. module: elvenstudio_tyre
+#: view:product.template:elvenstudio_tyre.elvenstudio_product_template_search_view
+#: view:stock.move:elvenstudio_tyre.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre.elvenstudio_quant_search_view
+msgid "Autocarro"
+msgstr "Autocarro"
+
+#. module: elvenstudio_tyre
+#: view:product.template:elvenstudio_tyre.elvenstudio_product_template_form_view
+msgid "Caratteristiche Pneumatico"
+msgstr "Caratteristiche Pneumatico"
+
+#. module: elvenstudio_tyre
+#: view:product.template:elvenstudio_tyre.elvenstudio_product_template_search_view
+#: field:product.template,ip_code:0
+msgid "Ip Code"
+msgstr "Ip Code"
+
+#. module: elvenstudio_tyre
+#: model:ir.model,name:elvenstudio_tyre.model_magento_attributes
+msgid "Magento Custom Attributes"
+msgstr "Magento Custom Attributes"
+
+#. module: elvenstudio_tyre
+#: model:ir.model,name:elvenstudio_tyre.model_product_attributes
+msgid "Magento Product Custom Attributes"
+msgstr "Magento Product Custom Attributes"
+
+#. module: elvenstudio_tyre
+#: view:product.template:elvenstudio_tyre.elvenstudio_product_template_search_view
+#: field:product.template,magento_manufacturer:0
+msgid "Marca"
+msgstr "Marca"
+
+#. module: elvenstudio_tyre
+#: view:product.template:elvenstudio_tyre.elvenstudio_product_template_search_view
+#: view:stock.move:elvenstudio_tyre.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre.elvenstudio_quant_search_view
+msgid "Moto"
+msgstr "Moto"
+
+#. module: elvenstudio_tyre
+#: model:ir.model,name:elvenstudio_tyre.model_product_template
+msgid "Product Template"
+msgstr "Product Template"
+
+#. module: elvenstudio_tyre
+#: model:ir.actions.server,name:elvenstudio_tyre.action_reload_product_template_from_magento
+msgid "Reload Magento Attributes"
+msgstr "Reload Magento Attributes"
+
+#. module: elvenstudio_tyre
+#: view:product.template:elvenstudio_tyre.elvenstudio_product_template_search_view
+#: view:stock.move:elvenstudio_tyre.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre.elvenstudio_quant_search_view
+msgid "Senza Categ."
+msgstr "Senza Categ."
+
+#. module: elvenstudio_tyre
+#: field:product.template,tipo_pneumatico:0
+msgid "Tipo di Pneumatico"
+msgstr "Tipo di Pneumatico"
+

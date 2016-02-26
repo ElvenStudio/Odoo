@@ -1,0 +1,136 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_tyre_specs
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 17:50+0000\n"
+"PO-Revision-Date: 2016-02-26 17:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "All Season"
+msgstr "All Season"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Ant/Post"
+msgstr "Ant/Post"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Anteriore"
+msgstr "Anteriore"
+
+#. module: elvenstudio_tyre_specs
+#: field:product.template,asse:0
+msgid "Asse"
+msgstr "Asse"
+
+#. module: elvenstudio_tyre_specs
+#: field:product.template,tube:0
+msgid "Camera"
+msgstr "Camera"
+
+#. module: elvenstudio_tyre_specs
+#: field:product.template,etichetta_europea:0
+msgid "Etichetta Europea"
+msgstr "Etichetta Europea"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: field:product.template,mud_snow:0
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "M+S"
+msgstr "M+S"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "No Season"
+msgstr "No Season"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Posteriore"
+msgstr "Posteriore"
+
+#. module: elvenstudio_tyre_specs
+#: model:ir.model,name:elvenstudio_tyre_specs.model_product_template
+msgid "Product Template"
+msgstr "Product Template"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: field:product.template,runflat:0
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "RFT"
+msgstr "RFT"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: field:product.template,asse_rimorchio:0
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Rimorchio"
+msgstr "Rimorchio"
+
+#. module: elvenstudio_tyre_specs
+#: field:product.template,season:0
+msgid "Stagione"
+msgstr "Stagione"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: field:product.template,asse_sterzante:0
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Sterzante"
+msgstr "Sterzante"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Summer"
+msgstr "Summer"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: field:product.template,asse_trattivo:0
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Trattivo"
+msgstr "Trattivo"
+
+#. module: elvenstudio_tyre_specs
+#: view:product.template:elvenstudio_tyre_specs.elvenstudio_product_template_measure_search_view
+#: view:stock.move:elvenstudio_tyre_specs.elvenstudio_stock_move_search_view
+#: view:stock.quant:elvenstudio_tyre_specs.elvenstudio_quant_search_view
+msgid "Winter"
+msgstr "Winter"
+
+#. module: elvenstudio_tyre_specs
+#: field:product.template,reinforced:0
+msgid "XL"
+msgstr "XL"
+

@@ -11,6 +11,9 @@ _log = logging.getLogger(__name__)
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
+    # Rewrite margin field for odoo 8 compatibility
+    margin = fields.Float(compute='_product_margin', digits=dp.get_precision('Product Price'), store=True)
+
     @api.multi
     @api.onchange('product_id', 'product_uom_qty', 'order_id.pricelist_id')
     def product_id_change_margin(self):
@@ -47,6 +50,7 @@ class SaleOrderLine(models.Model):
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
+    # Rewrite margin field for odoo 8 compatibility
     margin = fields.Float(
         compute='_product_margin',
         currency_field='currency_id',

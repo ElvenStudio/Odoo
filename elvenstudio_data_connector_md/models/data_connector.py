@@ -275,8 +275,7 @@ class DataConnector(models.Model):
                                     operation = False
 
                         except Exception as e:
-                            operation.error_on_operation("Error during data export" +
-                                                         (" - " + e.message if e.message else ''))
+                            operation.error_on_operation("Error during data export" + (" - " + str(e.message) if e.message else ''))
                     else:
                         operation.cancel_operation('No product selected to export')
 
@@ -288,7 +287,7 @@ class DataConnector(models.Model):
                 params['mail']['from_address'],
                 params['mail']['to_address'],
                 'Error during export_product_to_md execution',
-                str(operation.start_date) + ": " + operation.message
+                str(operation.start_date) + ": " + str(operation.message)
             )
 
         return status
@@ -353,8 +352,7 @@ class DataConnector(models.Model):
                                     operation = False
 
                         except Exception as e:
-                            operation.error_on_operation("Error during data export" +
-                                                         (" - " + e.message if e.message else ''))
+                            operation.error_on_operation("Error during data export" + (" - " + str(e.message) if e.message else ''))
                     else:
                         operation.cancel_operation('No product selected to export')
 
@@ -366,7 +364,7 @@ class DataConnector(models.Model):
                 params['mail']['from_address'],
                 params['mail']['to_address'],
                 'Error during export_product_to_tyre24 execution',
-                str(operation.start_date) + ": " + operation.message
+                str(operation.start_date) + ": " + str(operation.message)
             )
 
         return status
@@ -494,8 +492,7 @@ class DataConnector(models.Model):
                                     operation = False
 
                         except Exception as e:
-                            operation.error_on_operation("Error during data export" +
-                                                         (" - " + e.message if e.message else ''))
+                            operation.error_on_operation("Error during data export" + (" - " + str(e.message) if e.message else ''))
                     else:
                         operation.cancel_operation('No product selected to export')
 
@@ -507,7 +504,7 @@ class DataConnector(models.Model):
                 params['mail']['from_address'],
                 params['mail']['to_address'],
                 'Error during export_product_to_easytyre execution',
-                str(operation.start_date) + ": " + operation.message
+                str(operation.start_date) + ": " + str(operation.message)
             )
 
         return status

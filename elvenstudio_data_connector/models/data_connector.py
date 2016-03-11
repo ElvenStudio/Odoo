@@ -32,7 +32,7 @@ class DataConnector(models.BaseModel):
         default='draft')
     start_date = fields.Datetime(readonly=True)
     end_date = fields.Datetime(readonly=True)
-    message = fields.Char(size=255, readonly=True)
+    message = fields.Char(readonly=True)
     duration = fields.Char(compute='_get_duration', readonly=True)
 
     @api.one

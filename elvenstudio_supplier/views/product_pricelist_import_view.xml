@@ -8,10 +8,13 @@
             <field name="model">product.pricelist.import</field>
             <field name="type">search</field>
             <field name="arch" type="xml">
-                <search string="Search File load">
+                <search string="Search in Pricelists">
                     <group>
-                        <field name="date" />
+                        <field name="name" />
                         <field name="file_name" />
+                        <field name="supplier" />
+                        <field name="start_date" />
+                        <field name="end_date" />
                     </group>
                 </search>
             </field>
@@ -23,10 +26,17 @@
             <field name="model">product.pricelist.import</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="File Loads">
+                <tree string="Pricelists"
+                      colors="blue:state == 'draft';
+                              green:state =='active';
+                              red:state == 'overdue';
+                              gray:state == 'ended' or state == 'cancel'">
                     <field name="name" />
+                    <field name="supplier" />
                     <field name="fails" />
-                    <field name="date" />
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    <field name="state" invisibile="1" />
                 </tree>
             </field>
         </record>
@@ -37,28 +47,68 @@
             <field name="model">product.pricelist.import</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="File Load">
+                <form string="Pricelist">
                     <header>
-                        <button name="%(action_import_file)d" string="Load File" class="oe_highlight" type="action" />
-                        <button class="oe_highlight" name="process_lines" string="Proccess" type="object" />
+                        <button name="%(action_import_file)d" string="Load Pricelist" class="oe_highlight"
+                                type="action"
+                                attrs="{'invisible': ['|',('state','!=','draft'), ('process','>', 0)]}" />
+
+                        <button name="%(action_import_file)d" string="Load Pricelist"
+                                type="action"
+                                attrs="{'invisible': ['|',('state','!=','draft'), ('process','=', 0)]}" />
+
+                        <button name="process_pricelist" string="Proccess" class="oe_highlight"
+                                type="object"
+                                attrs="{'invisible': ['|',
+                                    '&amp;', ('fails','=', 0), ('state','in',['draft', 'active', 'overdue']),
+                                    ('state','not in',['draft', 'active', 'overdue'])]}" />
+
+                        <button name="process_pricelist" string="Proccess"
+                                type="object"
+                                attrs="{'invisible': ['|',
+                                    '&amp;', ('fails','>', 0), ('state','in',['draft', 'active', 'overdue']),
+                                    ('state','not in',['draft', 'active', 'overdue'])]}" />
+
+                        <button name="action_cancel_pricelist" string="Cancel"
+                                type="object"
+                                attrs="{'invisible': [('state','!=','draft')]}" />
+
+                        <button name="action_draft_pricelist" string="Set to draft"
+                                type="object"
+                                attrs="{'invisible': [('state','!=','cancel')]}" />
+
+                        <button name="action_deactivate_pricelist" string="Deactivate"
+                                type="object"
+                                attrs="{'invisible': [('state','!=','active'), ('state', '!=', 'overdue')]}" />
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,active,ended" />
                     </header>
                     <group>
-                        <h2><field name="name" /></h2>
-                    </group>
-                    <group>
-                        <field name="file_name" string="File Name"/>
+                        <h2><field name="name"/></h2>
                     </group>
                     <group col="6">
+                        <field name="supplier"  domain="[('supplier', '=', True)]" />
+                        <field name="start_date"
+                               string="Activation date"
+                               help="Automatically activate this pricelist at the given date./n
+                               Leave empty to activate the pricelist manually." />
 
+                        <field name="end_date"
+                               string="Deactivation date"
+                               help="Automatically deactivate the pricelist at the given date./n
+                               Leave empty to keep the pricelist always active/n
+                               (it can be deactivated manually if needed)." />
+                    </group>
+                    <group col="6" attrs="{'invisible': [('state','=','draft')]}">
+                        <field name="file_name" string="File Name"/>
+                        <field name="process" />
+                        <field name="fails" />
                         <field name="date" string="Created at"/>
                         <field name="process_start_date" string="Last process start" />
                         <field name="process_end_date" string="Last process end" />
-                        <field name="process" />
-                        <field name="fails" />
-                        <field name="supplier"  domain="[('supplier', '=', True)]" />
                     </group>
                     <field name="file_lines" nolabel="1">
-                        <tree string="Import Lines"
+                        <tree string="Pricelist Lines"
                               default_order="fail desc"
                               editable="bottom"
                               colors="red:fail==True;green:fail==False">
@@ -77,6 +127,23 @@
             </field>
         </record>
 
+        <record id="action_check_overdue_pricelist" model="ir.actions.server">
+			<field name="name">Check Overdue</field>
+			<field name="model_id" ref="elvenstudio_supplier.model_product_pricelist_import"/>
+			<field name="state">code</field>
+			<field name="code">
+                self.action_check_overdue(cr, uid, context.get('active_ids', []), context=context)
+            </field>
+		</record>
+
+        <record id="ir_open_bulk_check_overdue" model="ir.values">
+			<field eval="'client_action_multi'" name="key2"/>
+			<field eval="'product.pricelist.import'" name="model"/>
+			<field name="name">Check Overdue</field>
+			<field eval="'ir.actions.server,%d'%action_check_overdue_pricelist" name="value"/>
+			<field eval="True" name="object"/>
+		</record>
+
         <record id="action_file_price_import" model="ir.actions.act_window">
             <field name="name">Supplier pricelist importer</field>
             <field name="res_model">product.pricelist.import</field>
@@ -92,9 +159,9 @@
             id="act_fail_lines" />
 
         <!-- Definisco la voce per il plugin nel pannello di controllo -->
-        <menuitem  id="menu_controlpanel_pricelist_import" name="Product Supplier" parent="elvenstudio_control_panel.elvenstudio_controlpanel_parent_menu" sequence="2"/>
+        <menuitem  id="menu_controlpanel_supplier_header" name="Suppliers" parent="elvenstudio_control_panel.elvenstudio_controlpanel_parent_menu" sequence="2"/>
 
 				<!-- Definisco la view di default quando si accede alla voce di menu del plugin -->
-				<menuitem  id="cp_pl_import" name="Importer" parent="menu_controlpanel_pricelist_import" action="action_file_price_import"/>
+				<menuitem  id="menu_controlpanel_supplier_pricelist" name="Product Pricelists" parent="menu_controlpanel_supplier_header" action="action_file_price_import"/>
     </data>
 </openerp>

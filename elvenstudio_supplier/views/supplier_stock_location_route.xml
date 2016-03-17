@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- ************* Location Route search View  *************** -->
+        <record id="elvenstudio_supplier_stock_location_config_search" model="ir.ui.view">
+            <field name="name">elvenstudio.supplier.stock.location.config.search.view</field>
+            <field name="model">supplier.stock.location.routes</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <group>
+                        <field name="route" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ************* Location Route Tree View  *************** -->
+        <record id="elvenstudio_supplier_stock_location_config_tree_view" model="ir.ui.view">
+            <field name="name">elvenstudio.supplier.stock.location.config.tree.view</field>
+            <field name="model">supplier.stock.location.routes</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Location Routes" editable="top">
+                    <field name="route" />
+                    <field name="active" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- ************* Location Route form View  *************** -->
+        <record id="elvenstudio_supplier_stock_location_config_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.supplier.stock.location.config.tree.view</field>
+            <field name="model">supplier.stock.location.routes</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Active Stock Location Routes">
+                    <group>
+                        <field name="route" />
+                        <field name="active" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_supplier_conf" model="ir.actions.act_window">
+            <field name="name">Supplier Stock Location Routes</field>
+            <field name="res_model">supplier.stock.location.routes</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+		<!-- Definisco la view di default quando si accede alla voce di menu del plugin -->
+		<menuitem  id="cp_conf_supplier"
+                   name="Location Routes"
+                   parent="elvenstudio_control_panel.menu_controlpanel_config"
+                   action="action_supplier_conf" />
+    </data>
+</openerp>

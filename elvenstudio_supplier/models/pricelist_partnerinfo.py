@@ -14,8 +14,6 @@ class PriceListPartnerInfo(models.Model):
 
     @api.model
     def create(self, values):
-        # _logger.warning('CREATE PRICELIST')
-
         sort_product_suppliers = True
         if 'sort_suppliers' in values:
             sort_product_suppliers = values['sort_suppliers']
@@ -30,8 +28,6 @@ class PriceListPartnerInfo(models.Model):
 
     @api.multi
     def write(self, values):
-        # _logger.warning('WRITE PRICELIST')
-
         sort_suppliers = True
         if 'sort_suppliers' in values:
             sort_suppliers = values['sort_suppliers']
@@ -53,7 +49,6 @@ class PriceListPartnerInfo(models.Model):
 
     @api.multi
     def unlink(self):
-        # _logger.warning('UNLINK PRICELIST')
         # Aggiorno l'ordine dei fornitori sui prodotti coinvolti,
         # perchè potrebbe essdere cambiato qualcosa
         product_to_sort = set()

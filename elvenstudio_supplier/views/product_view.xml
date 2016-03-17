@@ -12,6 +12,7 @@
                 </xpath>
             </field>
         </record>
+
         <record model="ir.ui.view" id="elvenstudio_product_template_kanban_stock_view">
             <field name="name">Product Template Kanban Stock</field>
             <field name="model">product.template</field>
@@ -23,6 +24,7 @@
                 </ul>
             </field>
         </record>
+
         <record id="elvenstudio_view_stock_product_template_tree" model="ir.ui.view">
             <field name="name">product.template.stock.tree.inherit</field>
             <field name="model">product.template</field>

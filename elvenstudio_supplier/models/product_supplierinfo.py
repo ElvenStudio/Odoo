@@ -24,6 +24,7 @@ class ProductSupplierInfo(models.Model):
 
     supplier_pricelist_import_id = fields.Many2one('product.pricelist.import', 'id')
 
+    @api.multi
     def product_has_available_qty(self):
         if self:
             for supplier in self:
@@ -31,12 +32,14 @@ class ProductSupplierInfo(models.Model):
                     return True
         return False
 
+    @api.multi
     def get_supplier_qty(self, index=0):
         qty = 0.0
         if self and len(self) > index:
             qty = self[index].available_qty
         return qty
 
+    @api.multi
     def get_supplier_price(self, supplier_index=0, pricelist_index=0):
         price = 0.0
         if self and len(self) > supplier_index:
@@ -44,6 +47,7 @@ class ProductSupplierInfo(models.Model):
                 price = self[supplier_index].pricelist_ids[pricelist_index].price
         return price
 
+    @api.multi
     def get_total_supplier_qty(self):
         qty = 0.0
         if self:
@@ -53,20 +57,17 @@ class ProductSupplierInfo(models.Model):
 
     @api.one
     def _compute_condensed_pricelist(self):
-        atleast_text = _("At least")
-        at_text = _("at")
+        to_text = _("to")
         supplier_pricelist = ''
 
         for pricelist in self.pricelist_ids:
-            supplier_pricelist += ("\n" if supplier_pricelist != '' else '') + \
-                atleast_text + " " + str(pricelist.min_quantity) + " " + at_text + " " + str(pricelist.price)
+            supplier_pricelist += ("\n" if supplier_pricelist != '' else '')
+            supplier_pricelist += 'Min ' + str(pricelist.min_quantity) + ' ' + to_text + ' ' + str(pricelist.price)
 
         self.supplier_pricelist_condensed = supplier_pricelist
 
     @api.model
     def create(self, values):
-        # _logger.warning('CREATE SUPPLIER')
-
         update_mto_route = True
         if 'update_mto_route' in values:
             update_mto_route = values['update_mto_route']
@@ -89,8 +90,6 @@ class ProductSupplierInfo(models.Model):
 
     @api.multi
     def write(self, values):
-        # _logger.warning('WRITE SUPPLIER')
-
         sort_product_suppliers = True
         if 'sort_suppliers' in values:
             sort_product_suppliers = values['sort_suppliers']
@@ -109,7 +108,6 @@ class ProductSupplierInfo(models.Model):
 
     @api.multi
     def unlink(self):
-        # _logger.warning('UNLINK SUPPLIER')
         # Aggiorna le regole mto solo ai prodotti coinvolti
         # Aggiorna l'ordine dei fornitori solo ai prodotti coinvolti
         product_template_obj = self.env['product.template']

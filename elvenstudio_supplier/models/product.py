@@ -33,41 +33,63 @@ class ProductV8(models.Model):
 
     @api.multi
     def update_mto_route(self):
-        # _logger.warning('UPDATE PRODUCT ROUTE')
-        # Carico l'ultima configurazione valida
-        settings_obj = self.env['stock.config.settings'].search([('mto_route', '!=', False)], limit=1, order="id DESC")
 
-        if settings_obj and settings_obj.mto_route.id:
-            # Memorizzo la rotta per evitare il refresh continuo della configurazione
-            _route_id = settings_obj.mto_route.id
-
+        # Carico le rotte attive
+        active_routes = self.env['supplier.stock.location.routes'].search([('active', '=', True)])
+        if active_routes:
             # Creo le liste dei prodotti su cui aggiungere o rimuovere la rotta
-            product_to_remove_mto = []
-            product_to_add_mto = []
+            product_to_remove_mto = {}
+            product_to_add_mto = {}
 
+            active_route_ids = set(map(lambda r: r.route.id, active_routes))
             for product in self:
-                # Se la rotta c'è ma il prodotto non ha fornitori
-                if _route_id in product.route_ids.ids and not product.supplier_ids.ids:
-                    # rimuovo l'mto
-                    product_to_remove_mto.append(product.id)
-                # Se la rotta non c'è ma il prodotto ha fornitori
-                elif _route_id not in product.route_ids.ids and product.supplier_ids.ids:
-                    # aggiungo l'mto
-                    product_to_add_mto.append(product.id)
+                product_route_ids = set(product.route_ids.ids)
 
-                # Se la rotta non c'è e non ci sono fornitori non faccio nulla
-                # Se la rotta c'è e ci sono fornitori non faccio nulla
+                # Se il prodotto non ha fornitori
+                if not product.supplier_ids.ids:
+                    # Se il prodotto ha delle rotte tra quelle attive, allora vanno rimosse
+                    routes_to_remove = list(set.intersection(active_route_ids, product_route_ids))
+                    product_to_remove_mto.update(
+                        dict(
+                            zip(
+                                routes_to_remove,
+                                map(
+                                    lambda r: product_to_remove_mto.get(r, set()) | set([product.id]),
+                                    routes_to_remove
+                                )
+                            )
+                        )
+                    )
+                    # Altrimenti Se il prodotto non ha fornitori e non ha rotte attive non faccio nulla
+
+                # Altrimenti se il prodotto ha fornitori
+                else:
+                    # Se il prodotto non ha delle rotte tra quelle attive, allora vanno aggiunte
+                    routes_to_add = list(active_route_ids - product_route_ids)
+                    product_to_add_mto.update(
+                        dict(
+                            zip(
+                                routes_to_add,
+                                map(
+                                    lambda r: product_to_add_mto.get(r, set()) | set([product.id]),
+                                    routes_to_add
+                                )
+                            )
+                        )
+                    )
+                    # Altrimenti Se il prodotto ha fornitori e tutte le rotte sono già attive non faccio nulla
 
             # Aggiorno le rotte alle liste di prodotti in blocco
-            if product_to_add_mto:
-                self.browse(product_to_add_mto).write({'route_ids': [(4, _route_id)], 'update_mto_route': False})
+            for route_id, product_ids in product_to_add_mto.items():
+                if product_ids:
+                    self.browse(product_ids).write({'route_ids': [(4, route_id)], 'update_mto_route': False})
 
-            if product_to_remove_mto:
-                self.browse(product_to_remove_mto).write({'route_ids': [(3, _route_id)], 'update_mto_route': False})
+            for route_id, product_ids in product_to_remove_mto.items():
+                if product_ids:
+                    self.browse(product_ids).write({'route_ids': [(3, route_id)], 'update_mto_route': False})
 
     @api.multi
     def sort_suppliers(self):
-        # _logger.warning('SORT SUPPLIER')
         price_list_info_obj = self.env['pricelist.partnerinfo']
         sup_info_obj = self.env['product.supplierinfo']
 
@@ -99,7 +121,6 @@ class ProductV8(models.Model):
 
     @api.multi
     def write(self, values):
-        # _logger.warning('WRITE PRODUCT')
 
         update_mto = True
         if 'update_mto_route' in values:

@@ -29,7 +29,7 @@
  'description': """
     Invoice FIX
 ==============================================================
-Resolve the "ValueError: Expected Singleton" when multiple picking selected to be invoiced.
+Resolve the 'ValueError: Expected Singleton' when multiple picking selected to be invoiced.
 """,
  'author': "ElvenStudio",
  'license': 'AGPL-3',

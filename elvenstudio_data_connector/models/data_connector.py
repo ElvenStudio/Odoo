@@ -207,3 +207,8 @@ class DataConnector(models.BaseModel):
         message['To'] = to_address
 
         server.sendmail(from_address, to_address, message.as_string())
+
+    @api.model
+    def log_clean(self):
+        self.search([]).unlink()
+        return True

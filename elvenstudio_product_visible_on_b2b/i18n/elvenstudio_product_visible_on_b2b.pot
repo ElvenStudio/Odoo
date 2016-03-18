@@ -1,0 +1,39 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* elvenstudio_product_visible_on_b2b
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-18 17:41+0000\n"
+"PO-Revision-Date: 2016-03-18 17:41+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: elvenstudio_product_visible_on_b2b
+#: view:product.template:elvenstudio_product_visible_on_b2b.elvenstudio_product_template_b2b_ok_search
+msgid "Can be Sold on B2B"
+msgstr ""
+
+#. module: elvenstudio_product_visible_on_b2b
+#: view:product.template:elvenstudio_product_visible_on_b2b.elvenstudio_product_template_b2b_ok_search
+msgid "Cannot be Sold on B2B"
+msgstr ""
+
+#. module: elvenstudio_product_visible_on_b2b
+#: model:ir.model,name:elvenstudio_product_visible_on_b2b.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: elvenstudio_product_visible_on_b2b
+#: code:addons/elvenstudio_product_visible_on_b2b/models/product.py:9
+#: field:product.template,b2b_ok:0
+#, python-format
+msgid "Selectable on B2B"
+msgstr ""
+

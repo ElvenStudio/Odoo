@@ -62,7 +62,7 @@ msgstr "Annulla"
 #. module: elvenstudio_supplier
 #: model:ir.actions.server,name:elvenstudio_supplier.action_check_overdue_pricelist
 msgid "Check Overdue"
-msgstr "Scadenza Assegno"
+msgstr "Controlla Listini Scaduti"
 
 #. module: elvenstudio_supplier
 #: code:addons/elvenstudio_supplier/models/product_pricelist_import.py:161

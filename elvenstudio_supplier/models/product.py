@@ -35,7 +35,7 @@ class ProductV8(models.Model):
     def update_mto_route(self):
 
         # Carico le rotte attive
-        active_routes = self.env['supplier.stock.location.routes'].search([('active', '=', True)])
+        active_routes = self.env['supplier.stock.location.routes'].sudo().search([('active', '=', True)])
         if active_routes:
             # Creo le liste dei prodotti su cui aggiungere o rimuovere la rotta
             product_to_remove_mto = {}

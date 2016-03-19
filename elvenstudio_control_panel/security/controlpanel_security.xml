@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data noupdate="0">
+    <data noupdate="1">
         <record model="ir.module.category" id="module_elvenstudio_controlpanel_category">
             <field name="name">ElvenStudio Control Panel</field>
             <field name="description">Elven Studio Control Panel Application</field>

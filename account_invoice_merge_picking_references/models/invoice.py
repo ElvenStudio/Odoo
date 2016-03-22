@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, api
+import itertools
 
 
 class AccountInvoice(models.Model):
@@ -18,10 +19,14 @@ class AccountInvoice(models.Model):
                             set(
                                 self.browse(merged_invoice_id).picking_ids.ids
                                 +
-                                map(
-                                    lambda old_invoice_id:
-                                        self.browse(old_invoice_id).picking_ids.ids,
-                                    invoices_info[merged_invoice_id]
+                                list(
+                                    itertools.chain.from_iterable(
+                                        map(
+                                            lambda old_invoice_id:
+                                                self.browse(old_invoice_id).picking_ids.ids,
+                                            invoices_info[merged_invoice_id]
+                                        )
+                                    )
                                 )
                             )
                         )

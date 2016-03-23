@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, api
-import itertools
 
 
 class AccountInvoice(models.Model):
@@ -9,28 +8,16 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def do_merge(self, keep_references=True, date_invoice=False):
+        # invoices_info structure: {new_invoice_id: [old_invoice_ids]}
         invoices_info = super(AccountInvoice, self).do_merge(keep_references=keep_references, date_invoice=date_invoice)
 
         map(
             lambda merged_invoice_id:
-                self.browse(merged_invoice_id).write({
-                    'picking_ids':
-                        list(
-                            set(
-                                self.browse(merged_invoice_id).picking_ids.ids
-                                +
-                                list(
-                                    itertools.chain.from_iterable(
-                                        map(
-                                            lambda old_invoice_id:
-                                                self.browse(old_invoice_id).picking_ids.ids,
-                                            invoices_info[merged_invoice_id]
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                }),
+                self.env['stock.picking'].search(
+                    # find all stock.picking related to the old invoices
+                    [('invoice_id', 'in', invoices_info[merged_invoice_id])]
+                    # and set for all the new mereged_invoice_id
+                ).write({'invoice_id': merged_invoice_id}),
             invoices_info
         )
 

@@ -214,7 +214,7 @@ class Product(models.Model):
         try:
             result = value if isinstance(float(value), float) else default
         except ValueError:
-            result = value if '/' in value else default
+            result = value if '/' in value or "," in value else default
 
         return result
 

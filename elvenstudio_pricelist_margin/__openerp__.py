@@ -26,13 +26,6 @@
  'category': 'Sales & Purchases',
  'website': 'https://github.com/ElvenStudio/Odoo',
  'summary': "Calculate margin and margin rates from pricelist",
- 'description': """
-Extend Pricelist with margin calculation
-==============================================================
-
-This module extend the module product_pricelist adding the capability of calculate
-the product margin for a pricelist and the margin rate.
-""",
  'author': "ElvenStudio",
  'license': 'AGPL-3',
  'website': 'http://www.elvenstudio.it',

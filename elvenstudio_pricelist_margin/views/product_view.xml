@@ -10,10 +10,11 @@
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="before">
                     <field name="product_cost" />
                     <field name="markup"/>
-                </xpath>
-                <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
                     <field name="net_margin" />
                     <field name="margin_percent"/>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
+                    <field name="price_with_taxes"/>
                 </xpath>
             </field>
         </record>
@@ -26,10 +27,11 @@
                 <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="before">
                     <field name="product_cost" />
                     <field name="markup" />
-                </xpath>
-                <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
                     <field name="net_margin" />
                     <field name="margin_percent"/>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_ids']//field[@name='price']" position="after">
+                    <field name="price_with_taxes"/>
                 </xpath>
             </field>
         </record>

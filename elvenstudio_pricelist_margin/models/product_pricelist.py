@@ -15,16 +15,21 @@ class ProductPricelistMargin(models.Model):
     product_cost = fields.Float(
         compute='_get_product_cost',
         digits=dp.get_precision('Product Price'),
-        help='Product Cost')
+        help=_('Product Cost'))
 
     net_margin = fields.Float(
-        string='Margin',
+        string=_('Margin'),
         compute='_get_net_margin',
         digits=dp.get_precision('Product Price'),
-        help='Product net margin')
+        help=_('Product net margin'))
 
-    margin_percent = fields.Char(string='Margin Percentage', compute='_get_margin_percent')
-    markup = fields.Char(string='Markup', compute='_get_markup')
+    margin_percent = fields.Char(string=_('Margin Percentage'), compute='_get_margin_percent')
+    markup = fields.Char(compute='_get_markup')
+
+    price_with_taxes = fields.Float(
+        compute='_get_product_price_with_taxes',
+        digits=dp.get_precision('Product Price'),
+        help=_('Product Price With Taxes'))
 
     @api.one
     def _get_product_price(self):
@@ -71,6 +76,17 @@ class ProductPricelistMargin(models.Model):
             product = self.env['product.template'].browse(template_id)
 
         self.product_cost = self._get_cost(self, [(product, quantity, partner_id)])
+
+    @api.one
+    def _get_product_price_with_taxes(self):
+        product_id = self._context.get('product_id', False)
+        template_id = self._context.get('template_id', False)
+        if product_id:
+            self.price_with_taxes = self.env['product.product'].browse(product_id).taxes_id.compute_all(
+                self.price, 1.0)['total_included']
+        elif template_id:
+            self.price_with_taxes = self.env['product.template'].browse(template_id).taxes_id.compute_all(
+                self.price, 1.0)['total_included']
 
     @api.multi
     def _get_cost(self, pricelist, products_by_qty_by_partner):

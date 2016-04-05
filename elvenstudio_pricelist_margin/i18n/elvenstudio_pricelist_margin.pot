@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 17:50+0000\n"
-"PO-Revision-Date: 2016-02-26 17:50+0000\n"
+"POT-Creation-Date: 2016-04-05 09:55+0000\n"
+"PO-Revision-Date: 2016-04-05 09:55+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,10 +16,22 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: elvenstudio_pricelist_margin
-#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:101
+#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:117
 #, python-format
 msgid "At least one pricelist has no active version !\n"
 "Please create or activate one."
+msgstr ""
+
+#. module: elvenstudio_pricelist_margin
+#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:21
+#, python-format
+msgid "Margin"
+msgstr ""
+
+#. module: elvenstudio_pricelist_margin
+#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:26
+#, python-format
+msgid "Margin Percentage"
 msgstr ""
 
 #. module: elvenstudio_pricelist_margin
@@ -28,7 +40,25 @@ msgid "Pricelist"
 msgstr ""
 
 #. module: elvenstudio_pricelist_margin
-#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:100
+#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:18
+#, python-format
+msgid "Product Cost"
+msgstr ""
+
+#. module: elvenstudio_pricelist_margin
+#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:32
+#, python-format
+msgid "Product Price With Taxes"
+msgstr ""
+
+#. module: elvenstudio_pricelist_margin
+#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:24
+#, python-format
+msgid "Product net margin"
+msgstr ""
+
+#. module: elvenstudio_pricelist_margin
+#: code:addons/elvenstudio_pricelist_margin/models/product_pricelist.py:116
 #, python-format
 msgid "Warning!"
 msgstr ""

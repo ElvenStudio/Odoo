@@ -4,7 +4,7 @@
 
         <record id="action_recompute_account_analytic_line_amount" model="ir.actions.server">
 			<field name="name">Recompute Amount Line</field>
-			<field name="model_id" ref="account.account_analytic_line"/>
+			<field name="model_id" ref="model_account_analytic_line"/>
 			<field name="state">code</field>
 			<field name="code">
                 self.recompute_line_amount(cr, uid, context.get('active_ids', []), context=context)</field>

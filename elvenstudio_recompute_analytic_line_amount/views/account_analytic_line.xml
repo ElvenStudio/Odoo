@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="action_recompute_account_analytic_line_amount" model="ir.actions.server">
+			<field name="name">Recompute Amount Line</field>
+			<field name="model_id" ref="account.account_analytic_line"/>
+			<field name="state">code</field>
+			<field name="code">
+                self.recompute_line_amount(cr, uid, context.get('active_ids', []), context=context)</field>
+		</record>
+
+        <record id="ir_open_bulk_analytic_line_amount" model="ir.values">
+			<field eval="'client_action_multi'" name="key2"/>
+			<field eval="'account.analytic.line'" name="model"/>
+			<field name="name">Recompute Amount Line</field>
+			<field eval="'ir.actions.server,%d'%action_recompute_account_analytic_line_amount" name="value"/>
+			<field eval="True" name="object"/>
+		</record>
+
+    </data>
+</openerp>

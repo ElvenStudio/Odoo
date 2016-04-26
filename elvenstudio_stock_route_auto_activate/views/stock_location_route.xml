@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- ************* Location Route form View  *************** -->
+        <record id="elvenstudio_stock_route_auto_activate_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.stock.route.auto.activate.form.view</field>
+            <field name="model">stock.location.route</field>
+            <field name="inherit_id" ref="stock.stock_location_route_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_selectable']" position="after">
+                    <field name="auto_activate_route" attrs="{'invisible':[('product_selectable', '=', False)]}"/>
+                    <field name="warehouse_ids"
+                           widget="many2many_checkboxes"
+                           attrs="{'invisible':['|',('product_selectable', '=', False), ('auto_activate_route', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

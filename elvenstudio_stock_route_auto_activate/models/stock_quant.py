@@ -33,9 +33,12 @@ class StockQuant(models.Model):
         # Get all product from the selected quants
         products = self.mapped('product_id')
 
+        # Get all quant related to products
+        quants = self.search([('product_id', 'in', products.ids), ('location_id.usage', '=', 'internal')])
+
         location_obj = self.env['stock.location']
         # Get the quants related to the warehouse with auto activable routes
-        quants_to_check = self.filtered(lambda q: location_obj.get_warehouse(q.location_id) in warehouses.ids)
+        quants_to_check = quants.filtered(lambda q: location_obj.get_warehouse(q.location_id) in warehouses.ids)
 
         warehouse_products = dict()
         # warehouse_products = { w_id:
@@ -78,11 +81,11 @@ class StockQuant(models.Model):
             product_updated = product_updated.union(product_to_enable_route).union(product_to_disable_route)
 
             for route in warehouse_routes[warehouse_id]:
-                self.env['product.product'].search([('id', 'in', list(product_to_enable_route))]).write(
-                    {'route_ids': [(4, route.id)]})
-
                 self.env['product.product'].search([('id', 'in', list(product_to_disable_route))]).write(
                     {'route_ids': [(3, route.id)]})
+
+                self.env['product.product'].search([('id', 'in', list(product_to_enable_route))]).write(
+                    {'route_ids': [(4, route.id)]})
 
         # Get the products not updated, because we need to check and reset them
         product_to_update = set(products.ids) - product_updated

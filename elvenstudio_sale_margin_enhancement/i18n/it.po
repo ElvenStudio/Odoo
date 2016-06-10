@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 17:49+0000\n"
-"PO-Revision-Date: 2016-02-26 17:49+0000\n"
+"POT-Creation-Date: 2016-06-09 13:22+0000\n"
+"PO-Revision-Date: 2016-06-09 13:22+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,17 +16,78 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: elvenstudio_sale_margin_enhancement
-#: model:ir.actions.server,name:elvenstudio_sale_margin_enhancement.action_recompute_sale_order_margin
-msgid "Recompute Margin"
-msgstr "Recompute Margin"
+#: help:sale.order.line,product_type:0
+msgid "Consumable: Will not imply stock management for this product. \n"
+"Stockable product: Will imply stock management for this product."
+msgstr "Consumable: Will not imply stock management for this product. \n"
+"Stockable product: Will imply stock management for this product."
+
+#. module: elvenstudio_sale_margin_enhancement
+#: field:account.invoice.line,purchase_price:0
+msgid "Cost Price"
+msgstr "Costo"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:ir.model,name:elvenstudio_sale_margin_enhancement.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Righe Fattura"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: code:addons/elvenstudio_sale_margin_enhancement/models/sale_order.py:83
+#, python-format
+msgid "It gives profitability by calculating the difference between the Unit Price and the cost."
+msgstr "Mostra il profitto calcolato come differenza tra prezzo unitario e costo."
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:res.groups,name:elvenstudio_sale_margin_enhancement.group_sale_no_change_price
+msgid "No change price on sale order"
+msgstr "Non cambiare il prezzo nell'ordine di vendita"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: field:sale.order.line,product_type:0
+msgid "Product Type"
+msgstr "Tipo di prodotto"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:ir.module.category,description:elvenstudio_sale_margin_enhancement.elvenstudio_sale_margin_category
+#: model:ir.module.category,name:elvenstudio_sale_margin_enhancement.elvenstudio_sale_margin_category
+msgid "Sale margin options"
+msgstr "Opzioni dei margini di vendita"
 
 #. module: elvenstudio_sale_margin_enhancement
 #: model:ir.model,name:elvenstudio_sale_margin_enhancement.model_sale_order
 msgid "Sales Order"
-msgstr "Sales Order"
+msgstr "Ordine di vendita"
 
 #. module: elvenstudio_sale_margin_enhancement
 #: model:ir.model,name:elvenstudio_sale_margin_enhancement.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Sales Order Line"
+msgstr "Linea d'ordine di vendita"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:res.groups,name:elvenstudio_sale_margin_enhancement.group_sale_below_purchase_price
+msgid "Sell below the purchase price"
+msgstr "Vendi a meno del prezzo di acquisto"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:res.groups,name:elvenstudio_sale_margin_enhancement.group_sale_margin
+msgid "Show purchase price on sale order lines and customer invoice"
+msgstr "Mostra prezzi di acquisto sulle linee d'ordine di vendita e sulle fatture clienti"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: model:ir.model,name:elvenstudio_sale_margin_enhancement.model_stock_move
+msgid "Stock Move"
+msgstr "Movimento di magazzino"
+
+#. module: elvenstudio_sale_margin_enhancement
+#: code:addons/elvenstudio_sale_margin_enhancement/models/account_invoice.py:40
+#: code:addons/elvenstudio_sale_margin_enhancement/models/sale_order.py:59
+#, python-format
+msgid "You can not sell below the purchase price."
+msgstr "Non puoi vendere ad un prezzo inferiore del prezzo di acquisto."
+
+#. module: elvenstudio_sale_margin_enhancement
+#: view:sale.order:elvenstudio_sale_margin_enhancement.sale_margin_sale_order
+msgid "elvenstudio_sale_margin_enhancement.group_sale_margin"
+msgstr "elvenstudio_sale_margin_enhancement.group_sale_margin"
 

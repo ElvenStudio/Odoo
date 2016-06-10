@@ -25,27 +25,21 @@
  'category': 'Sales & Purchases',
  'website': 'https://github.com/ElvenStudio/Odoo',
  'summary': "Sale margin module Enhanced",
- 'description': """
-Sale Margin Enhancement
-==============================================================
-
-This module extends odoo sale_margin adding this functionalities:
- - saves the purchase price into sale order line from product pricelist base cost price;
- - computes margin using product_uom_qty instead of product_uos_qty;
- - adds a bulk action to recalculate sale order margins.
-    """,
  'author': "ElvenStudio",
  'license': 'AGPL-3',
  'website': 'http://www.elvenstudio.it',
 
- 'images': ['images/elvenstudio.png',],
-
  'depends': [
-     'sale_margin'
+     'sale_margin',
+     'product_variant_cost'
  ],
 
  'data': [
-     'views/sale_order_view.xml',
+     'data/data.xml',
+     'security/sale_security.xml',
+     # 'views/sale_order_view.xml',
+     'views/sale_margin_view.xml',
+     'views/account_invoice_view.xml',
  ],
 
  'installable': True,

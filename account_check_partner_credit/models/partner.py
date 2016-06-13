@@ -29,7 +29,7 @@ class Partner(osv.osv):
                 context=context
             )
 
-            checks_on_hold = self.pool.get('account.check').browse(cr, uid, checks_on_hold_id, context=context)
+            checks_on_hold = self.pool.get('account.check').sudo().browse(cr, uid, checks_on_hold_id, context=context)
 
             checks_credit = sum(check.amount for check in checks_on_hold)
 

@@ -131,7 +131,7 @@ class MagentoProduct(models.Model):
                 [
                     p.mag_product_id,
                     {
-                        'price': p.lst_price if not pricelist_id else p.pro_name.with_context(
+                        'price': p.pro_name.lst_price if not pricelist_id else p.pro_name.with_context(
                             pricelist=pricelist_id).price
                     }
                 ]

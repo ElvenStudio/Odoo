@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- NO Modify view -->
+        <record id="view_partner_credit_limit_no_modify" model="ir.ui.view">
+            <field name="name">form.res.partner.credit.limit.salesman</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <!--<field name="groups_id" eval="[(6, 0, [ref('base.group_sale_salesman') ])]" />-->
+            <field name="arch" type="xml">
+                <data>
+                    <field name="credit_limit" position="attributes">
+                        <attribute name="readonly">1</attribute>
+                    </field>
+                </data>
+            </field>
+        </record>
+
+        <!-- Modify view -->
+        <record id="view_partner_credit_limit_modify" model="ir.ui.view">
+            <field name="name">form.res.partner.credit.limit.salesmanager</field>
+            <field name="model">res.partner</field>
+            <!--<field name="inherit_id" ref="base.view_partner_form"/>-->
+            <field name="inherit_id" ref="view_partner_credit_limit_no_modify"/>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_sale_manager') ])]" />
+            <field name="arch" type="xml">
+                <data>
+                    <field name="credit_limit" position="attributes">
+                        <attribute name="readonly">0</attribute>
+                    </field>
+                </data>
+            </field>
+        </record>
+    </data>
+</openerp>

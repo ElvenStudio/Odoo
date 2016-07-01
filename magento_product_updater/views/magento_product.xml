@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Add product template info tree -->
+        <record id="magento_product_template_sync_tree" model="ir.ui.view">
+            <field name="name">magento.product.template.sync.tree</field>
+            <field name="model">magento.product.template</field>
+            <field name="inherit_id" ref="magento_bridge.magento_product_template_tree" />
+            <field name="arch" type="xml">
+                <field name="need_sync" position="after">
+                    <field name="need_qty_sync" />
+                    <field name="need_price_sync" />
+                </field>
+            </field>
+        </record>
+
+        <!-- Add product info -->
+        <record id="magento_product_sync_tree" model="ir.ui.view">
+            <field name="name">magento.product.sync.tree</field>
+            <field name="model">magento.product</field>
+            <field name="inherit_id" ref="magento_bridge.map_product_tree" />
+            <field name="arch" type="xml">
+                <field name="need_sync" position="after">
+                    <field name="need_qty_sync" />
+                    <field name="need_price_sync" />
+                </field>
+            </field>
+        </record>
+
+        <!-- Add product info form -->
+        <record id="magento_product_sync_form" model="ir.ui.view">
+            <field name="name">magento.product.sync.form</field>
+            <field name="model">magento.product</field>
+            <field name="inherit_id" ref="magento_bridge.map_product_form" />
+            <field name="arch" type="xml">
+                <field name="need_sync" position="after">
+                    <field name="need_qty_sync" />
+                    <field name="need_price_sync" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="update_sync_status_tree_wizard">
+            <field name="name">magento.update.sync.status.tree.wizard</field>
+            <field name="model">magento.update.sync.status</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Update Sync Status" col="2">
+                    <group>
+                        <field name="update_qty"/>
+                        <field name="update_price"/>
+                    </group>
+                    <footer>
+                        <button string="Cancel" special="cancel"/>
+                        <button string="Confirm" name="update_sync_status" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- More button Action-->
+        <act_window
+            id="update_sync_status_template_wizard_template"
+            name="Update Sync Status"
+            src_model="magento.product.template"
+            res_model="magento.update.sync.status"
+            view_mode="form"
+            target="new"
+            multi="True" />
+
+        <act_window
+            id="update_sync_status_template_wizard_product"
+            name="Update Sync Status"
+            src_model="magento.product"
+            res_model="magento.update.sync.status"
+            view_mode="form"
+            target="new"
+            multi="True" />
+
+    </data>
+</openerp>

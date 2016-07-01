@@ -49,8 +49,19 @@ class MagentoSynchronization(models.Model):
 
     @api.model
     def _write_sync_result(self, result=[]):
-        status = 'yes' if reduce(lambda x, y: x and y is True, result) else 'no'
-        error_message = reduce(lambda x, y: str(x) + (str(y) + "\n") if y is not True else '', result)
+
+        # result is a list of list
+        # each sublist is a chunk of multicall
+        # Example result = [[True, True, True], [True, {'error':'error_msg'}, True]]
+        flat_result = [item for sub_list in result for item in sub_list]
+
+        status = 'yes' if reduce(lambda x, y: x is True and y is True, flat_result) else 'no'
+
+        error_message = reduce(
+            lambda x, y: (str(x) + "\n" if x is not True else '') + (str(y) + "\n" if y is not True else ''),
+            flat_result
+        )
+
         self.env['magento.sync.history'].create(
             {
                 'status': status,

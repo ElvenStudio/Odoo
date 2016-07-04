@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <template id="elvenstudio_pos_md_assets_backend"
+                  name="elvenstudio_pos_md_assets_backend"
+                  inherit_id="point_of_sale.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="/elvenstudio_pos_md/static/src/js/screens.js" type="text/javascript"></script>
+                <script src="/elvenstudio_pos_md/static/src/js/widgets.js" type="text/javascript"></script>
+                <script src="/elvenstudio_pos_md/static/src/js/main.js" type="text/javascript"></script>
+            </xpath>
+        </template>
+
+        <template id="elvenstudio_pos_md_assets" name="elvenstudio_pos_md_css" inherit_id="point_of_sale.index">
+            <xpath expr="//script[@id='loading-script']" position="before">
+                <link rel="stylesheet" href="/elvenstudio_pos_md/static/src/css/pos.css"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>

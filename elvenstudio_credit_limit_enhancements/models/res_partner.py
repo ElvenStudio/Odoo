@@ -19,6 +19,6 @@ class ResPartner(models.Model):
             for partner in partners:
                 old = str(partner.credit_limit)
                 new = str(vals['credit_limit'])
-                partner.message_post(body=_("Credit limit modified: %s &rArr; %s" % (old, new)))
+                partner.message_post(body=_("Credit limit modified: %s &rArr; %s") % (old, new))
 
         return super(ResPartner, self).write(vals)

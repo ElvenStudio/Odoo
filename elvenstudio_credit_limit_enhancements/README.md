@@ -2,8 +2,8 @@ Credit enhancement
 ==========================================================
 
 This module extends the credit limit functionalities:
- - adds security groups to allow credit modify
- - adds ir.mail support: a log internal message is saved on partner view when credit_limit being modified
+ - only sales manager can modify the partner's credit_limit;
+ - adds ir.mail support: a log internal message is saved on partner view when credit_limit being modified;
 
 Usage:
 ------

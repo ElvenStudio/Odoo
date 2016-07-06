@@ -33,7 +33,9 @@ class DataConnector(models.Model):
         return status
 
     @api.model
-    def export_customer_to_md(self, filepath, filename, domain, params={}, log=False):
+    def export_customer_to_md(self, filepath, filename, domain, params=None, log=False):
+        if not params:
+            params = {}
         status = False
         operation = self.create_operation('export_to_csv')
         operation.execute_operation('res.partner')
@@ -67,7 +69,8 @@ class DataConnector(models.Model):
 
                                     vat_nr = re.findall('\d+', customer.vat)
                                     if len(vat_nr) == 1:
-                                        vat = int(vat_nr[0])
+                                        # vat = int(vat_nr[0])
+                                        vat = vat_nr[0]
 
                                         payment_term = ''
                                         if customer.customer_payment_mode and customer.property_payment_term:

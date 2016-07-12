@@ -6,6 +6,7 @@
             <field name="name">form.res.partner.credit.limit.salesman</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
             <!--<field name="groups_id" eval="[(6, 0, [ref('base.group_sale_salesman') ])]" />-->
             <field name="arch" type="xml">
                 <data>

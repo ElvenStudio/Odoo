@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<menuitem id="es_main_menu"
+			name="Elven Studio"
+			groups="group_elvenstudio_manager"/>
+
+			<menuitem  id="es_home_menu"
+				name="Control Panel"
+				parent="es_main_menu"
+				sequence="1"/>
+
+				<menuitem  id="cp_id0"
+					name="Elven Studio Panel"
+					parent="es_home_menu"
+					action="elvenstudio_home_action"/>
+
+			<menuitem  id="es_config_menu"
+				name="Configuration"
+				parent="es_main_menu"
+				sequence="100"/>
+	</data>
+</openerp>

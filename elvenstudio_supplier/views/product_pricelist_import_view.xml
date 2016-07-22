@@ -159,9 +159,15 @@
             id="act_fail_lines" />
 
         <!-- Definisco la voce per il plugin nel pannello di controllo -->
-        <menuitem  id="menu_controlpanel_supplier_header" name="Suppliers" parent="elvenstudio_control_panel.elvenstudio_controlpanel_parent_menu" sequence="2"/>
+        <menuitem  id="menu_controlpanel_supplier_header"
+                   name="Suppliers"
+                   parent="elvenstudio_control_panel.es_main_menu"
+                   sequence="2"/>
 
 				<!-- Definisco la view di default quando si accede alla voce di menu del plugin -->
-				<menuitem  id="menu_controlpanel_supplier_pricelist" name="Product Pricelists" parent="menu_controlpanel_supplier_header" action="action_file_price_import"/>
+				<menuitem  id="menu_controlpanel_supplier_pricelist"
+                           name="Product Pricelists"
+                           parent="menu_controlpanel_supplier_header"
+                           action="action_file_price_import"/>
     </data>
 </openerp>

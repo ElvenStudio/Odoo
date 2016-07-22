@@ -67,9 +67,15 @@
         </record>
 
         <!-- Definisco la voce per il plugin nel pannello di controllo -->
-        <menuitem  id="menu_performed_operation" name="Tasks" parent="elvenstudio_control_panel.elvenstudio_controlpanel_parent_menu" sequence="3"/>
+        <menuitem  id="menu_performed_operation"
+                   name="Tasks"
+                   parent="elvenstudio_control_panel.es_main_menu"
+                   sequence="3"/>
 
 				<!-- Definisco la view di default quando si accede alla voce di menu del plugin -->
-				<menuitem  id="cp_perf_op" name="Tasks" parent="menu_performed_operation" action="action_data_connector"/>
+				<menuitem  id="cp_perf_op"
+                           name="Tasks"
+                           parent="menu_performed_operation"
+                           action="action_data_connector"/>
     </data>
 </openerp>

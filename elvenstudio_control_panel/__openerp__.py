@@ -44,6 +44,7 @@ Pannello di controllo delle estensioni elvenstudio.
      'security/controlpanel_security.xml',
      'security/ir.model.access.csv',
      'views/controlpanel_view.xml',
+     'views/menu.xml',
  ],
 
  'installable': True,

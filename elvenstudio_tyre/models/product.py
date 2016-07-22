@@ -79,7 +79,10 @@ class Product(models.Model):
 
         if self.attribute_set_id:
             if AttributeCode.Pneumatico in self.attribute_set_id.name:
-                magento_attributes = self.env['product.attributes'].search([('fkey_product', '=', self.id)])
+
+                magento_attributes = self.env['product.attributes'].search(
+                    [('fkey_product', '=', self.id)], order="id asc")
+
                 for attribute in magento_attributes:
                     key = attribute.code
 

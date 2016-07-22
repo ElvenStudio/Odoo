@@ -54,7 +54,7 @@
 		<!-- Definisco la view di default quando si accede alla voce di menu del plugin -->
 		<menuitem  id="cp_conf_supplier"
                    name="Location Routes"
-                   parent="elvenstudio_control_panel.menu_controlpanel_config"
+                   parent="elvenstudio_control_panel.es_config_menu"
                    action="action_supplier_conf" />
     </data>
 </openerp>

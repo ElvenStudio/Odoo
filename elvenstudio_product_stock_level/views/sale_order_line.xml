@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="elvenstudio_product_stock_level_sale_order_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.product.stock.sale.order.line.form.view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//tree[@string='Sales Order Lines']//field[@name='price_subtotal']" position="after">
+                    <field name="stocklevel_flat" groups="base.group_user" readonly="1" widget="html"></field>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="elvenstudio_product_stock_level_sale_order_line_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.product.stock.level.sale.order.line.form.view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//form[@string='Sales Order Lines']//div[@name='discount']" position="after">
+                    <field name="stocklevel_ids" groups="base.group_user" readonly="1">
+                        <tree editable="none">
+                            <field name="warehouse_id" />
+                            <!--<field name="qty_available" />-->
+                            <field name="incoming_qty" />
+                            <!--<field name="outgoing_qty" />-->
+                            <!--<field name="virtual_available" />-->
+                            <field name="immediately_usable_qty" />
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

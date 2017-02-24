@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="elvenstudio_product_stock_level_product_form_view" model="ir.ui.view">
+            <field name="name">elvenstudio.product.stock.level.product.form.view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Stock and Expected Variations']" position="after">
+                    <group name="group_stock_level" string="Stock level" attrs="{'invisible': [('type', '=', 'service')]}" groups="base.group_user">
+                        <field name="stocklevel_ids" nolabel="1">
+                            <tree readonly="True">
+                                <field name="warehouse_id" />
+                                <!--<field name="qty_available" />-->
+                                <field name="incoming_qty" />
+                                <!--<field name="outgoing_qty" />-->
+                                <!--<field name="virtual_available" />-->
+                                <field name="immediately_usable_qty" />
+                                <!--<field name="sold" />-->
+                            </tree>
+                        </field>
+
+                        <!--<field name="stocklevel_flat" widget="html" />-->
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Aggiunge gli stocklevel_flat nella tree view -->
+        <record model="ir.ui.view" id="elvenstudio_product_stock_level_product_tree_view">
+            <field name="name">Product stocklevel Tree View</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.view_stock_product_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="stocklevel_flat" widget="html" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

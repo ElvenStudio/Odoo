@@ -1,0 +1,20 @@
+.o_form_graph_section{
+    width: 100%;
+    border: 1px solid #EEE;
+     position: relative !important;
+}
+.o_form_graph_section sgv.oe_graph {
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: relative !important;
+}
+
+.o_form_graph_section .nvtooltip {
+    /*position: relative !important;*/
+    display: inline-block !important;
+}
+
+.nvtooltip h3{
+    /*margin: 0 !important;*/
+}

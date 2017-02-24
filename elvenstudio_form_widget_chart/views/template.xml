@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+        <template id="assets_backend" name="chart_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <!-- CSS file-->
+                <link rel="stylesheet" type="text/css" href="/elvenstudio_form_widget_chart/static/src/css/style.css" />
+
+                <!-- chart function definitions -->
+                <script type="text/javascript" src="/elvenstudio_form_widget_chart/static/src/js/form_discrete_bar_chart.js"></script>
+                <script type="text/javascript" src="/elvenstudio_form_widget_chart/static/src/js/form_line_chart.js"></script>
+                <script type="text/javascript" src="/elvenstudio_form_widget_chart/static/src/js/form_multi_bar_chart.js"></script>
+
+                <!-- loader -->
+                <script type="text/javascript" src="/elvenstudio_form_widget_chart/static/src/js/form_chart_loader.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
